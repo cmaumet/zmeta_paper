@@ -36,6 +36,7 @@
 \mainmatter              % start of the contributions
 %
 \title{Is Z enough? Impact of Meta-Analysis using only Z/T images in lieu of estimates and standard errors}
+
 %
 \titlerunning{Running title}  % abbreviated title (for running head)
 %                                     also used for the TOC unless
@@ -53,28 +54,30 @@ Statistics Department, The University of Warwick, Coventry, UK.}
 
 \maketitle              % typeset the title of the contribution
 
+TODO: find another title
+
 \begin{abstract}
 The abstract should summarize the contents of the paper
 using at least 70 and at most 150 words. It will be set in 9-point
 font size and be inset 1.0 cm from the right and left margins.
 There will be two blank lines before and after the Abstract. \dots
-\keywords{computational geometry, graph theory, Hamilton cycles}
+\keywords{TODO}
 \end{abstract}
 %
 \section{Introduction}
-While most neuroimaging meta-analyses are based on peak coordinate data, the best practice method is an Intensity-Based Meta-Analysis (IBMA) that combines the effect estimates and their standard errors (E+SE's, aka COPE \& sqrt-VARCOPE) from each study [5]. Various efforts are underway to facilitate sharing of neuroimaging data to make such IBMA's possible (see, e.g. [2]), but the emphasis is usually on T-statistics and E+SE's are difficult to use in practice; for example, an analysis of E+SE's requires knowledge of the data, design and contrast scaling. However a meta-anlaysis based on T-statistic images is sub-optimal and discouraged in (non-imaging) meta-analysis [1], as the units of the meta-analysis are, say, ``BOLD significance'' instead of ``\% BOLD change''.
+% While most neuroimaging meta-analyses are based on peak coordinate data, the best practice method is an Intensity-Based Meta-Analysis (IBMA) that combines the effect estimates and their standard errors (E+SE's, aka COPE \& sqrt-VARCOPE) from each study [5]. Various efforts are underway to facilitate sharing of neuroimaging data to make such IBMA's possible (see, e.g. [2]), but the emphasis is usually on T-statistics and E+SE's are difficult to use in practice; for example, an analysis of E+SE's requires knowledge of the data, design and contrast scaling. However a meta-anlaysis based on T-statistic images is sub-optimal and discouraged in (non-imaging) meta-analysis [1], as the units of the meta-analysis are, say, ``BOLD significance'' instead of ``\% BOLD change''.
 
 
-Given a set of $k$ studies, we can face different configuration of data sharing, and hence for each study $i$ having available for meta-analysis:
-\begin{enumerate}
-	\item the contrast estimates $\effect$ and contrast variance estimates $\vareffect$.
-	\item the contrast estimates $\effect$.	
-	\item the standardized statistical maps $\zeffect$.		
-\end{enumerate}
+% Given a set of $k$ studies, we can face different configuration of data sharing, and hence for each study $i$ having available for meta-analysis:
+% \begin{enumerate}
+% 	\item the contrast estimates $\effect$ and contrast variance estimates $\vareffect$.
+% 	\item the contrast estimates $\effect$.	
+% 	\item the standardized statistical maps $\zeffect$.		
+% \end{enumerate}
 
-Depending on how much is shared different strategies can be used to combine the available results into a meta-analysis.
+% Depending on how much is shared different strategies can be used to combine the available results into a meta-analysis.
 
-Here we compare the use of IMBA using only T-statistics to use of E+SE's. Using 21 studies of pain in control subjects, we compare the best-practice analysis to two approaches using only T-statistics, Stouffer's [7] and weighted Z-score [4], the latter accounting for differing study sample size.
+% Here we compare the use of IMBA using only T-statistics to use of E+SE's. Using 21 studies of pain in control subjects, we compare the best-practice analysis to two approaches using only T-statistics, Stouffer's [7] and weighted Z-score [4], the latter accounting for differing study sample size.
 
 \section{Methods}
 \subsection{Theory}
@@ -132,6 +135,8 @@ In the absence of standard error, the contrast estimates $\effect$ can be combin
 
 Given $\hat\varCombined$ an estimate of $\varCombined$ we obtain the statistics detailed in table~\ref{stat_table} for one sample tests.
 
+Permutations...
+
 \paragraph{Combining standardised statistics} 
 In the presence of standardiseds statistical estimates, Fisher proposed to combine the associated p-values~\cite{Fisher1932}. Stouffer's proposed to combine directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. All these statistics, assuming fixed-effects and suited only for one-sample tests only are presented in table~\ref{stat_table}.
 
@@ -175,9 +180,20 @@ The impact of the number of studies involved in the meta-analysis and of the siz
 
 
 \subsection{Real data}
-Fig. 1 shows the Bland-Altman plots comparing Z-scores from the Stouffer's and weighted-Z methods each compared with the ground truth Z-scores. Overall, both approaches present the same pattern of overestimation of the Z-scores. The weighted-Z approach provides a somewhat more condensed pattern suggesting a closer match to the ground truth.
-The dice similarity score for uncorrected p-values of 0.001, 0.01 and 0.05 were 0.84, 0.87 and 0.89 respectively for Stouffer's method and 0.86, 0.88 and 0.90 for the weighted Z-score, showing again slightly better results for the weighted-Z approach. These scores are notably higher (dice similarity scores range from 0 to 1) than the scores obtained with coordinate-based meta-analyses (around 0.5, [5]).
-Finally the ROC curves displayed in figure 2 for a ground truth obtained with an FDR corrected threshold p<0.05 demonstrate again a slight advantage of weighted-Z FFX over Stouffer's FFX.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\linewidth]{./Rplot_realdata.pdf}
+	\caption{Difference between the -log10 p-values from each meta-analytic estimates and the -log10 p-values from MFX GLM as a function of -log10 p-values from MFX GLM [TODO change to z-stats instead of -log10(p)]}
+	\label{fig_realdata}
+\end{figure}
+
+
+Fig.~\ref{fig_realdata} presents the error made on the z-score estimated by each valid meta-analytic approach by comparison to the z-scores estimated with the Ground truth MFX GLM approach. GLM RFX, Contrast permutations and z permutations offers valid or more stringent estimates while Stouffer's MFX is more liberal than the gold standard for p-values between $10^{-3}$ and $10^{-7}$ and more stringent for p-values smaller than $10^{-7}$.
+
+% Fig. 1 shows the Bland-Altman plots comparing Z-scores from the Stouffer's and weighted-Z methods each compared with the ground truth Z-scores. Overall, both approaches present the same pattern of overestimation of the Z-scores. The weighted-Z approach provides a somewhat more condensed pattern suggesting a closer match to the ground truth.
+% The dice similarity score for uncorrected p-values of 0.001, 0.01 and 0.05 were 0.84, 0.87 and 0.89 respectively for Stouffer's method and 0.86, 0.88 and 0.90 for the weighted Z-score, showing again slightly better results for the weighted-Z approach. These scores are notably higher (dice similarity scores range from 0 to 1) than the scores obtained with coordinate-based meta-analyses (around 0.5, [5]).
+% Finally the ROC curves displayed in figure 2 for a ground truth obtained with an FDR corrected threshold p<0.05 demonstrate again a slight advantage of weighted-Z FFX over Stouffer's FFX.
 
 Dice among valids
 \begin{enumerate}
