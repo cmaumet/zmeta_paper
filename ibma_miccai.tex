@@ -19,6 +19,7 @@
 \newcommand{\varWithinCommon}{\sigma^2}
 \newcommand{\sampleSize}[1][i]{n_{#1}}
 \newcommand{\varWithin}[1][i]{\sigma^2_{#1}}
+\newcommand{\transpose}{^T}
 
 
 
@@ -79,89 +80,100 @@ There will be two blank lines before and after the Abstract. \dots
 
 % Here we compare the use of IMBA using only T-statistics to use of E+SE's. Using 21 studies of pain in control subjects, we compare the best-practice analysis to two approaches using only T-statistics, Stouffer's [7] and weighted Z-score [4], the latter accounting for differing study sample size.
 
+% As an alternative to parametric procedures, non-parametric statistics rely on a very small set of assumptions. 
+
 \section{Methods}
 \subsection{Theory}
-Given a set of $k$ studies, we denote for each study $i$: its contrast estimate by $\effect$, its contrast variance estimate by $\vareffect$, its standardized statistical map by $\zeffect$ and its sample size by $n_i$.		
-
-\paragraph{Combining contrast estimates and their standard error}
-
-The gold standard approach to combine contrast estimates and their standard errors is to input them into a GLM, creating effectively the third-level of a hierarchical model (level 1, subject; level 2, study; level 3: meta-analysis). The general formulation is provided in the following equation:
-
-\begin{equation}
-	\effectvector = X \beta + \epsilon
-	\label{eq_meta_GLM}
-\end{equation}
-
-where $\beta$ is the meta-analytic parameter to be estimated, $Y = [\effect[1] \ldots \effect[\nStudies] ]^t$ is the vector of contrast estimates and $\epsilon \sim \mathcal{N}(0,W)$ is the residual term. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least square giving:
-
-% TODO add contrast
-
-\begin{eqnarray}
-	\hat \beta  &=& (X^t W X)^{-1} X^t W \effectvector \\
-	\Var(\hat \beta)  &=& (X^t W X)^{-1}
-	\label{eq_WLS}
-\end{eqnarray}
-
-In a fixed-effects model (i.e. assuming no between-study variances), we have $W = diag( \varWithin[1] \ldots \varWithin[\nStudies] )$ where $\varWithin$ denotes the contrast variance for study $i$. In a random-effects model, we have $W = diag( \varWithin[1] + \varBetween \ldots \varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-studies variance. Approximating $\varWithin$ by $\vareffect[i]$ and given $\hat\varBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in table~\ref{stat_table} for one sample tests.
+Given a set of $k$ studies, we denote for each study $i$: its contrast estimate by $\effect$, its contrast variance estimate by $\vareffect$, its standardized statistical map by $\zeffect$ and its sample size by $n_i$.
 
 \begin{table}[h]
 \begin{center}
 \begin{tabular}{ccc}
 						& Statistic			& Disbribution under H$_0$ \\
 \hline						
-GLM FFX 				& $ \displaystyle \frac{1}{ \sqrt{\sum_{i=1}^\nStudies 1/\vareffect }} \sum_{i=1}^\nStudies \frac{\effect}{\vareffect}$ & $\mathcal{T}_{ (\sum_{i=1}^\nStudies n_i - 1) - 1}$ \\
-GLM MFX 				& $ \displaystyle \frac{1}{ \sqrt{\sum_{i=1}^\nStudies 1/ (\vareffect + \hat\varBetween) }} \sum_{i=1}^\nStudies \frac{\effect}{\vareffect + \hat\varBetween}$ & $\mathcal{T}_{\nStudies - 1}$ \\
-GLM RFX	 				& $ \displaystyle \frac{1}{\widehat\varCombined / \sqrt{\nStudies}} \sum_{i=1}^\nStudies \frac{\effect}{\nStudies}$ & $\mathcal{T}_{\nStudies - 1}$ \\
-Fisher's 				& $\displaystyle -2 \sum_{i=1}^{\nStudies} \ln( \Phi(-\zeffect) ) )$ & $\chi^2_{(2\nStudies)}$\\
-Stouffer's 				& $\displaystyle  \frac{\sum_{i=1}^\nStudies \zeffect}{\sqrt{\nStudies}}$ & $\mathcal{N}(0,1)$ \\
-Stouffer's MFX			& $\displaystyle  \frac{\sum_{i=1}^\nStudies \zeffect}{\sqrt{\nStudies} \hat \sigma}$ & $\mathcal{T}_{\nStudies-1}$ \\
+FFX GLM 		& $ \displaystyle \frac{1}{ \sqrt{\sum_{i=1}^\nStudies 1/\vareffect }} \sum_{i=1}^\nStudies \frac{\effect}{\vareffect}$ & $\mathcal{T}_{ (\sum_{i=1}^\nStudies n_i - 1) - 1}$ \\
+MFX GLM 		& $ \displaystyle \frac{1}{ \sqrt{\sum_{i=1}^\nStudies 1/ (\vareffect + \hat\varBetween) }} \sum_{i=1}^\nStudies \frac{\effect}{\vareffect + \hat\varBetween}$ & $\mathcal{T}_{\nStudies - 1}$ \\
+RFX GLM 		& $ \displaystyle \frac{1}{\widehat\varCombined / \sqrt{\nStudies}} \sum_{i=1}^\nStudies \frac{\effect}{\nStudies}$ & $\mathcal{T}_{\nStudies - 1}$ \\
+Contrast Permutation	& $ \displaystyle \frac{1}{\widehat\varCombined / \sqrt{\nStudies}} \sum_{i=1}^\nStudies \frac{\effect}{\nStudies}$ & \parbox{5cm}{Determined through permutations with sign switching.} \\
+Fisher's	& $\displaystyle -2 \sum_{i=1}^{\nStudies} \ln( \Phi(-\zeffect) ) )$ & $\chi^2_{(2\nStudies)}$\\
+Stouffer's& $\displaystyle  \frac{\sum_{i=1}^\nStudies \zeffect}{\sqrt{\nStudies}}$ & $\mathcal{N}(0,1)$ \\
 Optimally weighted-Z	& $\displaystyle  \frac{\sum_{i=1}^\nStudies  \sqrt{n_i} \zeffect}{\sqrt{\sum_{i=1}^\nStudies n_i}}$ & $\mathcal{N}(0,1)$ \\
+Stouffer's MFX& $\displaystyle  \frac{\sum_{i=1}^\nStudies \zeffect}{\sqrt{\nStudies} \hat \sigma}$ & $\mathcal{T}_{\nStudies-1}$ \\
+Z Permutation	& $\displaystyle  \frac{\sum_{i=1}^\nStudies \zeffect}{\sqrt{\nStudies}}$ & \parbox{5cm}{Determined through permutations with sign switching.} \\
 \hline 
 
 \end{tabular}
 \end{center}
 \caption{Statistics for one-sample meta-analysis tests and distributions under the null hypothesis.}
 \label{stat_table}
-\end{table}
+\end{table}	
 
-\paragraph{Combining contrast estimates}
-In the absence of standard error, the contrast estimates $\effect$ can be combined by assuming that the within-study variance $\varWithin$ is roughly constant ($\varWithin \simeq \sigma^2 \; \forall \, 1 \le i \le \nStudies $) or a negligible by comparison to the between-study variance($\varWithin \ll \varBetween \; \forall \, 1 \le i \le \nStudies $). Then $W = diag( \varCombined \ldots \varCombined )$ where $\varCombined$ is the combined within and between-stubject variance such as $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$. Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least square giving:
+\paragraph{Combining contrast estimates and their standard error}
+
+The gold standard approach to combine contrast estimates and their standard errors is to input them into a GLM~\cite{Cummings2004}, creating effectively the third-level of a hierarchical model (level 1: subject; level 2: study; level 3: meta-analysis). The general formulation is:
+
+\begin{equation}
+	\effectvector = X \beta + \epsilon
+	\label{eq_meta_GLM}
+\end{equation}
+
+where $\beta$ is the meta-analytic parameter to be estimated, $Y = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates and $\epsilon \sim \mathcal{N}(0,W)$ is the residual term. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least square giving:
+
+% TODO add contrast
 
 \begin{eqnarray}
-	\hat \beta  &=& (X^t X)^{-1} X^t \effectvector \\
-	\Var(\hat \beta)  &=& (X^t W X)^{-1}
+	\hat \beta  &=& (X\transpose W X)^{-1} X\transpose W \effectvector \\
+	\Var(\hat \beta)  &=& (X\transpose W X)^{-1}
+	\label{eq_WLS}
+\end{eqnarray}
+
+In a random-effects model, we have $W = diag( \varWithin[1] + \varBetween \ldots \varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-studies variance. Approximating $\varWithin$ by $\vareffect[i]$ and given $\hat\varBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in table~\ref{stat_table} for a one sample test. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
+
+In a fixed-effects model (i.e. assuming no between-study variances), we have $W = diag( \varWithin[1] \ldots \varWithin[\nStudies] )$ where $\varWithin$ denotes the contrast variance for study $i$. This approach will be referred to as \textbf{Fixed-effects (FFX) GLM}.
+
+
+\paragraph{Combining contrast estimates}
+In the absence of standard error, the contrast estimates $\effect$ can be combined by assuming that the within-study variance $\varWithin$ is roughly constant ($\varWithin \simeq \sigma^2 \; \forall \, 1 \le i \le \nStudies $) or negligible by comparison to the between-study variance($\varWithin \ll \varBetween \; \forall \, 1 \le i \le \nStudies $). Then $W = diag( \varCombined \ldots \varCombined )$ where $\varCombined$ is the combined within and between-subject variance such as $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$. Under these assumptions, eq.~\eqref{eq_meta_GLM} can be solved by ordinary least square giving:
+
+\begin{eqnarray}
+	\hat \beta  &=& (X\transpose X)^{-1} X\transpose \effectvector \\
+	\Var(\hat \beta)  &=& (X\transpose W X)^{-1}
 	\label{eq_OLS}
 \end{eqnarray}
 
-Given $\hat\varCombined$ an estimate of $\varCombined$ we obtain the statistics detailed in table~\ref{stat_table} for one sample tests.
+Given $\hat\varCombined$ an estimate of $\varCombined$ we obtain the statistics presented in table~\ref{stat_table} for one sample tests. This approach will be referred to \textbf{Random-effects (RFX) GLM} in the following.
 
-Permutations...
+As an alternative to parametric approaches, non-parametric statistics~\cite{Holmes1996,Nichols2002} can be computed by comparing the RFX GLM T-statistic to the distribution obtained by permuting the sign of each sample included in the analysis. This approach will be referred to as \textbf{Contrast permutation}.
 
 \paragraph{Combining standardised statistics} 
-In the presence of standardiseds statistical estimates, Fisher proposed to combine the associated p-values~\cite{Fisher1932}. Stouffer's proposed to combine directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. All these statistics, assuming fixed-effects and suited only for one-sample tests only are presented in table~\ref{stat_table}.
+In the presence of standardised statistical estimates, \textbf{Fisher's} meta-analysis provide a statistic to combine the associated p-values~\cite{Fisher1932}. \textbf{Stouffer's} approach combines directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. This approach will be referred to as \textbf{Optimally weighted-Z}. All these meta-analytic statistics assumes fixed-effects (no between-study variance) and are suited only for one-sample tests. The corresponding statistics are presented in table~\ref{stat_table}.
 
-As suggested in~\cite{Salimi-khorshidi2009}, to get a kind of MFX with Stouffer's approach, the standardised statistical estimates $\zeffect$ can be combined in an OLS analysis. The corresponding estimate, referred as Stouffer's MFX is also provided in~\ref{stat_table}
+As suggested in~\cite{Salimi-khorshidi2009}, to get a kind of MFX with Stouffer's approach, the standardised statistical estimates $\zeffect$ can be combined in an OLS analysis. The corresponding estimate, referred as \textbf{Stouffer's MFX} is also provided in~\ref{stat_table}
+
+As an alternative to parametric approaches, a non-parametric distribution~\cite{Holmes1996,Nichols2002} can be estimated by permutation on the $\zeffect$'s. This approach will be referred to as \textbf{Z permutation}.
 
 \subsection{Experiments}
 
 \subsubsection{Simulations}
-To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated a contrast estimate a variance estimates such as:
+To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated a contrast estimate and a variance estimates such as:
 \begin{eqnarray}
 	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\sampleSize}+\varBetween) \\
 	\vareffect &\sim& \frac{\varWithin}{\sampleSize-1} \chi^2_{(\sampleSize-1)}%
 \end{eqnarray}
-where $\varWithin \in [1/2, 1, 2, 4]$ is the within-study variance, $\varBetween \in [0, 1]$ is the between-study variance (fixed-effects if $\varBetween$ is $0$, random-effects otherwise). We simulated different number of studies: $\nStudies \in [5, 10, 25, 50]$ and for a given meta-analysis, the number of subjects per studies $n$ was selected such as we would have varying number of subjects in a common range for neuroimaging studies. In each simulated meta-analysis we simulated one study with exactly $20, 25, 10$ and $50$ subjects. For the remaining studies the number of subjects were drawn from uniform distributions a quarter from $\mathcal{U}(11,20)$, a quarter from $\mathcal{U}(26,50)$ and the remaining from $\mathcal{U}(21,25)$. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested, 71 repeats with 5041 samples per repeats were simulated.
+where $\varWithin \in [1/2, 1, 2, 4]$ is the within-study variance, $\varBetween \in [0, 1]$ is the between-study variance (fixed-effects if $\varBetween$ is $0$, random-effects otherwise). We simulated different number of studies per meta-analysis: $\nStudies \in [5, 10, 25, 50]$ and the number of subjects per studies $\sampleSize$ was selected such as we would have varying number of subjects per studies in given meta-analysis across the common range of subjects involved in neuroimaging studies. In each simulated meta-analysis we simulated one study with exactly 20, 25, 10 and 50 subjects. For the remaining studies the number of subjects were drawn from uniform distributions a quarter from $\mathcal{U}(11,20)$, a quarter from $\mathcal{U}(26,50)$ and the remaining from $\mathcal{U}(21,25)$. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested, 71 repeats with 5041 samples per repeats were simulated.
 
 
 \subsubsection{Real data}
 
 We first compared the Z-scores obtained by the three approaches using a Bland-Altman plot. Then, as results are usually presented as a thresholded map, we computed the dice similarity score between thresholded maps obtained with Stouffer's and weighted-Z FFX with FLAME FFX for three (uncorrected) thresholds: p < 0.001, 0.01 and 0.05. Finally, as results are best reported using a multiple comparison correction, we defined ground truth activations as the FLAME FFX analysis FDR-corrected at a threshold of p<0.05 and plotted Receiver-Operating-Characteristics (ROC) curves of Stouffer's and weighted-Z FFX.
 
+All plots were generated using ggplot~\cite{ggplot}.
+
 \section{Results}
 
 
 \subsection{Simulations}
-Fig.~\ref{fig_fpr_all} displays the false positive rate obtained for the eight estimators over all set of parameters in the absence and presence of random-effects. From this graph, it is clear that the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted-z estimates are overly liberal in the presence of random-effects. As expected the original Fisher's approach is the most invalid. Surprisingly, FFX GLM is also invalid under fixed-effects, maybe suggesting inaccurate degrees of freedoms (here set to $(\sum_{i=1}^\nStudies n_i - 1) - 1)$). Stouffer's MFX, GLM RFX and permutations on effects or z-statistics provide valid estimates. The permutation estimates present the largest sampling variance.
+Fig.~\ref{fig_fpr_all} displays the false positive rate at $p<0.05$ obtained for the eight estimators over all set of parameters in the absence and presence of random-effects. From this graph, it is clear that the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted-z estimates are overly liberal in the presence of random-effects. As expected the original Fisher's approach is the most invalid. Surprisingly, FFX GLM is also invalid under fixed-effects, maybe suggesting inaccurate degrees of freedoms (here set to $(\sum_{i=1}^\nStudies n_i - 1) - 1)$). Stouffer's MFX, GLM RFX and permutations of $\effect$'s or $\zeffect$'s provide valid estimates. The permutation estimates present the largest sampling variance.
 
 \begin{figure}[ht]
 	\centering
@@ -184,12 +196,12 @@ The impact of the number of studies involved in the meta-analysis and of the siz
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\linewidth]{./Rplot_realdata.pdf}
-	\caption{Difference between the -log10 p-values from each meta-analytic estimates and the -log10 p-values from MFX GLM as a function of -log10 p-values from MFX GLM [TODO change to z-stats instead of -log10(p)]}
+	\caption{Difference between the z-score estimated from each meta-analytic approach and the reference z-score from MFX GLM as a function of reference z-score}
 	\label{fig_realdata}
 \end{figure}
 
 
-Fig.~\ref{fig_realdata} presents the error made on the z-score estimated by each valid meta-analytic approach by comparison to the z-scores estimated with the Ground truth MFX GLM approach. GLM RFX, Contrast permutations and z permutations offers valid or more stringent estimates while Stouffer's MFX is more liberal than the gold standard for p-values between $10^{-3}$ and $10^{-7}$ and more stringent for p-values smaller than $10^{-7}$.
+Fig.~\ref{fig_realdata} plots the difference between the z-score estimated by each meta-analytic approach and the reference z-score computed with MFX GLM. GLM RFX and contrast permutations provide z-scores estimate that are equal or smaller than the reference. Z permutation provides slightly larger z-scores between 1 and 3 (reference p-values between 0.16 and 0.0013) but is mostly in agreement with the reference z-scores. On the other hand, Stouffer's MFX is more liberal than the reference for z-score ranging from 3 to 5 (reference p-values between 0.0013 and 2.9e-07) and more stringent for z-scores smaller than 5.
 
 % Fig. 1 shows the Bland-Altman plots comparing Z-scores from the Stouffer's and weighted-Z methods each compared with the ground truth Z-scores. Overall, both approaches present the same pattern of overestimation of the Z-scores. The weighted-Z approach provides a somewhat more condensed pattern suggesting a closer match to the ground truth.
 % The dice similarity score for uncorrected p-values of 0.001, 0.01 and 0.05 were 0.84, 0.87 and 0.89 respectively for Stouffer's method and 0.86, 0.88 and 0.90 for the weighted Z-score, showing again slightly better results for the weighted-Z approach. These scores are notably higher (dice similarity scores range from 0 to 1) than the scores obtained with coordinate-based meta-analyses (around 0.5, [5]).
