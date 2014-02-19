@@ -36,7 +36,7 @@
 %
 \mainmatter              % start of the contributions
 %
-\title{Is Z enough? Impact of Meta-Analysis using only Z/T images in lieu of estimates and standard errors}
+\title{Combining fMRI studies in Image-Based Meta-analysis}
 
 %
 \titlerunning{Running title}  % abbreviated title (for running head)
@@ -54,8 +54,6 @@
 Statistics Department, The University of Warwick, Coventry, UK.}
 
 \maketitle              % typeset the title of the contribution
-
-TODO: find another title
 
 \begin{abstract}
 The abstract should summarize the contents of the paper
@@ -195,59 +193,73 @@ The impact of the number of studies involved in the meta-analysis and of the siz
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\linewidth]{./Rplot_realdata.pdf}
-	\caption{Difference between the z-score estimated from each meta-analytic approach and the reference z-score from MFX GLM as a function of reference z-score}
-	\label{fig_realdata}
+	\includegraphics[width=0.7\linewidth]{./Rplot_ratio_variances.pdf}
+	\caption{Histogram of the between-study variance to the sum of the between-subject variance and the mean within-study variance.}
+	\label{fig_realdata_variances}
+\end{figure}
+
+The histogram of the ratio of between-subject variance onto total variance is displayed in fig.~\ref{fig_realdata_variances}. From this graph it is clear that for most of the voxels the estimated between-study variance is greater than the within-study variance. We can therefore suppose the presence of random-effects (non zero between-study variance) in this dataset.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\linewidth]{./Rplot_realdata_ffx.pdf}
+	\caption{Difference between the z-score estimated from each FFX meta-analytic approach and the reference z-score from MFX GLM as a function of reference z-score.}
+	\label{fig_realdata_ffx}
 \end{figure}
 
 
-Fig.~\ref{fig_realdata} plots the difference between the z-score estimated by each meta-analytic approach and the reference z-score computed with MFX GLM. GLM RFX and contrast permutations provide z-scores estimate that are equal or smaller than the reference. Z permutation provides slightly larger z-scores between 1 and 3 (reference p-values between 0.16 and 0.0013) but is mostly in agreement with the reference z-scores. On the other hand, Stouffer's MFX is more liberal than the reference for z-score ranging from 3 to 5 (reference p-values between 0.0013 and 2.9e-07) and more stringent for z-scores smaller than 5.
+Fig.~\ref{fig_realdata_ffx} and fig.~\ref{fig_realdata_rfx} plots the difference between the z-score estimated by each meta-analytic approach and the reference z-score computed with MFX GLM for FFX and RFX approaches respectively. All FFX statistics provide overly optimistic z-estimate suggesting, again, that random-effects are indeed present in the studied dataset.
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\linewidth]{./Rplot_realdata_rfx.pdf}
+	\caption{Difference between the z-score estimated from each RFX meta-analytic approach and the reference z-score from MFX GLM as a function of reference z-score.}
+	\label{fig_realdata_rfx}
+\end{figure}
+
+
+Among the RFX meta-analytic approaches presented in fig.~\ref{fig_realdata_rfx}, GLM RFX and contrast permutations provide z-scores estimate that are equal or smaller than the reference. Z permutation provides slightly larger z-scores between 1 and 3 (reference p-values between 0.16 and 0.0013) but is mostly in agreement with the reference z-scores. On the other hand, Stouffer's MFX is more liberal than the reference for z-score ranging from 3 to 5 (reference p-values between 0.0013 and 2.9e-07) and more stringent for z-scores smaller than 5.
 
 % Fig. 1 shows the Bland-Altman plots comparing Z-scores from the Stouffer's and weighted-Z methods each compared with the ground truth Z-scores. Overall, both approaches present the same pattern of overestimation of the Z-scores. The weighted-Z approach provides a somewhat more condensed pattern suggesting a closer match to the ground truth.
 % The dice similarity score for uncorrected p-values of 0.001, 0.01 and 0.05 were 0.84, 0.87 and 0.89 respectively for Stouffer's method and 0.86, 0.88 and 0.90 for the weighted Z-score, showing again slightly better results for the weighted-Z approach. These scores are notably higher (dice similarity scores range from 0 to 1) than the scores obtained with coordinate-based meta-analyses (around 0.5, [5]).
 % Finally the ROC curves displayed in figure 2 for a ground truth obtained with an FDR corrected threshold p<0.05 demonstrate again a slight advantage of weighted-Z FFX over Stouffer's FFX.
 
-Dice among valids
-\begin{enumerate}
-\item StouffersMFX: 0.9454
-\item PermutZ: 0.9450
-\item GLMRFX: 0.8994
-\item PermutCon: 0.8991
-\end{enumerate}
+% Dice among valids
+% \begin{enumerate}
+% \item StouffersMFX: 0.9454
+% \item PermutZ: 0.9450
+% \item GLMRFX: 0.8994
+% \item PermutCon: 0.8991
+% \end{enumerate}
 
-\begin{enumerate}
-\item WeightedZ: 0.9244
-\item Stouffers: 0.9184
-\item GLMFFX: 0.8972
-\item fishers: 0.8382
-\end{enumerate}
+% \begin{enumerate}
+% \item WeightedZ: 0.9244
+% \item Stouffers: 0.9184
+% \item GLMFFX: 0.8972
+% \item fishers: 0.8382
+% \end{enumerate}
 
-AUC between 0 and 0.1
-among valids
-\begin{enumerate}
-\item StouffersMFX: 0.8924
-\item PermutZ: 0.8919
-\item GLMRFX: 0.7809
-\item PermutCon: 0.7815
-\end{enumerate}
+% AUC between 0 and 0.1
+% among valids
+% \begin{enumerate}
+% \item StouffersMFX: 0.8924
+% \item PermutZ: 0.8919
+% \item GLMRFX: 0.7809
+% \item PermutCon: 0.7815
+% \end{enumerate}
 
-\begin{enumerate}
-\item  WeightedZ: 0.8293
-\item  Stouffers: 0.8619
-\item  fishers: 0.6329
-\item  GLMFFX: 0.6111
-\end{enumerate}
+% \begin{enumerate}
+% \item  WeightedZ: 0.8293
+% \item  Stouffers: 0.8619
+% \item  fishers: 0.6329
+% \item  GLMFFX: 0.6111
+% \end{enumerate}
     
-
-         
-       
-          
-       
-    
-       
 
 \section{Conclusion}
-We have found appreciable differences between the Z-score only approaches as compared to a gold-standard approach. Overall the weighted-Z method provided results that were closer to the ground truth than Stouffer's approach. We hypothesize that Stouffer's methods may be attributing greater weights to less-representative subsets of the data. All three procedures are valid, but the gold-standard should be giving the most faithful representation of the population effect. This advocates over the development of tools supporting the sharing E+SE's.
+We have compared eight meta-analytic statistic in the context of one-sample test. Through simulations, we outlined the invalidity of standard FFX approaches in the presence of random-effects. In a real dataset of 21 studies of pain, we outline the presence of random-effects advocating for the use of RFX meta-analytic statistics. When contrast estimates only are available, the RFX procedure was valid. This is in line with previous results on within-group one-sample t-tests studies~\cite{Mumford2009}. When only standardised estimates are available, permutation is the preferred option as the one providing the most faithful results. Further investigations are needed in order to investigate the behaviour of these estimators in other configurations, including meta-analyses focusing on between-study differences.
+
 
 \section{Acknowledgements}
 We gratefully acknowledge the use of this data from the Tracey pain group, FMRIB, Oxford.
