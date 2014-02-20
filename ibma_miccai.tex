@@ -70,9 +70,9 @@ Meta-analysis is a powerful statistical tool to combine results from a set of st
 
 A growing literature is focusing on the lack of statistical power in neuroimaging studies (see, e.g.~\cite{Button2013}), feeding the debate on the validity and reproducibility of published neuroimaging results. Meta-analysis, by providing inference based on the results of previously conducted studies, provides an essential method to increase power and hence confidence in neuroimaging.
 
-A number of methods have been proposed for neuroimaging meta-analysis (see ~\cite{Radua2012} for a review). As the results of neuroimaging studies are usually conveyed by providing a table of peak coordinate and statistics, most of these neuroimaging meta-analyses are restricted to combining coordinate-based information. Nevertheless the best practice method is an Intensity-Based Meta-Analysis (IBMA) that combines the effect estimates and their standard errors from each study~\cite{Salimi-khorshidi2009}. 
+A number of methods have been proposed for neuroimaging meta-analysis (see~\cite{Radua2012} for a review). As the results of neuroimaging studies are usually conveyed by providing a table of peak coordinate and statistics, most of these meta-analyses are restricted to combining coordinate-based information. Nevertheless the best practice method is an Intensity-Based Meta-Analysis (IBMA) that combines the effect estimates and their standard errors from each study~\cite{Salimi-khorshidi2009}. 
 
-In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes obtained as a result of a statistical analysis are needed. Various efforts are currently underway to facilitate sharing of neuroimaging data emphasis is usually on statistical maps (see, e.g. [2]). There are three evident approaches to sharing summary data from each study $i$:
+In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes obtained as a result of a statistical analysis are needed. Various efforts are currently underway to facilitate sharing of neuroimaging data but emphasis is usually on statistical maps (see, e.g. [2]). There are three evident approaches to sharing summary data from each study $i$:
 \begin{enumerate}
 	\item the contrast estimates $\effect$ and contrast variance estimates $\vareffect$.
 	\item the contrast estimates $\effect$.	
@@ -83,7 +83,7 @@ Depending on how much data is shared, different strategies can be used to combin
 
 Here we compare the use of IMBA using 9 meta-analytic approaches: 2 approaches use $\effect$'s and $\vareffect$'s, 2 $\effect$'s only and 5 $\zeffect$'s. We compare the validity and the accuracy of the eight meta-analytic approaches on simulated and real data including 21 studies of pain in control subjects.
 
-Section~\ref{sec_meth} describes the 8 meta-analytic estimates along with the experiment undertaken on simulated and real data to assert their validity. The results are described in section~\ref{sec_res}. Finally, we conclude in section~\ref{sec_ccl}.
+Section~\ref{sec_meth} describes the meta-analytic estimates along with the experiments undertaken on simulated and real data to assert their validity. The results are described in section~\ref{sec_res}. Finally, we conclude in section~\ref{sec_ccl}.
 
 \begin{figure}[t]
 	\centering
@@ -115,27 +115,27 @@ where $\beta$ is the meta-analytic parameter to be estimated, $Y = [\effect[1] \
 \end{eqnarray}
 
 In a meta-analysis random-effects (RFX) model, we have $W = \mathrm{diag}( \varWithin[1] + \varBetween, \ldots ,\varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance. Approximating $\varWithin$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in Table~\ref{stat_table} for one-sample tests. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
-In a fixed-effects (FFX) model (i.e. assuming no or negligible between-study variance), we have $W = \mathrm{diag}( \varWithin[1] \ldots \varWithin[\nStudies] )$ where $\varWithin$ denotes the contrast variance for study $i$. This approach will be referred to as \textbf{FFX GLM}.
+In a \textbf{fixed-effects (FFX) GLM} (i.e. assuming no or negligible between-study variance), we have $W = \mathrm{diag}( \varWithin[1] \ldots \varWithin[\nStudies] )$ where $\varWithin$ denotes the contrast variance for study $i$. 
 
 \begin{table}[t]
 \begin{center}
 \begin{tabular}{cccc}
-				& Meta-analysis statistic			& Distribution under H$_0$ & Study inputs \\
+				& Meta-analysis statistic			& Nominal H$_0$ distribution & Inputs \\
 \hline						
 FFX GLM 		& $  \left(  \sum_{i=1}^\nStudies  \frac{\effect}{\vareffect} \right) / \sqrt{\sum_{i=1}^\nStudies 1/\vareffect } $ & $\mathcal{T}_{ (\sum_{i=1}^\nStudies n_i - 1) - 1}$ & $\effect, \vareffect$\\
-MFX GLM 		& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\vareffect + \hat\varBetween} \right)/ \sqrt{\sum_{i=1}^\nStudies 1/ (\vareffect + \hat\varBetween) } $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect, \vareffect$\\
+MFX GLM 		& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\vareffect + \estvarBetween} \right)/ \sqrt{\sum_{i=1}^\nStudies 1/ (\vareffect + \estvarBetween) } $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect, \vareffect$\\
 RFX GLM 		& $  \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies} } \right) / \widehat\varCombined  $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect$\\
-Contrast Permutation	& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies}} \right) /\widehat\varCombined  $ & Empirical$^*$ & $\effect$\\
+Contrast Permutation	& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies}} \right) /\widehat\varCombined  $ & Empirical & $\effect$\\
 Fisher's	& $ -2 \sum_{i=1}^{\nStudies} \ln( \Phi(-\zeffect) ) )$ & $\chi^2_{(2\nStudies)}$ & $\zeffect$\\
 Stouffer's& $  \left(  \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies}$ & $\mathcal{N}(0,1)$ & $\zeffect$\\
 Weighted Stouffer's	& $  \left( \sum_{i=1}^\nStudies  \sqrt{n_i} \zeffect \right) / \sqrt{\sum_{i=1}^\nStudies n_i}$ & $\mathcal{N}(0,1)$ & $\zeffect, \sampleSize$\\
 Z MFX& $ \left(   \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies} \hat \sigma$ & $\mathcal{T}_{\nStudies-1}$ & $\zeffect$\\
-Z Permutation	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical$^*$ & $\zeffect$\\
+Z Permutation	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical & $\zeffect$\\
 \hline 
 
 \end{tabular}
 \end{center}
-\caption{Statistics for one-sample meta-analysis tests and distributions under the null hypothesis. (*) determined using permutations with sign flipping.}
+\caption{Statistics for one-sample meta-analysis tests and their sampling distributions under the null hypothesis $H_0$. Empirical null distributions are determined using permutations with sign flipping.}
 \label{stat_table}
 \end{table}	
 
@@ -150,13 +150,15 @@ If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be com
 
 Given $\estvarCombined$ an estimate of $\varCombined$ we obtain the statistics presented in Table~\ref{stat_table} for one sample tests. This approach will be referred to \textbf{RFX GLM} in the following.
 
-As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the RFX GLM T-statistic to the distribution obtained ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1. This approach will be referred to as \textbf{Contrast permutation}.
+As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the RFX GLM T-statistic to the distribution obtained ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. This approach will be referred to as \textbf{Contrast permutation}.
 
 \paragraph{Combining standardised statistics} 
 When only test statistic images are available there are a several alternate approaches available. \textbf{Fisher's} meta-analysis provide a statistic to combine the associated p-values~\cite{Fisher1932}. \textbf{Stouffer's} approach combines directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. This approach will be referred to as \textbf{Weighted Stouffer's}. All these meta-analytic statistics assumes no or negligible between-study variance and are suited only for one-sample tests. The corresponding statistics are presented in Table~\ref{stat_table}.
 As suggested in~\cite{Salimi-khorshidi2009}, to get a kind of MFX with Stouffer's approach, the standardised statistical estimates $\zeffect$ can be combined in an OLS analysis. The corresponding estimate, referred as \textbf{Z MFX} is also provided in~\ref{stat_table}
 
-As an alternative to parametric approaches, a non-parametric distribution~\cite{Holmes1996,Nichols2002} can be estimated by permutation on the $\zeffect$'s. This approach will be referred to as \textbf{Z permutation}.
+With contrasts, non-parametric inference~\cite{Holmes1996,Nichols2002} can be obtained by sign flipping on the $\zeffect$'s. This approach will be referred to as \textbf{Z permutation}.
+
+\paragraph{Approximations}  In practice, all of the methods based on contrast data have approximate parametric null distributions.  The nominal distributions listed in~Table~\ref{stat_table} are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s.  Further, even under homoscedasticity, MFX GLM's null is approximate due to iterative estimation of~$\estvarBetween$.   
 
 \begin{figure}[t]
 	\centering
@@ -168,20 +170,20 @@ As an alternative to parametric approaches, a non-parametric distribution~\cite{
 \subsection{Experiments}
 
 \subsubsection{Simulations}
-If their underlying assumptions are verified the meta-analytic estimators will exactly follow the null distribution specified in Table~\ref{stat_table}. Their behaviour under violation of these assumptions however needs to be carefully assessed to identify which approach is suitable for neuroimaging. Based on simulations, we verified the validity of each estimator under inhomogeneity of contrast variances $\vareffect$ and under the presence of non-negligible between-study variance.
+Due to the approximate nature of the sampling distributions, we conduct simulations to evaluate the validity of each estimator under inhomogeneity of contrast variances $\vareffect$ and under the presence of non-negligible between-study variance.
 
 
-To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated a contrast estimate and a variance estimates such as:
+To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated $\effect$ and $\vareffect$ such as:
 \begin{eqnarray}
 	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\sampleSize}+\varBetween) \\
 	\vareffect &\sim& \frac{\varWithin}{\sampleSize-1} \chi^2_{(\sampleSize-1)}%
 \end{eqnarray}
-where $\varWithin \in [1/2, 1, 2, 4]$ is the within-study variance, $\varBetween \in [0, 1/20]$ is the between-study variance (fixed-effects models are strictly only appropriate for $\varBetween=0$). For different number of studies per meta-analysis: $\nStudies \in [5, 10, 25, 50]$, we selected the number of subjects per studies $\sampleSize$ in order to have varying number of subjects per studies in a given meta-analysis across the common range of subjects involved in neuroimaging studies. In each simulated meta-analysis we simulated one study with exactly 20, 25, 10 and 50 subjects. For the remaining studies $1/4$ of the $\sampleSize$'s were drawn from $\mathcal{U}(11,20)$, $1/4$ from $\mathcal{U}(26,50)$ and the remaining from $\mathcal{U}(21,25)$, where $\mathcal{U}(a,b)$ is the discrete uniform distribution on the integers $a$ to $b$ inclusive. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested and a total of $71^3$ realisations were created.
+where $\varWithin \in [1/2, 1, 2, 4]$ is the within-study variance, $\varBetween \in [0, 1/20]$ is the between-study variance (fixed-effects models are strictly only appropriate for $\varBetween=0$). For different number of studies per meta-analysis we used: $\nStudies \in [5, 10, 25, 50]$, and set the number of subjects per studies $\sampleSize$ to vary across the common range of sample sizes in neuroimaging studies. In each simulated meta-analysis we simulated one study with exactly 20, 25, 10 and 50 subjects. For the remaining studies $1/4$ of the $\sampleSize$'s were drawn from $\mathcal{U}(11,20)$, $1/4$ from $\mathcal{U}(26,50)$ and the remaining from $\mathcal{U}(21,25)$, where $\mathcal{U}(a,b)$ is the discrete uniform distribution on the integers $a$ to $b$ inclusive. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested and a total of $71^3$ realisations were created.
 
 
 \subsubsection{Real data}
-We then verified the adequacy of the results provided by the 8 meta-analytic estimators to the reference approach, MFX GLM, on a dataset of 21 studies of pain. 
-Comparability of contrast estimates depends on equivalent scaling of the data, models, and contrast vectors. Data scaling was consistent performed by FSL, setting median brain intensity to 10,000; model were all created by FSL's Feat tool; and contrasts were constructed to preserve units, with sum of positive elements equal to 1, sum of negative elements equal to -1. 
+We then compared the 8 meta-analytic estimators to the reference approach, MFX GLM, on a dataset of 21 studies of pain. 
+Comparability of contrast estimates depends on equivalent scaling of the data, models, and contrast vectors. Data scaling was consistently performed by FSL, setting median brain intensity to 10,000; model were all created by FSL's Feat tool; and contrasts were constructed to preserve units, with sum of positive elements equal to 1, sum of negative elements equal to -1. 
 
 
 % TODO: Anyone who knows the slightest bit about meta-analysis will know about Cochran's Q test and the I^2 test.  I think you've created some version of I^2 (maybe).  ANYWAY, it's good to mention these somewhere (intro) and say that that we propose an intuitive exploratory metric to assess heterogentiy that complents existing methods (Cochran's Q, I^2).
@@ -191,9 +193,9 @@ Comparability of contrast estimates depends on equivalent scaling of the data, m
 % Higgins, J. P. T., & Thompson, S. G. (2002). Quantifying heterogeneity in a meta-analysis. Statistics in Medicine, 21(11), 1539–58. doi:10.1002/sim.1186
 
 
-To investigate the presence of between-study variations, we computed the ratio of the between-study variance (estimated using FSL's FLAME~\cite{Smith2001}) to the total variance (sum of between- and within-study variances) as suggested as a measure of heterogeneity in~\cite{Chen2012}. Here we use the average (across study) within-study variance as an estimate of within-study variance in the denominator, leading to:
-$\frac{\estvarBetween}{\estvarBetween + \sum_{i=1}^{\nStudies} \vareffect}$.
-Using this metric, voxels with values close to 0 present negligible between-study variance and values close to 1 outline appreciable study heterogeneity and the importance of RFX models.
+To investigate the presence of between-study variation, we computed the ratio of the between-study variance (estimated using FSL's FLAME~\cite{Smith2001}) to the total variance (sum of between- and within-study variances), as suggested in~\cite{Chen2012}. Here we use the average (across study) within-study variance as an estimate of within-study variance in the denominator:
+$\estvarBetween / (\estvarBetween + \sum_{i=1}^{\nStudies} \vareffect)$.
+Using this metric, voxels with values close to 0 present negligible between-study variance and values close to 1 outline appreciable study heterogeneity and the importance of RFX~models.
 
 Then for each estimator we compared the standardised meta-analytic statistic to the z-statistic obtained with the reference approach. Overestimation of z-statistic leads to overly optimistic detections while underestimation outline a reduced sensitivity of the approach. 
 
@@ -207,16 +209,16 @@ Then for each estimator we compared the standardised meta-analytic statistic to 
 \section{Results}\label{sec_res}
 
 \subsection{Simulations}
-Fig.~\ref{fig_fpr_all} displays the false positive rate at $p<0.05$ obtained for the eight estimators over all set of parameters in the absence and presence of between-study variation. As expected, the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted Stouffer's estimates, are liberal in the presence of study heterogeneity. The original Fisher's approach is the most invalid. More surprising, FFX GLM is also invalid with homogeneous studies. This suggests that the degrees of freedoms estimated by assuming a common within-study variance and a common number of subject per study ($(\sum_{i=1}^\nStudies n_i - 1) - 1)$) is inadequate is this setting. Z MFX and GLM RFX provide valid estimates. The permutation estimates are valid but tend conservative with greater variation in false positive rates.
+Fig.~\ref{fig_fpr_all} displays the false positive rate at $p<0.05$ obtained for the eight estimators over all set of parameters in the absence and presence of between-study variation. As expected, the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted Stouffer's estimates, are liberal in the presence of study heterogeneity. The original Fisher's approach is the most invalid. More surprising, FFX GLM is also invalid with homogeneous studies. The explanation is over-estimation of degrees-of-freedom (DF); while DF is computed as $(\sum n-1)-1$, under heteroscasdicity (from $\sigma_i$ or $\sampleSize$) it will be much lower~\cite{Satterthwaite}. Z MFX and GLM RFX provide valid estimates, and the permutation estimates are valid but tend to be conservative with greater variation in false positive rates.
 
-The impact of the number of studies involved in the meta-analysis and of the size of the within-study variance are investigated in Fig.~\ref{fig_fpr_valid}. Permutation inference is valid but conservative when 5 studies are used; this is because there are only $2^5=32$ possible permutations and thus $1/32=0.03125$ is biggest valid P-value attainable. All approaches perform equally as soon as 10 or more studies are included in the meta-analysis. 
+The impact of the number of studies involved in the meta-analysis and of the size of the within-study variance are investigated in Fig.~\ref{fig_fpr_valid}. Permutation inference is valid but conservative when 5 studies are used; this is because there are only $2^5=32$ possible permutations and thus $1/32=0.03125$ is largest attainable valid P-value. All approaches perform equally as soon as 10 or more studies are included in the meta-analysis. 
 
 
 \subsection{Real data}
 
 
 
-The histogram of the ratio of between-subject variance to total variance is displayed in Fig.~\ref{fig_realdata_variances}. From this graph it is clear that for most of the voxels the estimated between-study variance is greater than the within-study variance. We can therefore suppose the presence of study heterogeneity (non negligible between-study variance) in this dataset.
+The histogram of the ratio of between-subject variance to total variance is displayed in Fig.~\ref{fig_realdata_variances}. From this graph it is clear that for most of the voxels the estimated between-study variance is greater than the within-study variance. We can therefore suppose the presence of study heterogeneity (non negligible between-study variance) in this collection of studies.
 
 \begin{figure}[t]
 	\centering
@@ -227,7 +229,7 @@ The histogram of the ratio of between-subject variance to total variance is disp
 \end{figure}
 
 
-Fig.~\ref{fig_realdata} plots the difference between the z-score estimated by each meta-analytic approach and the reference z-score computed with MFX GLM. All FFX statistics provide overly optimistic z-estimate suggesting, again, that study heterogeneity is present in the studied dataset.
+Fig.~\ref{fig_realdata} plots the difference between the z-score estimated by each meta-analytic approach against the reference z-score computed with MFX GLM. All FFX statistics provide overly optimistic z-estimate suggesting, again, that study heterogeneity is present in the studied dataset.
 Among the RFX meta-analytic approaches, GLM RFX and contrast permutations provide z-scores estimate that are equal or smaller than the reference. Z permutation provides slightly larger z-scores between 1 and 3 (reference p-values between 0.16 and 0.0013) but is mostly in agreement with the reference z-scores. On the other hand, Z MFX is more liberal than the reference for z-score ranging from 3 to 5 (reference p-values between 0.0013 and 2.9e-07) and more stringent for z-scores smaller than 5.
 
 % Fig. 1 shows the Bland-Altman plots comparing Z-scores from the Stouffer's and weighted-Z methods each compared with the ground truth Z-scores. Overall, both approaches present the same pattern of overestimation of the Z-scores. The weighted-Z approach provides a somewhat more condensed pattern suggesting a closer match to the ground truth.
@@ -267,7 +269,7 @@ Among the RFX meta-analytic approaches, GLM RFX and contrast permutations provid
     
 
 \section{Conclusion}\label{sec_ccl}
-We have compared eight meta-analytic statistic in the context of one-sample test. Through simulations, we outlined the invalidity of standard FFX approaches in the presence of study heterogeneity. In a real dataset of 21 studies of pain, we outline the heterogeneity advocating for the use of RFX meta-analytic statistics. When only contrast estimates are available, RFX GLM was valid. This is in line with previous results on within-group one-sample t-tests studies~\cite{Mumford2009}. When only standardised estimates are available, permutation is the preferred option as the one providing the most faithful results. Further investigations are needed in order to assess the behaviour of these estimators in other configurations, including meta-analyses focusing on between-study differences.
+We have compared eight meta-analytic approaches in the context of one-sample test. Through simulations, we found the expected invalidity of standard FFX approaches in the presence of study heterogeneity, but also of FFX GLM even with no between-study variation. In a real dataset of 21 studies of pain, there was evidence for substantial between-study variation that supports the use of RFX meta-analytic statistics. When only contrast estimates are available, RFX GLM was valid. This is in line with previous results on within-group one-sample t-tests studies~\cite{Mumford2009}. When only standardised estimates are available, permutation is the preferred option as the one providing the most faithful results. Further investigations are needed in order to assess the behaviour of these estimators in other configurations, including meta-analyses focusing on between-study differences.
 
 
 % \section{Acknowledgements}
