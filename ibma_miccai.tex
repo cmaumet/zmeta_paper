@@ -24,6 +24,9 @@
 \newcommand{\varWithin}[1][i]{\sigma^2_{#1}}
 \newcommand{\transpose}{^T}
 
+\newcommand{\IGE}{IGE}
+\newcommand{\ISE}{ISE}
+
 
 
 
@@ -46,17 +49,17 @@
 %                                     also used for the TOC unless
 %                                     \toctitle is used
 %
-\author{***********************************************}
-% \author{Camille Maumet\inst{1} \and Thomas E. Nichols\inst{1,2}}
+% \author{***********************************************}
+\author{Camille Maumet\inst{1} \and Thomas E. Nichols\inst{1,2}}
 %
 \authorrunning{Camille Maumet et al.} % abbreviated author list (for running head)
 %
 %
-\institute{***********************************************}
+% \institute{***********************************************}
 
-% \institute{Warwick Manufacturing Group, The University of Warwick, Coventry, UK.\\
-% \and
-% Statistics Department, The University of Warwick, Coventry, UK.}
+ \institute{Warwick Manufacturing Group, The University of Warwick, Coventry, UK.\\
+ \and
+ Statistics Department, The University of Warwick, Coventry, UK.}
 
 \maketitle              % typeset the title of the contribution
 
@@ -119,23 +122,25 @@ In a \textbf{fixed-effects (FFX) GLM} (i.e. assuming no or negligible between-st
 
 \begin{table}[t]
 \begin{center}
-\begin{tabular}{cccc}
-				& Meta-analysis statistic			& Nominal H$_0$ distribution & Inputs \\
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{ccccl}
+				& Meta-analysis statistic			& Nominal H$_0$ distrib. & Inputs & Assumptions\\
 \hline						
-FFX GLM 		& $  \left(  \sum_{i=1}^\nStudies  \frac{\effect}{\vareffect} \right) / \sqrt{\sum_{i=1}^\nStudies 1/\vareffect } $ & $\mathcal{T}_{ (\sum_{i=1}^\nStudies n_i - 1) - 1}$ & $\effect, \vareffect$\\
-MFX GLM 		& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\vareffect + \estvarBetween} \right)/ \sqrt{\sum_{i=1}^\nStudies 1/ (\vareffect + \estvarBetween) } $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect, \vareffect$\\
-RFX GLM 		& $  \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies} } \right) / \widehat\varCombined  $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect$\\
-Contrast Permutation	& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies}} \right) /\widehat\varCombined  $ & Empirical & $\effect$\\
-Fisher's	& $ -2 \sum_{i=1}^{\nStudies} \ln( \Phi(-\zeffect) ) )$ & $\chi^2_{(2\nStudies)}$ & $\zeffect$\\
-Stouffer's& $  \left(  \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies}$ & $\mathcal{N}(0,1)$ & $\zeffect$\\
-Weighted Stouffer's	& $  \left( \sum_{i=1}^\nStudies  \sqrt{n_i} \zeffect \right) / \sqrt{\sum_{i=1}^\nStudies n_i}$ & $\mathcal{N}(0,1)$ & $\zeffect, \sampleSize$\\
-Z MFX& $ \left(   \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies} \hat \sigma$ & $\mathcal{T}_{\nStudies-1}$ & $\zeffect$\\
-Z Permutation	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical & $\zeffect$\\
+FFX GLM 		& $  \left(  \sum_{i=1}^\nStudies  \frac{\effect}{\vareffect} \right) / \sqrt{\sum_{i=1}^\nStudies 1/\vareffect } $ & $\mathcal{T}_{ (\sum_{i=1}^\nStudies n_i - 1) - 1}$ & $\effect, \vareffect$ 
+& IGE; $\varWithin$ cst; $\varBetween=0$.\\
+MFX GLM 		& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\vareffect + \estvarBetween} \right)/ \sqrt{\sum_{i=1}^\nStudies 1/ (\vareffect + \estvarBetween) } $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect, \vareffect$& IGE; $\varBetween=\estvarBetween$.\\
+RFX GLM 		& $  \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies} } \right) / \widehat\varCombined  $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect$ & IGE; $\varBetween+\varWithin$ cst.\\
+Ctrst Perm.	& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies}} \right) /\widehat\varCombined  $ & Empirical & $\effect$ & ISE.\\
+Fisher's	& $ -2 \sum_{i=1}^{\nStudies} \ln( \Phi(-\zeffect) ) )$ & $\chi^2_{(2\nStudies)}$ & $\zeffect$ & IGE; $\varBetween=0$.\\
+Stouffer's& $  \left(  \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies}$ & $\mathcal{N}(0,1)$ & $\zeffect$& IGE; $\varBetween=0$.\\
+Wght Stouff.& $  \left( \sum_{i=1}^\nStudies  \sqrt{n_i} \zeffect \right) / \sqrt{\sum_{i=1}^\nStudies n_i}$ & $\mathcal{N}(0,1)$ & $\zeffect, \sampleSize$& IGE; $\varBetween=0$.\\
+Z MFX& $ \left(   \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies} \hat \sigma$ & $\mathcal{T}_{\nStudies-1}$ & $\zeffect$& IGE; $1 + \varBetween/\varWithin$ cst.\\
+Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical & $\zeffect$ & ISE.\\
 \hline 
 
 \end{tabular}
 \end{center}
-\caption{Statistics for one-sample meta-analysis tests and their sampling distributions under the null hypothesis $H_0$. Empirical null distributions are determined using permutations with sign flipping.}
+\caption{Statistics for one-sample meta-analysis tests and their sampling distributions under the null hypothesis $H_0$. Empirical null distributions are determined using permutations with sign flipping. \IGE=Independent Gaussian Errors, \ISE=Independent Symmetric Errors.}
 \label{stat_table}
 \end{table}	
 
@@ -272,8 +277,8 @@ Among the RFX meta-analytic approaches, GLM RFX and contrast permutations provid
 We have compared eight meta-analytic approaches in the context of one-sample test. Through simulations, we found the expected invalidity of standard FFX approaches in the presence of study heterogeneity, but also of FFX GLM even with no between-study variation. In a real dataset of 21 studies of pain, there was evidence for substantial between-study variation that supports the use of RFX meta-analytic statistics. When only contrast estimates are available, RFX GLM was valid. This is in line with previous results on within-group one-sample t-tests studies~\cite{Mumford2009}. When only standardised estimates are available, permutation is the preferred option as the one providing the most faithful results. Further investigations are needed in order to assess the behaviour of these estimators in other configurations, including meta-analyses focusing on between-study differences.
 
 
-% \section{Acknowledgements}
-% We gratefully acknowledge the use of this data from the Tracey pain group, FMRIB, Oxford.
+\section{Acknowledgements}
+We gratefully acknowledge the use of this data from the Tracey pain group, FMRIB, Oxford.
 
 %
 % ---- Bibliography ----
