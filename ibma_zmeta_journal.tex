@@ -82,7 +82,11 @@ In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes o
 	\item the standardized statistical maps $\zeffect$.		
 \end{enumerate}
 
-Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, working with contrasts requires fastidious tracking of data, model and contrast vector scaling. Given the growing interest in data sharing in the neuroimaging community, and the relative easiness of sharing just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
+Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, working with contrasts requires fastidious tracking of data, model and contrast vector scaling. 
+
+TODO: Add more info about the data scaling issue and cite papers
+
+Given the growing interest in data sharing in the neuroimaging community, and the relative easiness of sharing just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
 
 Here we compare the use of IMBA using 9 meta-analytic approaches: 2 approaches use $\effect$'s and $\vareffect$'s, 2 $\effect$'s only and 5 $\zeffect$'s. We compare the validity and the accuracy of the eight meta-analytic approaches on simulated and real data including 21 studies of pain in control subjects.
 
@@ -163,14 +167,16 @@ As suggested in~\cite{Salimi-khorshidi2009}, to get a kind of MFX with Stouffer'
 
 With contrasts, non-parametric inference~\cite{Holmes1996,Nichols2002} can be obtained by sign flipping on the $\zeffect$'s. This approach will be referred to as \textbf{Z permutation}.
 
-\paragraph{Approximations}  In practice, all of the methods based on contrast data have approximate parametric null distributions.  The nominal distributions listed in~Table~\ref{stat_table} are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s.  Further, even under homoscedasticity, MFX GLM's null is approximate due to iterative estimation of~$\estvarBetween$.   
+\paragraph{Approximations}  In practice, all of the methods based on contrast data have approximate parametric null distributions.  The nominal distributions listed in~Table~\ref{stat_table} are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s.  Further, even under homoscedasticity, MFX GLM's null is approximate due to iterative estimation of~$\estvarBetween$.
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\linewidth]{./Rplot_valids.pdf}
-	\caption{False positive rates of the RFX meta-analytic estimators under $H_0$ for $p<0.05$ as a function of the number of studies and the within-study variance.}
-	\label{fig_fpr_valid}
-\end{figure}
+TODO: Add more info about the data scaling issue and cite papers   
+
+% \begin{figure}[t]
+% 	\centering
+% 	\includegraphics[width=\linewidth]{./Rplot_valids.pdf}
+% 	\caption{False positive rates of the RFX meta-analytic estimators under $H_0$ for $p<0.05$ as a function of the number of studies and the within-study variance.}
+% 	\label{fig_fpr_valid}
+% \end{figure}
 
 \subsection{Experiments}
 
