@@ -82,9 +82,7 @@ In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes o
 	\item the standardized statistical maps $\zeffect$.		
 \end{enumerate}
 
-Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, working with contrasts requires fastidious tracking of data, model and contrast vector scaling. 
-
-TODO: Add more info about the data scaling issue and cite papers
+Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, it requires the contrasts to be expressed with in the same units. In fMRI, units will depends on data, model and contrast vector scaling and are typically different across neuroimaging software due to different data scaling approaches~\cite{Nichols2012units}.
 
 Given the growing interest in data sharing in the neuroimaging community, and the relative easiness of sharing just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
 
@@ -94,7 +92,7 @@ Section~\ref{sec_meth} describes the meta-analytic estimates along with the expe
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=\linewidth]{./Rplot_FPR_all.pdf}
+	\includegraphics[width=\linewidth]{./MICCAI_version/Rplot_FPR_all.pdf}
 	\caption{False positive rates of the meta-analytic estimators under the null hypothesis for $p<0.05$.}
 	\label{fig_fpr_all}
 \end{figure}
@@ -173,7 +171,7 @@ TODO: Add more info about the data scaling issue and cite papers
 
 % \begin{figure}[t]
 % 	\centering
-% 	\includegraphics[width=\linewidth]{./Rplot_valids.pdf}
+% 	\includegraphics[width=\linewidth]{./MICCAI_version/Rplot_valids.pdf}
 % 	\caption{False positive rates of the RFX meta-analytic estimators under $H_0$ for $p<0.05$ as a function of the number of studies and the within-study variance.}
 % 	\label{fig_fpr_valid}
 % \end{figure}
@@ -212,7 +210,7 @@ Then for each estimator we compared the standardised meta-analytic statistic to 
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.7\linewidth]{./Rplot_ratio_variances.pdf}
+	\includegraphics[width=0.7\linewidth]{./MICCAI_version/Rplot_ratio_variances.pdf}
 	\caption{Histogram of the between-study variance to the sum of the between-subject variance and the mean within-study variance.}
 	\label{fig_realdata_variances}
 \end{figure}
@@ -233,8 +231,8 @@ The histogram of the ratio of between-subject variance to total variance is disp
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.8\linewidth]{./Rplot_realdata_ffx.pdf}
-	\includegraphics[width=0.8\linewidth]{./Rplot_realdata_rfx.pdf}
+	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_ffx.pdf}
+	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_rfx.pdf}
 	\caption{Difference between the z-score estimated from each meta-analytic approach and the reference z-score from MFX GLM as a function of reference z-score.}
 	\label{fig_realdata}
 \end{figure}
@@ -289,7 +287,7 @@ We gratefully acknowledge the use of this data from the Tracey pain group, FMRIB
 %
 % ---- Bibliography ----
 \bibliographystyle{plain}
-\bibliography{miccai2014}
+\bibliography{ibma}
 
 % %
 % \begin{thebibliography}{5}
