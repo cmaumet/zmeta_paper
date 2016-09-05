@@ -9,13 +9,15 @@
 \usepackage{graphicx} % include graphics
 
 \DeclareMathOperator{\Var}{Var}
-\newcommand{\effectvector}{Y}
+\newcommand{\effectvector}{\hat\beta}
 \newcommand{\effect}[1][i]{\effectvector_{#1}}
-\newcommand{\vareffect}[1][i]{S^2_{#1}}
+\newcommand{\vareffect}[1][i]{\hat S^2_{#1}}
 \newcommand{\zeffect}[1][i]{Z_{#1}}
 \newcommand{\nStudies}{k}
 \newcommand{\varCombined}{\sigma^2_{C}}
 \newcommand{\estvarCombined}{\hat\sigma^2_{C}}
+
+\newcommand{\metaanalyticeffect}{\gamma}
 
 \newcommand{\varBetween}{\tau^2}
 \newcommand{\estvarBetween}{\hat\tau^2}
@@ -71,6 +73,8 @@ Meta-analysis is a powerful statistical tool to combine results from a set of st
 %
 \section{Introduction}
 
+TODO: check number of meta-analytic approaches (8 or 9) and update everywhere
+
 A growing literature is focusing on the lack of statistical power in neuroimaging studies (see, e.g.~\cite{Button2013}), feeding the debate on the validity and reproducibility of published neuroimaging results. Meta-analysis, by providing inference based on the results of previously conducted studies, provides an essential method to increase power and hence confidence in neuroimaging.
 
 A number of methods have been proposed for neuroimaging meta-analysis (see~\cite{Radua2012} for a review). As the results of neuroimaging studies are usually conveyed by providing a table of peak coordinate and statistics, most of these meta-analyses are restricted to combining coordinate-based information. Nevertheless the best practice method is an Intensity-Based Meta-Analysis (IBMA) that combines the effect estimates and their standard errors from each study~\cite{Salimi-khorshidi2009}. 
@@ -83,6 +87,8 @@ In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes o
 \end{enumerate}
 
 Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, it requires the contrasts to be expressed with in the same units. In fMRI, units will depends on data, model and contrast vector scaling and are typically different across neuroimaging software due to different data scaling approaches~\cite{Nichols2012units}.
+
+TODO: cite Gang's paper
 
 Given the growing interest in data sharing in the neuroimaging community, and the relative easiness of sharing just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
 
@@ -99,23 +105,23 @@ Section~\ref{sec_meth} describes the meta-analytic estimates along with the expe
 
 \section{Methods}\label{sec_meth}
 \subsection{Theory}
-For study $i=1,\ldots,k$ we have contrast estimate $\effect$, its contrast variance estimate $S^2_i$ (i.e. squared standard error), its statistic map $Z_i$ and its sample size $n_i$.  
+For study $i=1,\ldots,k$ we have contrast estimate $\effect$, its contrast variance estimate $\vareffect$ (i.e. squared standard error), its statistic map $Z_i$ and its sample size $n_i$.  
 
 \paragraph{Combining contrast estimates and their standard error}
 
-The gold standard approach is to fit contrast estimates and their standard error with a hierarchical general linear model (GLM)~\cite{Cummings2004}, creating a third-level (level 1: subject; level 2: study; level 3: meta-analysis). The general formulation for the study-level data is:
+The gold standard approach is to fit contrast estimates and their standard error with a hierarchical general linear model (GLM)~\cite{Cummings2004}, creating a third-level (level ~1:~subject; level~2:~study; level~3:~meta-analysis). The general formulation for the study-level data is:
 
 \begin{equation}
-	\effectvector = X \beta + \epsilon
+	\vec{\effectvector} = X \metaanalyticeffect + \epsilon
 	\label{eq_meta_GLM}
 \end{equation}
-where $\beta$ is the meta-analytic parameter to be estimated, $Y = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $k\times p$ study-level matrix (typically just a column of ones) and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least square giving:
+where $\metaanalyticeffect$ is the meta-analytic parameter to estimate, $\vec{\effectvector} = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $k\times p$ study-level matrix (typically just a column of ones for a one-sample test) and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least squares giving:
 
-% TODO add contrast
+TODO: add contrast
 
 \begin{eqnarray}
-	\hat \beta  &=& (X\transpose W^{-1} X)^{-1} X\transpose W^{-1} \effectvector \\
-	\Var(\hat \beta)  &=& (X\transpose W^{-1} X)^{-1}
+	\hat \metaanalyticeffect  &=& (X\transpose W^{-1} X)^{-1} X\transpose W^{-1} \effectvector \\
+	\Var(\hat \metaanalyticeffect)  &=& (X\transpose W^{-1} X)^{-1}
 	\label{eq_WLS}
 \end{eqnarray}
 
@@ -147,17 +153,19 @@ Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & E
 \end{table}	
 
 \paragraph{Combining contrast estimates}
-If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be combined by assuming that the within-study variance $\varWithin$ is roughly constant ($\varWithin \simeq \sigma^2$) or negligible in comparison to the between-study variance($\varWithin \ll \varBetween$). Then $W = \mathrm{diag}( \varCombined, \ldots, \varCombined )$ where $\varCombined$ is the combined within and between-subject variance, i.e.\ $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$ (note, however, in this setting we do not separately estimate $\varBetween$ or $\varWithinCommon$). Under these assumptions, Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least squares giving:
+If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be combined by assuming that the within-study contrast variance $\varWithin$ is roughly constant ($\varWithin \simeq \sigma^2$) or negligible in comparison to the between-study variance($\varWithin \ll \varBetween$). Then $W = \mathrm{diag}( \varCombined, \ldots, \varCombined )$ where $\varCombined$ is the combined within and between-subject variance, i.e.\ $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$ (note, however, in this setting we do not separately estimate $\varBetween$ or $\varWithinCommon$). Under these assumptions, Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least squares giving:
 
 \begin{eqnarray}
-	\hat \beta  &=& (X\transpose X)^{-1} X\transpose \effectvector \\
-	\Var(\hat \beta)  &=& (X\transpose X)^{-1} \varCombined
+	\hat \metaanalyticeffect  &=& (X\transpose X)^{-1} X\transpose \effectvector \\
+	\Var(\hat \metaanalyticeffect)  &=& (X\transpose X)^{-1} \varCombined
 	\label{eq_OLS}
 \end{eqnarray}
 
 Given $\estvarCombined$ an estimate of $\varCombined$ we obtain the statistics presented in Table~\ref{stat_table} for one sample tests. This approach will be referred to \textbf{RFX GLM} in the following.
 
 As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the RFX GLM T-statistic to the distribution obtained ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. This approach will be referred to as \textbf{Contrast permutation}.
+
+TODO: We should be able to do something if we have the sample sizes by assuming constant within subject variance
 
 \paragraph{Combining standardised statistics} 
 When only test statistic images are available there are a several alternate approaches available. \textbf{Fisher's} meta-analysis provide a statistic to combine the associated p-values~\cite{Fisher1932}. \textbf{Stouffer's} approach combines directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. This approach will be referred to as \textbf{Weighted Stouffer's}. All these meta-analytic statistics assumes no or negligible between-study variance and are suited only for one-sample tests. The corresponding statistics are presented in Table~\ref{stat_table}.
@@ -167,7 +175,7 @@ With contrasts, non-parametric inference~\cite{Holmes1996,Nichols2002} can be ob
 
 \paragraph{Approximations}  In practice, all of the methods based on contrast data have approximate parametric null distributions.  The nominal distributions listed in~Table~\ref{stat_table} are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s.  Further, even under homoscedasticity, MFX GLM's null is approximate due to iterative estimation of~$\estvarBetween$.
 
-TODO: Add more info about the data scaling issue and cite papers   
+TODO: Clarify what is approximate in each
 
 % \begin{figure}[t]
 % 	\centering
