@@ -227,7 +227,7 @@ Then for each estimator we co{}mpared the standardised meta-analytic statistic t
 
 \subsection{How bad is the units issue?}
 
-Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample with $\varBetween=1$ and a sample size $\nStudies = 25$. 
+\subsubsection{Group meta-analysis}
 
 \begin{figure}[t]
 	\centering
@@ -235,6 +235,30 @@ Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample with 
 	\caption{Deviation from theoretical Z in one-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
 	\label{test1_k25_btw1}
 \end{figure}
+
+Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, i.e. when the units are matched across studies and contrasts, MFX GLM, RFX GLM and Contrast Permutation are all valid, as expected. For large values of Z, Contrast Estimation is conservative as expected due to the discrete nature of its TODOxxTODO disribution. More suprinsingly, in the presence of a high within-subject variance, the MFX GLM also appears to be conservative. RFX GLM displays the best behaviour with a pattern that is always within the 95\% confidence interval of the theoretical Z.
+
+In the extreme case of different scaling target, i.e. when data where scaled to a different mean (100 versus 10 000), Contrast Permutation displays a pattern that is very close to its nominal behaviour, namely it is valid but conservative for large Z. GLM RFX is valid for Z values that are greater than 1.5 (i.e. the area we are interested in in terms of detections) but very conservative, especially when the number of samples from each scaling factor are not equal. This behaviour is expected as the estimated between-study variance is inflated by the difference in scaling target. MFX GLM is invalid for small within-subject variances and conservative for large within-subject variances.
+
+When different scaling algorithm are used, i.e. as in different neuroimaging software packages. Contrast Permutation still has a behaviour that is very similar to nominal. RFX GLM is valid with some conservativness for large Z but still less conservative than Contrast Permutation. MFX GLM is overall valid (TODO what about within=5 /20\%) and conservative for large or small within-subject variance. 
+
+When the contrast are scaled differently, we observe a very similar pattern than for different scaling algorithm.
+
+\subsubsection{Balanced between-group meta-analysis}
+
+Fig.~\ref{test2_k25_btw1} presents the simulation results for a two-sample with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, GLM RFX, GLM RFX and contrast estimation provide valid estimates. Contrast Permutation is conservative for large Z values. Both RFX GLM and MFX GLM display the best behaviour with a pattern that is within the 95\% confidence interval of the theoretical Z.
+
+In the extreme case of different scaling target, contrast permutation is always valid with a pattern very similar than its nominal behaviour. GLM RFX is valid for Z values greater than 1.5, which is the area of interest in detections, but display a strong conservativness, more pronounced than the Contarst Permutation. GLM MFX is slighlty invalid for all within-subject variances except the largest one when 20\% of the studies come fro
+
+
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.99\linewidth]{./figures/test2_k25_btw1.png}
+	\caption{Deviation from theoretical Z in balanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
+	\label{test2_k25_btw1}
+\end{figure}
+
 
 \subsection{Simulations}
 Fig.~\ref{fig_fpr_all} displays the false positive rate at $p<0.05$ obtained for the eight estimators over all set of parameters in the absence and presence of between-study variation. As expected, the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted Stouffer's estimates, are liberal in the presence of study heterogeneity. The original Fisher's approach is the most invalid. More surprising, FFX GLM is also invalid with homogeneous studies. The explanation is over-estimation of degrees-of-freedom (DF); while DF is computed as $(\sum n-1)-1$, under heteroscasdicity (from $\sigma_i$ or $\sampleSize$) it will be much lower~\cite{Satterthwaite}. Z MFX and GLM RFX provide valid estimates, and the permutation estimates are valid but tend to be conservative with greater variation in false positive rates.
