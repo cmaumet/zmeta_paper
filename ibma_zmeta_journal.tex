@@ -208,7 +208,7 @@ To investigate the presence of between-study variation, we computed the ratio of
 $\estvarBetween / (\estvarBetween + \sum_{i=1}^{\nStudies} \vareffect)$.
 Using this metric, voxels with values close to 0 present negligible between-study variance and values close to 1 outline appreciable study heterogeneity and the importance of RFX~models.
 
-Then for each estimator we compared the standardised meta-analytic statistic to the z-statistic obtained with the reference approach. Overestimation of z-statistic leads to overly optimistic detections while underestimation outline a reduced sensitivity of the approach. 
+Then for each estimator we co{}mpared the standardised meta-analytic statistic to the z-statistic obtained with the reference approach. Overestimation of z-statistic leads to overly optimistic detections while underestimation outline a reduced sensitivity of the approach. 
 
 \begin{figure}[t]
 	\centering
@@ -218,6 +218,17 @@ Then for each estimator we compared the standardised meta-analytic statistic to 
 \end{figure}
 
 \section{Results}\label{sec_res}
+
+\subsection{How bad is the units issue?}
+
+Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample with $\varBetween=1$ and a sample size $\nStudies = 25$. 
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.99\linewidth]{./figures/test1_k25_btw1.png}
+	\caption{Deviation from theoretical Z in one-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
+	\label{test1_k25_btw1}
+\end{figure}
 
 \subsection{Simulations}
 Fig.~\ref{fig_fpr_all} displays the false positive rate at $p<0.05$ obtained for the eight estimators over all set of parameters in the absence and presence of between-study variation. As expected, the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted Stouffer's estimates, are liberal in the presence of study heterogeneity. The original Fisher's approach is the most invalid. More surprising, FFX GLM is also invalid with homogeneous studies. The explanation is over-estimation of degrees-of-freedom (DF); while DF is computed as $(\sum n-1)-1$, under heteroscasdicity (from $\sigma_i$ or $\sampleSize$) it will be much lower~\cite{Satterthwaite}. Z MFX and GLM RFX provide valid estimates, and the permutation estimates are valid but tend to be conservative with greater variation in false positive rates.

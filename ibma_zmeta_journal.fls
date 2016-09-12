@@ -1,4 +1,4 @@
-PWD /Users/cmaumet/Projects/Meta-analysis/Results/2014-06-23_Z-meta/Paper
+PWD /Users/cmaumet/Projects/Meta-analysis/dev/zmeta/Paper
 INPUT /usr/local/texlive/2013/texmf.cnf
 INPUT /usr/local/texlive/2013/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2013/texmf-var/web2c/pdftex/pdflatex.fmt
@@ -90,6 +90,9 @@ INPUT /usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmtt9.tfm
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmti10.tfm
+INPUT ./figures/test1_k25_btw1.png
+INPUT ./figures/test1_k25_btw1.png
+INPUT ./figures/test1_k25_btw1.png
 INPUT ibma_zmeta_journal.bbl
 INPUT ibma_zmeta_journal.bbl
 INPUT /usr/local/texlive/2013/texmf-dist/fonts/tfm/public/cm/cmti9.tfm
