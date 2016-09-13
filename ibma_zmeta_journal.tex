@@ -246,11 +246,9 @@ When the contrast are scaled differently, we observe a very similar pattern than
 
 \subsubsection{Balanced between-group meta-analysis}
 
-Fig.~\ref{test2_k25_btw1} presents the simulation results for a two-sample with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, GLM RFX, GLM RFX and contrast estimation provide valid estimates. Contrast Permutation is conservative for large Z values. Both RFX GLM and MFX GLM display the best behaviour with a pattern that is within the 95\% confidence interval of the theoretical Z.
+Fig.~\ref{test2_k25_btw1} presents the simulation results for a two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, GLM RFX, GLM RFX and contrast estimation provide valid estimates. Contrast Permutation is conservative for large Z values. Both RFX GLM and MFX GLM display the best behaviour with a pattern that is within the 95\% confidence interval of the theoretical Z.
 
-In the extreme case of different scaling target, contrast permutation is always valid with a pattern very similar than its nominal behaviour. GLM RFX is valid for Z values greater than 1.5, which is the area of interest in detections, but display a strong conservativness, more pronounced than the Contarst Permutation. GLM MFX is slighlty invalid for all within-subject variances except the largest one when 20\% of the studies come fro
-
-
+In the extreme case of different scaling target, contrast permutation is always valid with a pattern very similar than its nominal behaviour. GLM RFX is valid for Z values greater than 1.5, which is the area of interest in detections, but display a strong conservativness, more pronounced than the Contarst Permutation. GLM MFX is slighlty invalid for all within-subject variances except the largest one when 20\% of the studies come from the second software.
 
 \begin{figure}[t]
 	\centering
@@ -258,6 +256,23 @@ In the extreme case of different scaling target, contrast permutation is always 
 	\caption{Deviation from theoretical Z in balanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
 	\label{test2_k25_btw1}
 \end{figure}
+
+\subsubsection{Unbalanced between-group meta-analysis}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.99\linewidth]{./figures/test3_k25_btw1.png}
+	\caption{Deviation from theoretical Z in unbalanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
+	\label{test2_k25_btw1}
+\end{figure}
+
+Fig.~\ref{test2_k25_btw1} presents the simulation results for unbalanced two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, MFX GLM, GLM RFX and contrast permutation provide valide estimate. As expected due to the discrete nature of its ampling distribution, contrast permutation is conservative for large Z value. GLM RFX is conservative. RFX GLM is closest to the theoretical behaviour with Z-values that are always within the 95\% confidence interval.
+
+In the extreme case of different scaling target, MFX GLM is always valid but slightly conservative. RFX GLM is valid for Z values greater than 1.5 (area of interest in detections) but conservative. Similarly contrast permutation is invalid for Z smaller than 1.5 and conservative otherwise. This can be explained by the violation of the exchangeability condition.
+
+When different scaling algorithm are used, (same paragraph as for one-sample test)
+
+When the contrast are scaled differently, we observe a very similar pattern than for different scaling algorithm with higher varaince of the estimates.
 
 
 \subsection{Simulations}
