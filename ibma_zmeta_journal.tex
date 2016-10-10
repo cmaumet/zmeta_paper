@@ -70,6 +70,7 @@
 Meta-analysis is a powerful statistical tool to combine results from a set of studies. When image data is available for each study, a number of approaches have been proposed to perform such meta-analysis including combination of standardised statistics, just effect estimates or both effects estimates and their sampling variance. While the latter is the preferred approach in the statistical community, often only standardised estimates are shared, reducing the possible meta-analytic approaches. Given the growing interest in data sharing in the neuroimaging community there is a need to identify what is the minimal data to be shared in order to allow for future image-based meta-analysis. In this paper, we compare the validity and the accuracy of eight meta-analytic approaches on simulated and real data. In one-sample tests, combination of contrast estimates into a random-effects General Linear Model or non-parametric statistics provide a good approximation of the reference approach. If only standardised statistical estimates are shared, permutations of z-score is the preferred approach.
 % \keywords{}
 \end{abstract}
+
 %
 \section{Introduction}
 
@@ -231,7 +232,8 @@ Then for each estimator we co{}mpared the standardised meta-analytic statistic t
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.99\linewidth]{./figures/test1_k25_btw1.png}
+	\hspace*{-1.5in}
+	\includegraphics[width=1.3\linewidth]{./figures/test1_k25_btw1.png}
 	\caption{Deviation from theoretical Z in one-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
 	\label{test1_k25_btw1}
 \end{figure}
