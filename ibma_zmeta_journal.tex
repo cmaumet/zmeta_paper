@@ -70,6 +70,7 @@
 Meta-analysis is a powerful statistical tool to combine results from a set of studies. When image data is available for each study, a number of approaches have been proposed to perform such meta-analysis including combination of standardised statistics, just effect estimates or both effects estimates and their sampling variance. While the latter is the preferred approach in the statistical community, often only standardised estimates are shared, reducing the possible meta-analytic approaches. Given the growing interest in data sharing in the neuroimaging community there is a need to identify what is the minimal data to be shared in order to allow for future image-based meta-analysis. In this paper, we compare the validity and the accuracy of eight meta-analytic approaches on simulated and real data. In one-sample tests, combination of contrast estimates into a random-effects General Linear Model or non-parametric statistics provide a good approximation of the reference approach. If only standardised statistical estimates are shared, permutations of z-score is the preferred approach.
 % \keywords{}
 \end{abstract}
+
 %
 \section{Introduction}
 
@@ -88,6 +89,8 @@ In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes o
 
 Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, it requires the contrasts to be expressed with in the same units. In fMRI, units will depends on data, model and contrast vector scaling and are typically different across neuroimaging software due to different data scaling approaches~\cite{Nichols2012units}.
 
+
+TODO: units also depend on field strength: 3T/7T
 TODO: cite Gang's paper
 
 Given the growing interest in data sharing in the neuroimaging community, and the relative easiness of sharing just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
@@ -125,8 +128,12 @@ TODO: add contrast
 	\label{eq_WLS}
 \end{eqnarray}
 
-In a meta-analysis random-effects (RFX) model, we have $W = \mathrm{diag}( \varWithin[1] + \varBetween, \ldots ,\varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance. Approximating $\varWithin$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in Table~\ref{stat_table} for one-sample tests. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
+In a random-effects (RFX) meta-analysis, we have $W = \mathrm{diag}( \varWithin[1] + \varBetween, \ldots ,\varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance. Approximating $\varWithin$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in Table~\ref{stat_table} for one-sample tests. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
 In a \textbf{fixed-effects (FFX) GLM} (i.e. assuming no or negligible between-study variance), we have $W = \mathrm{diag}( \varWithin[1] \ldots \varWithin[\nStudies] )$ where $\varWithin$ denotes the contrast variance for study $i$. 
+
+TODO: need to state the assumptions (e.g. within-study is the true within study var?)
+
+TODO: We need a second table for two-sample tests
 
 \begin{table}[t]
 \begin{center}
@@ -163,7 +170,9 @@ If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be com
 
 Given $\estvarCombined$ an estimate of $\varCombined$ we obtain the statistics presented in Table~\ref{stat_table} for one sample tests. This approach will be referred to \textbf{RFX GLM} in the following.
 
-As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the RFX GLM T-statistic to the distribution obtained ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. This approach will be referred to as \textbf{Contrast permutation}.
+As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the RFX GLM T-statistic to the distribution obtained with ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. This approach will be referred to as \textbf{Contrast permutation}.
+
+TODO: We should be able to do something if we have the sample sizes by assuming constant within subject variance
 
 TODO: We should be able to do something if we have the sample sizes by assuming constant within subject variance
 
@@ -175,7 +184,8 @@ With contrasts, non-parametric inference~\cite{Holmes1996,Nichols2002} can be ob
 
 \paragraph{Approximations}  In practice, all of the methods based on contrast data have approximate parametric null distributions.  The nominal distributions listed in~Table~\ref{stat_table} are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s.  Further, even under homoscedasticity, MFX GLM's null is approximate due to iterative estimation of~$\estvarBetween$.
 
-TODO: Clarify what is approximate in each
+
+TODO: Clarify what is approximate in each + units issue + RFX/FFX choice
 
 % \begin{figure}[t]
 % 	\centering
@@ -189,6 +199,8 @@ TODO: Clarify what is approximate in each
 \subsubsection{Simulations}
 Due to the approximate nature of the sampling distributions, we conduct simulations to evaluate the validity of each estimator under inhomogeneity of contrast variances $\vareffect$ and under the presence of non-negligible between-study variance.
 
+
+TODO: No longer at $p<0.05$
 
 To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated $\effect$ and $\vareffect$ such as:
 \begin{eqnarray}
@@ -214,7 +226,7 @@ To investigate the presence of between-study variation, we computed the ratio of
 $\estvarBetween / (\estvarBetween + \sum_{i=1}^{\nStudies} \vareffect)$.
 Using this metric, voxels with values close to 0 present negligible between-study variance and values close to 1 outline appreciable study heterogeneity and the importance of RFX~models.
 
-Then for each estimator we compared the standardised meta-analytic statistic to the z-statistic obtained with the reference approach. Overestimation of z-statistic leads to overly optimistic detections while underestimation outline a reduced sensitivity of the approach. 
+Then for each estimator we co{}mpared the standardised meta-analytic statistic to the z-statistic obtained with the reference approach. Overestimation of z-statistic leads to overly optimistic detections while underestimation outline a reduced sensitivity of the approach. 
 
 \begin{figure}[t]
 	\centering
@@ -224,6 +236,57 @@ Then for each estimator we compared the standardised meta-analytic statistic to 
 \end{figure}
 
 \section{Results}\label{sec_res}
+
+\subsection{How bad is the units issue?}
+
+\subsubsection{Group meta-analysis}
+
+\begin{figure}[t]
+	\centering
+	\hspace*{-1.5in}
+	\includegraphics[width=1.3\linewidth]{./figures/test1_k25_btw1.png}
+	\caption{Deviation from theoretical Z in one-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
+	\label{test1_k25_btw1}
+\end{figure}
+
+Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, i.e. when the units are matched across studies and contrasts, MFX GLM, RFX GLM and Contrast Permutation are all valid, as expected. For large values of Z, Contrast Estimation is conservative as expected due to the discrete nature of its TODOxxTODO disribution. More suprinsingly, in the presence of a high within-subject variance, the MFX GLM also appears to be conservative. RFX GLM displays the best behaviour with a pattern that is always within the 95\% confidence interval of the theoretical Z.
+
+In the extreme case of different scaling target, i.e. when data where scaled to a different mean (100 versus 10 000), Contrast Permutation displays a pattern that is very close to its nominal behaviour, namely it is valid but conservative for large Z. GLM RFX is valid for Z values that are greater than 1.5 (i.e. the area we are interested in in terms of detections) but very conservative, especially when the number of samples from each scaling factor are not equal. This behaviour is expected as the estimated between-study variance is inflated by the difference in scaling target. MFX GLM is invalid for small within-subject variances and conservative for large within-subject variances.
+
+When different scaling algorithm are used, i.e. as in different neuroimaging software packages. Contrast Permutation still has a behaviour that is very similar to nominal. RFX GLM is valid with some conservativness for large Z but still less conservative than Contrast Permutation. MFX GLM is overall valid (TODO what about within=5 /20\%) and conservative for large or small within-subject variance. 
+
+When the contrast are scaled differently, we observe a very similar pattern than for different scaling algorithm.
+
+\subsubsection{Balanced between-group meta-analysis}
+
+Fig.~\ref{test2_k25_btw1} presents the simulation results for a two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, GLM RFX, GLM RFX and contrast estimation provide valid estimates. Contrast Permutation is conservative for large Z values. Both RFX GLM and MFX GLM display the best behaviour with a pattern that is within the 95\% confidence interval of the theoretical Z.
+
+In the extreme case of different scaling target, contrast permutation is always valid with a pattern very similar than its nominal behaviour. GLM RFX is valid for Z values greater than 1.5, which is the area of interest in detections, but display a strong conservativness, more pronounced than the Contarst Permutation. GLM MFX is slighlty invalid for all within-subject variances except the largest one when 20\% of the studies come from the second software.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.99\linewidth]{./figures/test2_k25_btw1.png}
+	\caption{Deviation from theoretical Z in balanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
+	\label{test2_k25_btw1}
+\end{figure}
+
+\subsubsection{Unbalanced between-group meta-analysis}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.99\linewidth]{./figures/test3_k25_btw1.png}
+	\caption{Deviation from theoretical Z in unbalanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
+	\label{test2_k25_btw1}
+\end{figure}
+
+Fig.~\ref{test2_k25_btw1} presents the simulation results for unbalanced two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, MFX GLM, GLM RFX and contrast permutation provide valide estimate. As expected due to the discrete nature of its ampling distribution, contrast permutation is conservative for large Z value. GLM RFX is conservative. RFX GLM is closest to the theoretical behaviour with Z-values that are always within the 95\% confidence interval.
+
+In the extreme case of different scaling target, MFX GLM is always valid but slightly conservative. RFX GLM is valid for Z values greater than 1.5 (area of interest in detections) but conservative. Similarly contrast permutation is invalid for Z smaller than 1.5 and conservative otherwise. This can be explained by the violation of the exchangeability condition.
+
+When different scaling algorithm are used, (same paragraph as for one-sample test)
+
+When the contrast are scaled differently, we observe a very similar pattern than for different scaling algorithm with higher varaince of the estimates.
+
 
 \subsection{Simulations}
 Fig.~\ref{fig_fpr_all} displays the false positive rate at $p<0.05$ obtained for the eight estimators over all set of parameters in the absence and presence of between-study variation. As expected, the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted Stouffer's estimates, are liberal in the presence of study heterogeneity. The original Fisher's approach is the most invalid. More surprising, FFX GLM is also invalid with homogeneous studies. The explanation is over-estimation of degrees-of-freedom (DF); while DF is computed as $(\sum n-1)-1$, under heteroscasdicity (from $\sigma_i$ or $\sampleSize$) it will be much lower~\cite{Satterthwaite}. Z MFX and GLM RFX provide valid estimates, and the permutation estimates are valid but tend to be conservative with greater variation in false positive rates.
