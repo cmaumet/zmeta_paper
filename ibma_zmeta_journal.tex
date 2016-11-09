@@ -89,6 +89,7 @@ In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes o
 
 Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, it requires the contrasts to be expressed with in the same units. In fMRI, units will depends on data, model and contrast vector scaling and are typically different across neuroimaging software due to different data scaling approaches~\cite{Nichols2012units}.
 
+TODO: units also depend on field strength: 3T/7T
 TODO: cite Gang's paper
 
 Given the growing interest in data sharing in the neuroimaging community, and the relative easiness of sharing just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
@@ -126,8 +127,12 @@ TODO: add contrast
 	\label{eq_WLS}
 \end{eqnarray}
 
-In a meta-analysis random-effects (RFX) model, we have $W = \mathrm{diag}( \varWithin[1] + \varBetween, \ldots ,\varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance. Approximating $\varWithin$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in Table~\ref{stat_table} for one-sample tests. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
+In a random-effects (RFX) meta-analysis, we have $W = \mathrm{diag}( \varWithin[1] + \varBetween, \ldots ,\varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance. Approximating $\varWithin$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in Table~\ref{stat_table} for one-sample tests. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
 In a \textbf{fixed-effects (FFX) GLM} (i.e. assuming no or negligible between-study variance), we have $W = \mathrm{diag}( \varWithin[1] \ldots \varWithin[\nStudies] )$ where $\varWithin$ denotes the contrast variance for study $i$. 
+
+TODO: need to state the assumptions (e.g. within-study is the true within study var?)
+
+TODO: We need a second table for two-sample tests
 
 \begin{table}[t]
 \begin{center}
@@ -164,7 +169,7 @@ If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be com
 
 Given $\estvarCombined$ an estimate of $\varCombined$ we obtain the statistics presented in Table~\ref{stat_table} for one sample tests. This approach will be referred to \textbf{RFX GLM} in the following.
 
-As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the RFX GLM T-statistic to the distribution obtained ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. This approach will be referred to as \textbf{Contrast permutation}.
+As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the RFX GLM T-statistic to the distribution obtained with ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. This approach will be referred to as \textbf{Contrast permutation}.
 
 TODO: We should be able to do something if we have the sample sizes by assuming constant within subject variance
 
@@ -176,7 +181,7 @@ With contrasts, non-parametric inference~\cite{Holmes1996,Nichols2002} can be ob
 
 \paragraph{Approximations}  In practice, all of the methods based on contrast data have approximate parametric null distributions.  The nominal distributions listed in~Table~\ref{stat_table} are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s.  Further, even under homoscedasticity, MFX GLM's null is approximate due to iterative estimation of~$\estvarBetween$.
 
-TODO: Clarify what is approximate in each
+TODO: Clarify what is approximate in each + units issue + RFX/FFX choice
 
 % \begin{figure}[t]
 % 	\centering
@@ -190,6 +195,8 @@ TODO: Clarify what is approximate in each
 \subsubsection{Simulations}
 Due to the approximate nature of the sampling distributions, we conduct simulations to evaluate the validity of each estimator under inhomogeneity of contrast variances $\vareffect$ and under the presence of non-negligible between-study variance.
 
+
+TODO: No longer at $p<0.05$
 
 To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated $\effect$ and $\vareffect$ such as:
 \begin{eqnarray}
