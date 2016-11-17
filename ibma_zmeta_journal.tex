@@ -12,8 +12,10 @@
 \newcommand{\effectvector}{\hat\beta}
 \newcommand{\effect}[1][i]{\effectvector_{#1}}
 \newcommand{\vareffect}[1][i]{\hat S^2_{#1}}
-\newcommand{\zeffect}[1][i]{Z_{#1}}
-\newcommand{\nStudies}{k}
+\newcommand{\zeffect}[1][\studyidx]{Z_{#1}}
+\newcommand{\peffect}[1][\studyidx]{P_{#1}}
+\newcommand{\nStudies}{K}
+\newcommand{\studyidx}{k}
 \newcommand{\varCombined}{\sigma^2_{C}}
 \newcommand{\estvarCombined}{\hat\sigma^2_{C}}
 
@@ -135,7 +137,7 @@ TODO: need to state the assumptions (e.g. within-study is the true within study 
 
 TODO: We need a second table for two-sample tests
 
-\begin{table}[t]
+\begin{table*}[t]
 \begin{center}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{ccccl}
@@ -146,18 +148,18 @@ FFX GLM 		& $  \left(  \sum_{i=1}^\nStudies  \frac{\effect}{\vareffect} \right) 
 MFX GLM 		& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\vareffect + \estvarBetween} \right)/ \sqrt{\sum_{i=1}^\nStudies 1/ (\vareffect + \estvarBetween) } $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect, \vareffect$& IGE; $\varBetween=\estvarBetween$.\\
 RFX GLM 		& $  \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies} } \right) / \widehat\varCombined  $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect$ & IGE; $\varBetween+\varWithin$ cst.\\
 Ctrst Perm.	& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies}} \right) /\widehat\varCombined  $ & Empirical & $\effect$ & ISE.\\
-Fisher's	& $ -2 \sum_{i=1}^{\nStudies} \ln( \Phi(-\zeffect) ) )$ & $\chi^2_{(2\nStudies)}$ & $\zeffect$ & IGE; $\varBetween=0$.\\
-Stouffer's& $  \left(  \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies}$ & $\mathcal{N}(0,1)$ & $\zeffect$& IGE; $\varBetween=0$.\\
-Wght Stouff.& $  \left( \sum_{i=1}^\nStudies  \sqrt{n_i} \zeffect \right) / \sqrt{\sum_{i=1}^\nStudies n_i}$ & $\mathcal{N}(0,1)$ & $\zeffect, \sampleSize$& IGE; $\varBetween=0$.\\
+Fisher's	& $ \displaystyle -2 \sum_{\studyidx} \ln \peffect $ & $\chi^2_{(2\nStudies)}$ & $\zeffect$ & IGE; $\varBetween=0$.\\
+Stouffer's& $ \displaystyle \sqrt{\nStudies} \times \frac{1}{\nStudies} \sum_{\studyidx} \zeffect $ & $\mathcal{N}(0,1)$ & $\zeffect$& IGE; $\varBetween=0$.\\
+Wght Stouff.& $  \displaystyle \frac{1}{\sqrt{\sum_{\studyidx} n_\studyidx}} \sum_{\studyidx}  \sqrt{n_\studyidx} \zeffect  $ & $\mathcal{N}(0,1)$ & $\zeffect, \sampleSize$& IGE; $\varBetween=0$.\\
 Z MFX& $ \left(   \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies} \hat \sigma$ & $\mathcal{T}_{\nStudies-1}$ & $\zeffect$& IGE; $1 + \varBetween/\varWithin$ cst.\\
 Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical & $\zeffect$ & ISE.\\
 \hline 
 
 \end{tabular}
 \end{center}
-\caption{Statistics for one-sample meta-analysis tests and their sampling distributions under the null hypothesis $H_0$. Empirical null distributions are determined using permutations with sign flipping. \IGE=Independent Gaussian Errors, \ISE=Independent Symmetric Errors.}
+\caption{Statistics for one-sample meta-analysis tests and their sampling distributions under the null hypothesis $H_0$. Empirical null distributions are determined using permutations with sign flipping. \IGE=Independent Gaussian Errors, \ISE=Independent Symmetric Errors. Note: $\peffect = \Phi(-\zeffect)$}
 \label{stat_table}
-\end{table}	
+\end{table*}	
 
 \paragraph{Combining contrast estimates}
 If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be combined by assuming that the within-study contrast variance $\varWithin$ is roughly constant ($\varWithin \simeq \sigma^2$) or negligible in comparison to the between-study variance($\varWithin \ll \varBetween$). Then $W = \mathrm{diag}( \varCombined, \ldots, \varCombined )$ where $\varCombined$ is the combined within and between-subject variance, i.e.\ $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$ (note, however, in this setting we do not separately estimate $\varBetween$ or $\varWithinCommon$). Under these assumptions, Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least squares giving:
