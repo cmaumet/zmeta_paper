@@ -1,0 +1,200 @@
+Main points:
+- Main question: "Is Z enough?"
+   o Compa z-based approaches to gold std GLM MFX / or contrast-based approches
+	- Check empirically validity under violation of underlying assumptions 
+      i.e. in the absence of units issue (when we know that MFX is best how do z-based stat do)
+   		+ tau^2 != 0
+   		+ s^2_i not constant
+   		+ relation between within and between sub variance (for RFX or Z MFX)
+		=> no assumption is violated for permutation so we have no reason to test for 
+validity... unless we look at not symmetric error dist (bof!)
+
+	- How bad is the units issue? (only for contrast [+sderr] based):
+   		+ dramatic: 100 / 10 000 (not accounting for different in target across software)
+   		+ cross-software differences in normalisation procedure: 1/2
+   		+ cross-studies differences: 1 to 4 (contrast weights or design matrix)
+   		=> here we also need to test the gold standard because we are violating an assumption
+
+Note: si on considère que gold standard is MFX GLM, cela signifie qu'on ne 
+s'intéresse pas aux cas où l'erreur est non normale.
+
+
+Unit mismatch: todo check what happens with smaller factor for soft2
+
+*** Simulations ***
+
+TODO:
+- estimation of Si2 is wrong in Miccai: this is study variance but not var cope (study variance = varcope * n_subjects)
+
+
+-------------------------------------------------------------------------------
+Miccai paper notes
+
+Probably not possible to have a look at two-sample t-tests right now... But what will we have as a conclusion??? standard z-based methods really bad at dealig with RFX. As for one-sample on BOLD fMRI GLM OLS (RFX) seems pretty robust as are permutation based approches.
+=> ok as a conclusion of simulation
+
+on real data we look how well the reference MFX is approximated by each method. And more importantly we try to find out where we are. (in particular is there rfx en utilisant un test how does within-study variance compare to between-study variance).
+
+and concludes.
+
+
+TODO:
+- Understand why optimal weighted of z is sqrt(n_i). 
+- The first point will help understanding how to weight COPE (with ni or sqrt(ni))?? But for COPE it is easier as we can just start with the Gold std 3-level WLS and then add assumptions.
+
+-------------------------------- Simulations --------------------------------
+Y = X beta + epsilon 	V(epsilon) = tau^2 + s^2_i
+
+X = {one-sample, two-sample, two-sample unbalanced (1/5; 4/5) | no nuisance, 3 nuisance}
+tau^2 = 0, tau^2 = 1 | s^2_i proportional to {0, 1/2, 1, 2, 4}
+
+First simulation:
+X = one-sample without nuisance
+tau^2 = 0
+s^2_i proportional to 4 => what do we mean by proportional?? Can we do something like s^2_i ~ N(1/2, 1)??
+
+=> we need to specify number of subjects as well and differences between studies in intra-study variances
+
+Let's say we have 5 studies with intra-study variances of 1/2 (same level of noise) and potentially different number of subjects.
+
+That gives us 
+The sample variance needs to be chosen from a chi-square (no need if the simulated the data??)
+
+In theory, for our simulation.
+H0 true: Y ~ N(0, 4/nSubjects)
+
+In the simulation
+varcon ~ chi^2 (dof = nSubjects-1) * sigma^2/(nSubjects-1)
+con ~ N(0, sigma^2)
+
+We do not look at H0 false to simplify and just measure FPR & efficiency.
+
+Let's do that with a big image per study so that one-image corresponds to many iterations of the problem. But do we want to change the parameters in one-image or keep them the same...
+
+Not yet fixed: 
+- nStudies: Let's do 4 meta-analysis involving each 5, 10, 25 or 50 studies
+- nSubjects per studies: 
+5 studies: 10 15 20 25 35
+10 studies: 10 15 20 25 35 -- 10 25 20 25 35
+25 studies: 10 15 20 25 35 -- 10 25 20 25 35 -- 10 20 25 20 25 -- 20 25 20 25 35 -- 10 25 20 25 35 
+50 studies: 10 15 20 25 35 -- 10 25 20 25 35 -- 10 20 25 20 25 -- 20 25 20 25 35 -- 10 25 20 25 35 -- 10 15 20 25 35 -- 10 25 20 25 35 -- 10 20 25 20 25 -- 20 25 20 25 35 -- 10 25 20 25 35 
+
+
+sigma^2 = 4/nSubjects
+
+Let's do 1 test with nStudies = 5 and nSubjects/studies = [10, 15, 20, 25]
+
+We will also want to have a look with a large number of studies to check that FFX mega-analysis give sensible results.
+
+Conclusion:
+WeightedZ > Stouffers > Fishers
+All fail in presence of RFX
+
+MegaFFX with dof=sum(nSubjects-1)-1 (as in FSL) always fails (even for FFX!!!)
+
+megaFFXOLS, permutCon et permutZ all well-behaved => thiner compa?? and MFX from FSL as well??
+
+
+1/ meta-analysis vs mega-analysis on one-sample tests
+fisher/stouffer/weightedZ/permonZ / OLS on Z??
+OLS on COPE (WLS on COPE??)
+
+essayer les versions RFX aussi...
+
+2/ among the best behaved i.e OLS on COPE/PermutCOn/PermutZ/ maybe OLS on Z have a look at other designs
+two-sample t-test
+imbalanced two-sample t-test
+
+
+OLS on cope seems a very good choice. This is coherent with the Mumford papers that showed that it is very hard to break OLS in one-sample t-tests.
+
+Maybe have a quick look at a drastically imbalanced two-sample t-test?
+
+-------------------------------- Permutations --------------------------------
+The true model of the data:
+Y = X beta + epsilon 	V(epsilon) = tau^2 + s^2_i
+
+Then the `true` parametric model is given by WLS:
+hat_beta_wls = 1 / sum ( 1/ sigma^2_i ) sum ( cope_i / sigma^2_i )
+Cov(hat_beta_ls) = 1 / sum ( 1/ sigma^2_i )
+stat_wls = 1 / sqrt( sum ( 1/ sigma^2_i ) ) sum ( cope_i / sigma^2_i )
+
+where sigma^2_i = tau^2 + s^2_i
+
+Let's try permutation on COPE and see how it is close to that
+Let's try permutation on COPE (weighted by sqrt(ni))
+
+-------------------------------- OLS and WLS --------------------------------
+Given Y = X beta + epsilon
+and epsilon ~ N(0, V)
+
+hat_beta_ols = (Xt X)-1 Xt Y
+hat_beta_wls = (Xt W X)-1 Xt W Y where W is the whitening matrix W = V-1
+
+Cov(hat_beta_ls) = (Xt W X)-1
+
+stat_ols = hat_beta_ols / sqrt( Cov(hat_beta_ls) ) 
+stat_wls = hat_beta_wls / sqrt( Cov(hat_beta_ls) ) Here 
+
+Is inference available for contrasts only???
+
+if V is known then:
+stat_ols ~ N(0, 1)
+stat_Wls ~ N(0, 1)
+
+else
+stat_ols ~ T_nu where nu = ddl to estimate sigma^2 Here it's easy to find out the dof i.e. k-1 (nSubjects-1 for FFX and nStudies-1 for RFX)
+stat_wls ~ T_nu where nu = ??? Here it's a bit trickier to find the dof
+
+-----------------------------------------------------------------------------
+
+-------------------------------- Gold standard three-level GLM ---------------------------------
+
+* FFX
+hat_beta_wls = 1 / sum ( 1/ sigma^2_i ) sum ( cope_i / sigma^2_i )
+Cov(hat_beta_ls) = 1 / sum ( 1/ sigma^2_i )
+stat_wls = 1 / sqrt( sum ( 1/ sigma^2_i ) ) sum ( cope_i / sigma^2_i )
+
+-------------------------------- Fisher's ---------------------------------
+From Chen 2011: 
+One popular method is the Fisher test which bases on the fact that if k random variables X1, X2,..., Xk are independently and identically distributed as uniform U(0,1), then -2 sum( log(Xi) ) has a Chi^2 distribution with 2k degrees of freedom (d.f.). So
+Fisher test first calculates F = -2 sum( log(Pi) ), where
+where Pi is the P-value from study i; then it compares F with the upper alpha percentile of a Chi^2 distribution with 2k degrees of freedom.
+
+* "standard" Fishers's i.e. FFX
+P_i = normcdf(-z_i)
+stat = -2 sum( ln(P_i) )
+
+-------------------------------- Stouffer's ---------------------------------
+
+* "standard" Stouffer's i.e. FFX
+stat = sum(z_i) / sqrt(k)  for i = 1..k
+stat ~ N(0,1)
+this is equivalent to a WLS on z's
+
+* RFX Stouffer's 
+if z_i ~ N(0, sigma^2)
+stat = sum(z_i) / ( sqrt(k) hat_sigma )  for i = 1..k
+stat ~ T_k-1
+this is equivalent to a one-sample t-test on z's
+
+-------------------------------- z-weighted by w_i ---------------------------------
+* "standard" z-weighted i.e. FFX
+stat = sum(z_i * w_i) / sqrt( sum( w_i^2 ) )
+stat ~ N(0, 1)
+this is *not* equivalent to a WLS on w_i*z's
+
+* RFX z-weighted 
+if z_i ~ N(0, sigma^2)
+stat = sum(z_i * w_i) / ( hat_sigma* sqrt( sum( w_i^2 ) ) )
+stat ~ T_k-1
+
+-------------------------------- z-weighted by sqrt(n_i) ---------------------------------
+* "standard" z-weighted by sqrt(n_i) i.e. FFX
+stat = sum(z_i * sqrt(n_i) ) / sqrt( sum( n_i ) )
+stat ~ N(0, 1)
+
+* RFX z-weighted by sqrt(n_i)
+if z_i ~ N(0, sigma^2)
+stat = sum(z_i * sqrt(n_i) ) / ( hat_sigma* sqrt( sum( n_i^2 ) ) )
+stat ~ T_k-1
