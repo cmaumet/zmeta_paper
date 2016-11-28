@@ -1,0 +1,30 @@
+IBMA notes
+
+
+In this tbx we want:
+ok- Stouffer's FFX (and RFX)
+ok- Fishers
+- weighted Fishers?
+ok- z-weighted by sqrt(n_i)
+ok- hierarchical 3rd-level FFX (WLS)
+
+ok- OLS on cope (is MFX !!!)
+
+
+- permutation on z's ??
+- permutation FFX (and see how well it behave)
+
+TODO:
+- create stouffers.mat to detect if an analysis has already been computed in there
+- ask to overwrite analysis and if yes delete previous files
+- FFX OLS is not practical for meta-analysis (as we would need to store the original subject data) unless a cross-subjects cross-study variance estimate is shared which is not practical either... Are there other solutions ??
+
+
+done
+- Stouffers FFX and RFX
+- you want to have a directory to store the results of an IBMA
+- ecrire des tests
+
+
+General tbx notes:
+Cannot have a <tbxname>_cfg_<functionName> as common function for config
