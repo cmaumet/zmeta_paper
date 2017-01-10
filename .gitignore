@@ -1,3 +1,6 @@
+## Ignore (heavy pdf version of the figures)
+figures/*.pdf
+
 *.DS_Store
 
 ## Core latex/pdflatex auxiliary files:
