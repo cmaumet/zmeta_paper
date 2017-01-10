@@ -1,12 +1,51 @@
-% This is LLNCS.DEM the demonstration file of
-% the LaTeX macro package from Springer-Verlag
-% for Lecture Notes in Computer Science,
-% version 2.4 for LaTeX2e as of 16. April 2010
-%
-\documentclass{llncs}
+%% This is file `elsarticle-template-1-num.tex',
+%%
+%% Copyright 2009 Elsevier Ltd
+%%
+%% This file is part of the 'Elsarticle Bundle'.
+%% ---------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% Template article for Elsevier's document class `elsarticle'
+%% with numbered style bibliographic references
+%%
+%% $Id: elsarticle-template-1-num.tex 149 2009-10-08 05:01:15Z rishi $
+%% $URL: http://lenova.river-valley.com/svn/elsbst/trunk/elsarticle-template-1-num.tex $
+%%
+\documentclass[preprint,12pt]{elsarticle}
+
+%% Use the option review to obtain double line spacing
+%% \documentclass[preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% The graphicx package provides the includegraphics command.
+\usepackage{graphicx}
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers after \end{frontmatter}.
+\usepackage{lineno}
+
 \usepackage{amsopn} % DeclareMathOperator
 \usepackage{amsmath} % bmatrix
-\usepackage{graphicx} % include graphics
 
 \DeclareMathOperator{\Var}{Var}
 \newcommand{\effectvector}{\hat\beta}
@@ -31,49 +70,90 @@
 \newcommand{\IGE}{IGE}
 \newcommand{\ISE}{ISE}
 
+%% natbib.sty is loaded by default. However, natbib options can be
+%% provided with \biboptions{...} command. Following options are
+%% valid:
 
+%%   round  -  round parentheses are used (default)
+%%   square -  square brackets are used   [option]
+%%   curly  -  curly braces are used      {option}
+%%   angle  -  angle brackets are used    <option>
+%%   semicolon  -  multiple citations separated by semi-colon
+%%   colon  - same as semicolon, an earlier confusion
+%%   comma  -  separated by comma
+%%   numbers-  selects numerical citations
+%%   super  -  numerical citations as superscripts
+%%   sort   -  sorts multiple citations according to order in ref. list
+%%   sort&compress   -  like sort, but also compresses numerical citations
+%%   compress - compresses without sorting
+%%
+%% \biboptions{comma,round}
 
+% \biboptions{}
 
-\usepackage{makeidx}  % allows for indexgeneration
-%
+\journal{Journal Name}
+
 \begin{document}
-%
-\frontmatter          % for the preliminaries
-%
-\pagestyle{headings}  % switches on printing of running heads
-% \addtocmark{Hamiltonian Mechanics} % additional mark in the TOC
-%
-%
-\mainmatter              % start of the contributions
-%
+
+\begin{frontmatter}
+
+%% Title, authors and addresses
+
 \title{Minimal Data Needed for Valid \& Accurate Image-Based fMRI Meta-Analysis}
 
-%
-\titlerunning{Running title}  % abbreviated title (for running head)
-%                                     also used for the TOC unless
-%                                     \toctitle is used
-%
-% \author{***********************************************}
-\author{Camille Maumet\inst{1} \and Thomas E. Nichols\inst{1,2}}
-%
-\authorrunning{Camille Maumet et al.} % abbreviated author list (for running head)
-%
-%
-% \institute{***********************************************}
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for the associated footnote;
+%% use the fnref command within \author or \address for footnotes;
+%% use the fntext command for the associated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for the associated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%%
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \address{Address\fnref{label3}}
+%% \fntext[label3]{}
 
- \institute{Warwick Manufacturing Group, The University of Warwick, Coventry, UK.\\
- \and
- Statistics Department, The University of Warwick, Coventry, UK.}
 
-\maketitle              % typeset the title of the contribution
+%% use optional labels to link authors explicitly to addresses:
+%% \author[label1,label2]{<author name>}
+%% \address[label1]{<address>}
+%% \address[label2]{<address>}
+
+\author{Camille Maumet}
+\author{Thomas Nichols}
+
+\address{WMG, University of Warwick, Coventry, UK}
+\address{Statistics Department, University of Warwick, Coventry, UK.}
 
 \begin{abstract}
-% The abstract should summarize the contents of the paper using at least 70 and at most 150 words. 
+%% Text of abstract
 Meta-analysis is a powerful statistical tool to combine results from a set of studies. When image data is available for each study, a number of approaches have been proposed to perform such meta-analysis including combination of standardised statistics, just effect estimates or both effects estimates and their sampling variance. While the latter is the preferred approach in the statistical community, often only standardised estimates are shared, reducing the possible meta-analytic approaches. Given the growing interest in data sharing in the neuroimaging community there is a need to identify what is the minimal data to be shared in order to allow for future image-based meta-analysis. In this paper, we compare the validity and the accuracy of eight meta-analytic approaches on simulated and real data. In one-sample tests, combination of contrast estimates into a random-effects General Linear Model or non-parametric statistics provide a good approximation of the reference approach. If only standardised statistical estimates are shared, permutations of z-score is the preferred approach.
-% \keywords{}
 \end{abstract}
 
-%
+\begin{keyword}
+Science \sep Publication \sep Complicated
+%% keywords here, in the form: keyword \sep keyword
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+
+\end{keyword}
+
+\end{frontmatter}
+
+%%
+%% Start line numbering here if you want
+%%
+\linenumbers
+
+%% main text
 \section{Introduction}
 
 TODO: check number of meta-analytic approaches (8 or 9) and update everywhere
@@ -103,7 +183,7 @@ Section~\ref{sec_meth} describes the meta-analytic estimates along with the expe
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=\linewidth]{./MICCAI_version/Rplot_FPR_all.pdf}
+% 	\includegraphics[width=\linewidth]{./MICCAI_version/Rplot_FPR_all.pdf}
 	\caption{False positive rates of the meta-analytic estimators under the null hypothesis for $p<0.05$.}
 	\label{fig_fpr_all}
 \end{figure}
@@ -228,11 +308,11 @@ To investigate the presence of between-study variation, we computed the ratio of
 $\estvarBetween / (\estvarBetween + \sum_{i=1}^{\nStudies} \vareffect)$.
 Using this metric, voxels with values close to 0 present negligible between-study variance and values close to 1 outline appreciable study heterogeneity and the importance of RFX~models.
 
-Then for each estimator we co{}mpared the standardised meta-analytic statistic to the z-statistic obtained with the reference approach. Overestimation of z-statistic leads to overly optimistic detections while underestimation outline a reduced sensitivity of the approach. 
+Then for each estimator we compared the standardised meta-analytic statistic to the z-statistic obtained with the reference approach. Overestimation of z-statistic leads to overly optimistic detections while underestimation outline a reduced sensitivity of the approach. 
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.7\linewidth]{./MICCAI_version/Rplot_ratio_variances.pdf}
+% 	\includegraphics[width=0.7\linewidth]{./MICCAI_version/Rplot_ratio_variances.pdf}
 	\caption{Histogram of the between-study variance to the sum of the between-subject variance and the mean within-study variance.}
 	\label{fig_realdata_variances}
 \end{figure}
@@ -246,16 +326,16 @@ Then for each estimator we co{}mpared the standardised meta-analytic statistic t
 \begin{figure}[t]
 	\centering
 	\hspace*{-1.5in}
-	\includegraphics[width=1.3\linewidth]{./figures/test1_k25_btw1.png}
-	\caption{Deviation from theoretical Z in one-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
+ 	\includegraphics[width=1.3\linewidth]{./figures/test1_btw1.png}
+	\caption{Deviation from theoretical Z in one-sample tests with $\varBetween=1$ and $\nStudies = 5, 25, 50$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
 	\label{test1_k25_btw1}
 \end{figure}
 
-Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, i.e. when the units are matched across studies and contrasts, MFX GLM, RFX GLM and Contrast Permutation are all valid, as expected. For large values of Z, Contrast Estimation is conservative as expected due to the discrete nature of its TODOxxTODO disribution. More suprinsingly, in the presence of a high within-subject variance, the MFX GLM also appears to be conservative. RFX GLM displays the best behaviour with a pattern that is always within the 95\% confidence interval of the theoretical Z.
+Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample with $\varBetween=1$ and a sample size $\nStudies = 5, 25, 50$. For the nominal case, i.e. when the units are matched across studies and contrasts, MFX GLM, RFX GLM and Contrast Permutation are all valid, as expected. For small sample sizes ($\nStudies = 5$), MFX GLM and contrast permutation are both very conservative. For large values of Z, Contrast Estimation is conservative as expected due to the discrete nature of its distribution. More suprinsing, in the presence of a high within-subject variance, MFX GLM also appears to be conservative. RFX GLM displays the best behaviour with a pattern that is always within the 95\% confidence interval of the theoretical Z.
 
-In the extreme case of different scaling target, i.e. when data where scaled to a different mean (100 versus 10 000), Contrast Permutation displays a pattern that is very close to its nominal behaviour, namely it is valid but conservative for large Z. GLM RFX is valid for Z values that are greater than 1.5 (i.e. the area we are interested in in terms of detections) but very conservative, especially when the number of samples from each scaling factor are not equal. This behaviour is expected as the estimated between-study variance is inflated by the difference in scaling target. MFX GLM is invalid for small within-subject variances and conservative for large within-subject variances.
+% In the extreme case of different scaling target, i.e. when data where scaled to a different mean (100 versus 10 000), Contrast Permutation displays a pattern that is very close to its nominal behaviour, namely it is valid but conservative for large Z. GLM RFX is valid for Z values that are greater than 1.5 (i.e. the area we are interested in in terms of detections) but very conservative, especially when the number of samples from each scaling factor are not equal. This behaviour is expected as the estimated between-study variance is inflated by the difference in scaling target. MFX GLM is invalid for small within-subject variances and conservative for large within-subject variances.
 
-When different scaling algorithm are used, i.e. as in different neuroimaging software packages. Contrast Permutation still has a behaviour that is very similar to nominal. RFX GLM is valid with some conservativness for large Z but still less conservative than Contrast Permutation. MFX GLM is overall valid (TODO what about within=5 /20\%) and conservative for large or small within-subject variance. 
+When different scaling algorithm are used, i.e. with different neuroimaging software packages, Contrast Permutation still has a behaviour that is very similar to nominal. MFX GLM and RFX GLM display invalidity for small Z's and conservativness for large Z's (but less conservative than Contrast Permutation). 
 
 When the contrast are scaled differently, we observe a very similar pattern than for different scaling algorithm.
 
@@ -267,7 +347,7 @@ In the extreme case of different scaling target, contrast permutation is always 
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.99\linewidth]{./figures/test2_k25_btw1.png}
+ 	\includegraphics[width=0.99\linewidth]{./figures/test2_btw1.png}
 	\caption{Deviation from theoretical Z in balanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
 	\label{test2_k25_btw1}
 \end{figure}
@@ -276,7 +356,7 @@ In the extreme case of different scaling target, contrast permutation is always 
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.99\linewidth]{./figures/test3_k25_btw1.png}
+ 	\includegraphics[width=0.99\linewidth]{./figures/test3_btw1.png}
 	\caption{Deviation from theoretical Z in unbalanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
 	\label{test2_k25_btw1}
 \end{figure}
@@ -304,8 +384,8 @@ The histogram of the ratio of between-subject variance to total variance is disp
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_ffx.pdf}
-	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_rfx.pdf}
+% 	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_ffx.pdf}
+% 	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_rfx.pdf}
 	\caption{Difference between the z-score estimated from each meta-analytic approach and the reference z-score from MFX GLM as a function of reference z-score.}
 	\label{fig_realdata}
 \end{figure}
@@ -398,3 +478,6 @@ We gratefully acknowledge the use of this data from the Tracey pain group, FMRIB
 
 
 \end{document}
+
+%%
+%% End of file `elsarticle-template-1-num.tex'.
