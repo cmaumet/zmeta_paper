@@ -15,6 +15,7 @@ figures/*.pdf
 *.fot
 *.cb
 *.cb2
+*.spl
 
 ## Intermediate documents:
 *.dvi
