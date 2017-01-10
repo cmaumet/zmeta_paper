@@ -341,7 +341,7 @@ When the contrast are scaled differently, we observe a very similar pattern than
 
 \subsubsection{Balanced between-group meta-analysis}
 
-Fig.~\ref{test2_k25_btw1} presents the simulation results for a two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, GLM RFX, GLM RFX and contrast estimation provide valid estimates. Contrast Permutation is conservative for large Z values. Both RFX GLM and MFX GLM display the best behaviour with a pattern that is within the 95\% confidence interval of the theoretical Z.
+Fig.~TODO presents the simulation results for a two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, GLM RFX, GLM RFX and contrast estimation provide valid estimates. Contrast Permutation is conservative for large Z values. Both RFX GLM and MFX GLM display the best behaviour with a pattern that is within the 95\% confidence interval of the theoretical Z.
 
 In the extreme case of different scaling target, contrast permutation is always valid with a pattern very similar than its nominal behaviour. GLM RFX is valid for Z values greater than 1.5, which is the area of interest in detections, but display a strong conservativness, more pronounced than the Contarst Permutation. GLM MFX is slighlty invalid for all within-subject variances except the largest one when 20\% of the studies come from the second software.
 
@@ -361,7 +361,7 @@ In the extreme case of different scaling target, contrast permutation is always 
 	\label{test3_btw1}
 \end{figure}
 
-Fig.~\ref{test2_k25_btw1} presents the simulation results for unbalanced two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, MFX GLM, GLM RFX and contrast permutation provide valide estimate. As expected due to the discrete nature of its ampling distribution, contrast permutation is conservative for large Z value. GLM RFX is conservative. RFX GLM is closest to the theoretical behaviour with Z-values that are always within the 95\% confidence interval.
+Fig.~TODO presents the simulation results for unbalanced two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, MFX GLM, GLM RFX and contrast permutation provide valide estimate. As expected due to the discrete nature of its ampling distribution, contrast permutation is conservative for large Z value. GLM RFX is conservative. RFX GLM is closest to the theoretical behaviour with Z-values that are always within the 95\% confidence interval.
 
 In the extreme case of different scaling target, MFX GLM is always valid but slightly conservative. RFX GLM is valid for Z values greater than 1.5 (area of interest in detections) but conservative. Similarly contrast permutation is invalid for Z smaller than 1.5 and conservative otherwise. This can be explained by the violation of the exchangeability condition.
 
@@ -373,7 +373,7 @@ When the contrast are scaled differently, we observe a very similar pattern than
 \subsection{Simulations}
 Fig.~\ref{fig_fpr_all} displays the false positive rate at $p<0.05$ obtained for the eight estimators over all set of parameters in the absence and presence of between-study variation. As expected, the fixed-effects meta-analytic summary statistics, i.e.\ Fisher's, Stouffer's and weighted Stouffer's estimates, are liberal in the presence of study heterogeneity. The original Fisher's approach is the most invalid. More surprising, FFX GLM is also invalid with homogeneous studies. The explanation is over-estimation of degrees-of-freedom (DF); while DF is computed as $(\sum n-1)-1$, under heteroscasdicity (from $\sigma_i$ or $\sampleSize$) it will be much lower~\cite{Satterthwaite}. Z MFX and GLM RFX provide valid estimates, and the permutation estimates are valid but tend to be conservative with greater variation in false positive rates.
 
-The impact of the number of studies involved in the meta-analysis and of the size of the within-study variance are investigated in Fig.~\ref{fig_fpr_valid}. Permutation inference is valid but conservative when 5 studies are used; this is because there are only $2^5=32$ possible permutations and thus $1/32=0.03125$ is largest attainable valid P-value. All approaches perform equally as soon as 10 or more studies are included in the meta-analysis. 
+The impact of the number of studies involved in the meta-analysis and of the size of the within-study variance are investigated in Fig.~TODO. Permutation inference is valid but conservative when 5 studies are used; this is because there are only $2^5=32$ possible permutations and thus $1/32=0.03125$ is largest attainable valid P-value. All approaches perform equally as soon as 10 or more studies are included in the meta-analysis. 
 
 
 \subsection{Real data}
