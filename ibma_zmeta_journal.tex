@@ -62,7 +62,7 @@
 \newcommand{\varWithinCommon}{\sigma^2}
 \newcommand{\sampleSize}[1][i]{n_{#1}}
 \newcommand{\varWithin}[1][i]{\sigma^2_{#1}}
-\newcommand{\varWithinCon}[1][i]{\sigma^2_{#1}\}
+\newcommand{\varWithinCon}[1][i]{\frac{\sigma^2_{#1}}{n}}
 \newcommand{\transpose}{^T}
 
 \newcommand{\IGE}{IGE}
@@ -202,7 +202,7 @@ where $\metaanalyticeffect$ is the meta-analytic parameter to estimate, $\vec{\e
 	\label{eq_WLS}
 \end{eqnarray}
 
-In a random-effects (RFX) meta-analysis, we have $W = \mathrm{diag}( \varWithin[1] + \varBetween, \ldots ,\varWithin[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance. Approximating $\varWithin$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in Table~\ref{stat_table} for one-sample tests. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
+In a random-effects (RFX) meta-analysis, we have $W = \mathrm{diag}( \varWithinCon[1] + \varBetween, \ldots ,\varWithinCon[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance. Approximating $\varWithin$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the statistics detailed in Table~\ref{stat_table} for one-sample tests. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
 In a \textbf{fixed-effects (FFX) GLM} (i.e. assuming no or negligible between-study variance), we have $W = \mathrm{diag}( \varWithin[1] \ldots \varWithin[\nStudies] )$ where $\varWithin$ denotes the contrast variance for study $i$. 
 
 TODO: need to state the assumptions (e.g. within-study is the true within study var?)
@@ -234,7 +234,7 @@ Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & E
 \end{table*}	
 
 \paragraph{Combining contrast estimates}
-If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be combined by assuming that the within-study contrast variance $\varWithin$ is roughly constant ($\varWithin \simeq \sigma^2$) or negligible in comparison to the between-study variance($\varWithin \ll \varBetween$). Then $W = \mathrm{diag}( \varCombined, \ldots, \varCombined )$ where $\varCombined$ is the combined within and between-subject variance, i.e.\ $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$ (note, however, in this setting we do not separately estimate $\varBetween$ or $\varWithinCommon$). Under these assumptions, Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least squares giving:
+If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be combined by assuming that the within-study contrast variance $\varWithinCon$ is roughly constant ($\varWithinCon \simeq \sigma^2$) or negligible in comparison to the between-study variance($\varWithinCon \ll \varBetween$). Then $W = \mathrm{diag}( \varCombined, \ldots, \varCombined )$ where $\varCombined$ is the combined within and between-subject variance, i.e.\ $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$ (note, however, in this setting we do not separately estimate $\varBetween$ or $\varWithinCommon$). Under these assumptions, Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least squares giving:
 
 \begin{eqnarray}
 	\hat \metaanalyticeffect  &=& (X\transpose X)^{-1} X\transpose \effectvector \\
@@ -279,7 +279,7 @@ TODO: No longer at $p<0.05$
 To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated $\effect$ and $\vareffect$ such as:
 \begin{eqnarray}
 	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\sampleSize}+\varBetween) \\
-	\vareffect &\sim& \frac{\varWithin}{\sampleSize-1} \chi^2_{(\sampleSize-1)}%
+	\vareffect &\sim& \frac{1}{\sampleSize} \frac{\varWithin}{\sampleSize-1} \chi^2_{(\sampleSize-1)}%
 \end{eqnarray}
 where $\varWithin \in [1/2, 1, 2, 4]$ is the within-study variance, $\varBetween \in [0, 1/20]$ is the between-study variance (fixed-effects models are strictly only appropriate for $\varBetween=0$). For different number of studies per meta-analysis we used: $\nStudies \in [5, 10, 25, 50]$, and set the number of subjects per studies $\sampleSize$ to vary across the common range of sample sizes in neuroimaging studies. In each simulated meta-analysis we simulated one study with exactly 20, 25, 10 and 50 subjects. For the remaining studies $1/4$ of the $\sampleSize$'s were drawn from $\mathcal{U}(11,20)$, $1/4$ from $\mathcal{U}(26,50)$ and the remaining from $\mathcal{U}(21,25)$, where $\mathcal{U}(a,b)$ is the discrete uniform distribution on the integers $a$ to $b$ inclusive. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested and a total of $71^3$ realisations were created.
 
