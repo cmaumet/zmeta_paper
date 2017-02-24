@@ -296,17 +296,20 @@ TODO: Clarify what is approximate in each + units issue + RFX/FFX choice
 \subsection{Experiments}
 
 \subsubsection{Simulations}
+We used Monte Carlo simulations to empirically investigate the validity of each estimator. We simulated a set of studies contrast estimates $\effect$ and contrast variance estimates $\vareffect$ according to:
+\begin{eqnarray}
+	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\sampleSize[]}+\varBetween) \\
+	\vareffect &\sim& \frac{1}{\sampleSize[]} \frac{\varWithin}{\sampleSize[]-1} \chi^2_{(\sampleSize[]-1)}%
+\end{eqnarray}
+where $\varWithin = \varWithin[] \alpha_i$ with $\varWithin[] \in \sampleSize[] \times [0.25, 0.5, 1, 2, 4]$ and $\alpha_i$ is either equal to 1 for all studies or is taken from $\alpha_i \in [1, 2, 4, 8, 16]$ to simulate varying within-study variances, $\varBetween \in [0, 1]$ is the between-study variance. Four different number of studies per meta-analysis were used: $\nStudies \in [5, 10, 25, 50]$. We set the number of subjects per studies $\sampleSize[]=20$ which is a common sample size in existing neuroimaging studies~\cite{Poldrack2017}. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested and a total of $1~026~000$ realisations were created.
+
+
 Due to the approximate nature of the sampling distributions, we conduct simulations to evaluate the validity of each estimator under inhomogeneity of contrast variances $\vareffect$ and under the presence of non-negligible between-study variance.
 
 
 TODO: No longer at $p<0.05$
 
-To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. For each meta-analysis, we simulated $\effect$ and $\vareffect$ such as:
-\begin{eqnarray}
-	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\sampleSize}+\varBetween) \\
-	\vareffect &\sim& \frac{1}{\sampleSize} \frac{\varWithin}{\sampleSize-1} \chi^2_{(\sampleSize-1)}%
-\end{eqnarray}
-where $\varWithin \in [1/2, 1, 2, 4]$ is the within-study variance, $\varBetween \in [0, 1/20]$ is the between-study variance (fixed-effects models are strictly only appropriate for $\varBetween=0$). For different number of studies per meta-analysis we used: $\nStudies \in [5, 10, 25, 50]$, and set the number of subjects per studies $\sampleSize$ to vary across the common range of sample sizes in neuroimaging studies. In each simulated meta-analysis we simulated one study with exactly 20, 25, 10 and 50 subjects. For the remaining studies $1/4$ of the $\sampleSize$'s were drawn from $\mathcal{U}(11,20)$, $1/4$ from $\mathcal{U}(26,50)$ and the remaining from $\mathcal{U}(21,25)$, where $\mathcal{U}(a,b)$ is the discrete uniform distribution on the integers $a$ to $b$ inclusive. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested and a total of $71^3$ realisations were created.
+To verify the validity of each estimator under the null hypothesis we estimated the false positive rate at $p<0.05$ uncorrected. 
 
 
 \subsubsection{Real data}
@@ -346,7 +349,7 @@ Then for each estimator we compared the standardised meta-analytic statistic to 
 	\label{unitmismatch_test1}
 \end{figure}
 
-Fig.~\ref{unitmismatch_test1} presents the simulation results under unit mismatch for one-sample tests. For the nominal case, i.e. when the units are matched across studies and contrasts, MFX GLM, RFX GLM and Contrast Permutation are all valid, as expected. For large values of Z, Contrast Estimation is conservative as expected due to the discrete nature of its distribution. More suprinsing, in the presence of a high within-study variance, MFX GLM also appears to be conservative. RFX GLM displays the best behaviour with a pattern that is always within the 95\% confidence interval of the theoretical Z.
+Fig.~\ref{unitmismatch_test1} presents the simulation results under unit mismatches for one-sample tests. In the nominal case, i.e. when the units are matched across studies and contrasts, RFX GLM and Contrast Permutation are valid, as expected. Surprinsingly, while MFX GLM is valid for constant within-study variances it is invalid when the within-study variances are varying (TODO: Need to understand this point better!!). For large values of Z, Contrast Permutation is conservative as expected due to the discrete nature of its distribution. In the presence of a high within-study variance, MFX GLM also appears to be conservative. RFX GLM displays the best behaviour with a pattern that is within the 95\% confidence interval of the theoretical Z for all within-study variance studied and only slightly conservative when the within-study variances are varying across studies.
 
 When different scaling algorithm are used, i.e. with different neuroimaging software packages (provided that the scaling target has been accounted for), Contrast Permutation still has a behaviour that is very similar to nominal. For small or high within-study variances ($\varWithin=5$, $\varWithin=10$, $\varWithin=80$), MFX GLM and RFX GLM display invalidity for small Z's and conservativness for large Z's. When within-study and between-study variances are similar, MFX GLM is slightly invalid for all Z values. When the contrast are scaled differently, we observe a very similar pattern than for different scaling algorithm.
 
