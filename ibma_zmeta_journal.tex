@@ -140,14 +140,14 @@
 
 \begin{abstract}
 %% Text of abstract
-Meta-analysis provides a quantitative approach to summarise the rich functional Magnetic Resonance Imaging literature (fMRI). When image data is available for each study, a number of approaches have been proposed to perform such meta-analysis including combination of standardised statistics, just effect estimates or both effects estimates and their sampling variance. While the latter is the preferred approach in the statistical community, often only standardised estimates are shared, reducing the possible meta-analytic approaches. Also, because the BOLD signal is non quantitative care has to be taken in order to insure that the contrast estimates are expressed in the same units, in particular when combining data from different software packages. Given the growing interest in data sharing in the neuroimaging community there is a need to identify what is the minimal data to be shared in order to allow for future image-based meta-analysis. In this paper, we compare the validity and the accuracy of nine meta-analytic approaches on simulated and real data. 
+Meta-analysis provides a quantitative approach to summarise the rich functional Magnetic Resonance Imaging literature (fMRI). When image data is available for each study, a number of approaches have been proposed to perform such meta-analysis including combination of standardised statistics, just effect estimates or both effects estimates and their sampling variance. While the latter is the preferred approach in the statistical community, its properties are only guaranteed under large sample sizes. Additionally, often only standardised estimates are shared, reducing the possible meta-analytic approaches. Finally, because the BOLD signal is non-quantitative care has to be taken in order to insure that effect estimates are expressed in the same units, especially when combining data from different software packages. Given the growing interest in data sharing in the neuroimaging community there is a need to identify what is the minimal data to be shared in order to allow for future image-based meta-analysis. In this paper, we compare the validity and the accuracy of nine meta-analytic approaches on simulated and real data. 
 
 %% TODO review conclusion in terms of the new results
-In one-sample tests, combination of contrast estimates into a random-effects General Linear Model or non-parametric statistics provide a good approximation of the reference approach. If only standardised statistical estimates are shared, permutations of z-score is the preferred approach.
+% In one-sample tests, combination of contrast estimates into a random-effects General Linear Model or non-parametric statistics provide a good approximation of the reference approach. If only standardised statistical estimates are shared, permutations of z-score is the preferred approach.
 \end{abstract}
 
 \begin{keyword}
-Science \sep Publication \sep Complicated
+Meta-analysis \sep Neuroimaging \sep Mixed-effects 
 %% keywords here, in the form: keyword \sep keyword
 
 %% MSC codes here, in the form: \MSC code \sep code
@@ -314,11 +314,11 @@ Non-parametric inference~\cite{Holmes1996,Nichols2002} can also be obtained by s
 We used Monte Carlo simulations to empirically investigate the validity of each estimator. We simulated a set of studies contrast estimates $\effect$ and contrast variance estimates $\vareffect$ according to:
 \begin{eqnarray}
 	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\sampleSize[]}+\varBetween) \\
-	\vareffect &\sim& \frac{1}{\sampleSize[]} \frac{\varWithin}{\sampleSize[]-1} \chi^2_{(\sampleSize[]-1)}%
+	\vareffect &\sim& \frac{\varWithin}{\sampleSize[]}  \frac{\chi^2_{(\sampleSize[]-1)}}{\sampleSize[]-1} %
 \end{eqnarray}
 where $\varWithin = \varWithin[] \alpha_i$ with $\varWithin[] \in \sampleSize[] \times [0.25, 0.5, 1, 2, 4]$ and $\alpha_i$ is either equal to 1 for all studies or is taken from $\alpha_i \in [1, 2, 4, 8, 16]$ to simulate varying within-study variances, $\varBetween \in [0, 1]$ is the between-study variance. Four different number of studies per meta-analysis were used: $\nStudies \in [5, 10, 25, 50]$. We set the number of subjects per studies $\sampleSize[]=20$ which is a common sample size in existing neuroimaging studies~\cite{Poldrack2017}. A total of 32 parameter sets (4 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$) was therefore tested and a total of $1~026~000$ realisations were performed for each parameter set.
 
-Three types of analyses were computed: a one-sample meta-analysis (testing significance on the mean effect in 1 group of \nStudies), a two-sample meta-analysis (testing significance in mean differences between 2 groups of \nStudies) and an unbalanced two-sample meta-analysis (testing significance in mean differences between 2 groups of 2*\nStudies/5 and 2*\nStudies*4/5 respectively).
+Three types of analyses were computed: a one-sample meta-analysis (testing significance on the mean effect in 1 group of \nStudies), a two-sample meta-analysis (testing significance in mean differences between two groups of \nStudies each) and an unbalanced two-sample meta-analysis (testing significance in mean differences between two groups of 2*\nStudies/5 and 2*\nStudies*4/5 respectively).
 
 We conducted simulations to evaluate the validity of each estimator in small samples and under violations of their assumptions, namely inhomogeneity of contrast variances $\vareffect$, presence of non-negligible between-study variance.
 
@@ -360,6 +360,41 @@ Then for each estimator we compared the standardised meta-analytic statistic to 
 
 \section{Results}\label{sec_res}
 
+\subsection{Robustness to small samples}
+
+\begin{figure}[h]
+	\centering
+ 	\includegraphics[trim={0 3cm 0 3cm},clip,width=0.8\linewidth]{../zmeta/small_samples/test1_smallsample_robustness_p.pdf}
+	\caption{Deviation from theoretical P-values in one-sample tests under ideal circunstances with respect to heterogeneity for each statistical approach ($\varBetween=0$ for FFX and $\varBetween=1$ for MFX) and $\nStudies = 5, 25, 50$ with matched (``nominal'') units.}
+	\label{small_sample_test1}
+\end{figure}
+
+% \begin{figure}[h]
+% 	\centering
+%  	\includegraphics[width=0.8\linewidth]{../zmeta/small_samples/test1_smallsample_robustness_subjects_p.pdf}
+% 	\caption{Deviation from theoretical P-values in one-sample tests under ideal circunstances with respect to heterogeneity for each statistical approach ($\varBetween=0$ for FFX and $\varBetween=1$ for MFX) and $\sampleSize = 20, 100$ with matched (``nominal'') units.}
+% 	\label{small_number_of_subjects_test1}
+% \end{figure}
+
+Fig.~\ref{small_sample_test1} presents the one-sample simulation results in small samples, i.e. under small number of studies or small number of subjects. We focus here on methods that are guaranteed only in large samples: FFX and MFX. When the number of subjects is small, FFX is invalid for all within-study variances investigated, regardless of the number of studies included in the meta-analysis. On the other hand MFX GLM is conservative for small number of studies and constant within-study variance. In the presence of large variations in the within-study variances and under small number of studies, MFX is invalid, regardless of the number of subjects included in each study.
+
+For small number of studies, permutation methods (including Contrast Permutation and Z permutation) are conservative as expected due to the discrete nature of their distribution (cf. supplementary figure TODO).
+
+Other approaches (TODO) have a nominal behaviour under small sample sizes as expected according to theory. Only Stouffers MFX presents some invalidity, which can be explained by the fact that this is an had hoc not recommended statistic (cf. supplementary figure TODO).
+
+\subsection{Robustness to heteroscedasticity}
+
+\begin{figure}[h]
+	\centering
+ 	\includegraphics[trim={0 0 0 0
+ 	},clip,width=0.8\linewidth]{../zmeta/small_samples/robustness.pdf}
+	\caption{Deviation from theoretical P-values for a range of varying within-study variances with $\nStudies = 25$ and $n = 20$ with matched (``nominal'') units.}
+	\label{heteroscedasticity}
+\end{figure}
+
+RFX and Perm E. are robust to heteroscedasticity for all settings studied.
+
+\subsection{Robustness to heterogeneity}
 
 \subsection{Robustness to units mismatch}
 
