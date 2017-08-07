@@ -421,45 +421,8 @@ When the contrast are scaled differently (Fig.~\ref{fig:units}, 4th column), we 
 Similar behaviours are observed for two-sample tests (cf. Supplementary Fig.~\ref{fig:units_test2} and Fig.~\ref{fig:units_test3}).
 
 
-\subsection{Small sample properties}
-
-\begin{figure}[h]
-	\centering
- 	\includegraphics[width=0.8\linewidth]{./figures/samplesizes_test1.pdf}
-	\caption{}
-	\label{samplesizes_test1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
- 	\includegraphics[width=0.8\linewidth]{./figures/samplesizes_test2.pdf}
-	\caption{}
-	\label{samplesizes_test2}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
- 	\includegraphics[width=0.8\linewidth]{./figures/samplesizes_test3.pdf}
-	\caption{}
-	\label{samplesizes_test3}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
- 	\includegraphics[width=0.8\linewidth]{./figures/rfx_assump.pdf}
-	\caption{}
-	\label{rfx_assump}
-\end{figure}
-
 
 \subsubsection{Group meta-analysis}
-
-\begin{figure}[t]
-	\centering
- 	\includegraphics[width=\linewidth]{./figures/test1_btw1.png}
-	\caption{Deviation from theoretical Z in one-sample tests with $\varBetween=1$ and $\nStudies = 5, 25, 50$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
-	\label{test1_k25_btw1}
-\end{figure}
 
 Fig.~\ref{test1_k25_btw1} presents the simulation results for a one-sample test with $\varBetween=1$ and a sample size $\nStudies = 5, 25, 50$. For the nominal case, i.e. when the units are matched across studies and contrasts, MFX GLM, RFX GLM and Contrast Permutation are all valid, as expected. For small sample sizes ($\nStudies = 5$), MFX GLM and contrast permutation are both very conservative. For large values of Z, Contrast Estimation is conservative as expected due to the discrete nature of its distribution. More suprinsing, in the presence of a high within-study variance, MFX GLM also appears to be conservative. RFX GLM displays the best behaviour with a pattern that is always within the 95\% confidence interval of the theoretical Z.
 
@@ -472,21 +435,9 @@ Fig.~TODO presents the simulation results for a two-sample meta-analyses with $\
 
 In the extreme case of different scaling target, contrast permutation is always valid with a pattern very similar than its nominal behaviour. GLM RFX is valid for Z values greater than 1.5, which is the area of interest in detections, but display a strong conservativness, more pronounced than the Contarst Permutation. GLM MFX is slighlty invalid for all within-study variances except the largest one when 20\% of the studies come from the second software.
 
-\begin{figure}[t]
-	\centering
- 	\includegraphics[width=0.99\linewidth]{./figures/test2_btw1.png}
-	\caption{Deviation from theoretical Z in balanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
-	\label{test2_btw1}
-\end{figure}
 
 \subsubsection{Unbalanced between-group meta-analysis}
 
-\begin{figure}[t]
-	\centering
- 	\includegraphics[width=0.99\linewidth]{./figures/test3_btw1.png}
-	\caption{Deviation from theoretical Z in unbalanced two-sample tests with $\varBetween=1$ and $\nStudies = 25$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
-	\label{test3_btw1}
-\end{figure}
 
 Fig.~TODO presents the simulation results for unbalanced two-sample meta-analyses with $\varBetween=1$ and a sample size $\nStudies = 25$. For the nominal case, MFX GLM, GLM RFX and contrast permutation provide valide estimate. As expected due to the discrete nature of its ampling distribution, contrast permutation is conservative for large Z value. GLM RFX is conservative. RFX GLM is closest to the theoretical behaviour with Z-values that are always within the 95\% confidence interval.
 
@@ -568,6 +519,8 @@ We gratefully acknowledge the use of the pain dataset from the Tracey pain group
 
 %
 % ---- Bibliography ----
+
+\section{References}
 \bibliographystyle{plain}
 \bibliography{ibma}
 
