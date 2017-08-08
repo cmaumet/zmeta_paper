@@ -73,6 +73,8 @@
 \newcommand{\IGE}{IGE}
 \newcommand{\ISE}{ISE}
 
+% TODO: ajouter software used to compute the figures (ggplot, cowplot)
+
 % Bold that works both for letters and greek symbols
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 
@@ -460,14 +462,19 @@ The impact of the number of studies involved in the meta-analysis and of the siz
 
 % The histogram of the ratio of between-subject variance to total variance is displayed in Fig.~\ref{fig_realdata_variances}. From this graph it is clear that for most of the voxels the estimated between-study variance is greater than the within-study variance. We can therefore suppose the presence of study heterogeneity (non negligible between-study variance) in this collection of studies.
 
-\begin{figure}[t]
+\begin{figure}[h]
 	\centering
-% 	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_ffx.pdf}
-% 	\includegraphics[width=0.8\linewidth]{./MICCAI_version/Rplot_realdata_rfx.pdf}
-	\caption{Difference between the z-score estimated from each meta-analytic approach and the reference z-score from MFX GLM as a function of reference z-score.}
+ 	\includegraphics[trim={0 0 0 0
+ 	},clip,width=0.8\linewidth]{../zmeta/roc.pdf}
+	\caption{ROC curves of the meta-analytic estimators where true positive rate were computed using a real data meta-analysis of 21 studies of pain and false positive rates using simulated data under various levels of heterogeneity (A) and hetoroscedasticity (B).}
 	\label{fig_realdata}
 \end{figure}
 
+% TODO: check RFX curve: do we need more points towards zero??
+
+Fig.~\ref{fig_realdata}A. displays the ROC curves for all the meta-analytic estimators under varying levels of heterogeneity. As expected, the fixed-effects approaches are the most sensitive to heterogeneity. The exterme being Fisher's method that is the most sensitive under low heterogeneity and the less sensitive under large heterogeneity. Random-effects approaches are relatively insensitive to the level of heterogeneity. Amongst random-effects approaches the most optimal are stouffers MFX and Z permutation that display almost identical ROC curves, followed by MFX GLM, contrast permutation and finally RFX GLM. TODO: Why RFX is last??  
+
+Fig.~\ref{fig_realdata}B. displays the ROC curves for all the meta-analytic estimators under varying levels of heteroscedasticity. Again, the fixed-effects approaches are the most sensitive to heteroscedasticity. This can be explained by the fact that under high heteroscedasticy, some studies will present a low (or high) within-study variance, relatively increasing the between-study variance by comparison to the within-study variance. Amongst the random-effects approaches the most optimal are again stouffers MFX and Z permutation that display almost identical ROC curves. 
 
 Fig.~\ref{fig_realdata} plots the difference between the z-score estimated by each meta-analytic approach against the reference z-score computed with MFX GLM. All FFX statistics provide overly optimistic z-estimate suggesting, again, that study heterogeneity is present in the studied dataset.
 Among the RFX meta-analytic approaches, GLM RFX and contrast permutations provide z-scores estimate that are equal or smaller than the reference. Z permutation provides slightly larger z-scores between 1 and 3 (reference p-values between 0.16 and 0.0013) but is mostly in agreement with the reference z-scores. On the other hand, Z MFX is more liberal than the reference for z-score ranging from 3 to 5 (reference p-values between 0.0013 and 2.9e-07) and more stringent for z-scores smaller than 5.
