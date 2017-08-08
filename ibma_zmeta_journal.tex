@@ -73,8 +73,6 @@
 \newcommand{\IGE}{IGE}
 \newcommand{\ISE}{ISE}
 
-% TODO: ajouter software used to compute the figures (ggplot, cowplot)
-
 % Bold that works both for letters and greek symbols
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 
@@ -198,6 +196,10 @@ Section~\ref{sec_meth} describes the meta-analytic estimates along with the expe
 \end{figure}
 
 \section{Methods}\label{sec_meth}
+
+TODO: ajouter software used to compute the figures (ggplot, cowplot)
+TODO: say how we computed the CI for the qqplots
+
 \subsection{Theory}
 For study $\studyidx=1,\ldots,\nStudies$ we have contrast estimate $\effect$, its contrast variance estimate $\vareffect$ (i.e. squared standard error), its equivalent Z-statistic map $Z_i$ and its sample size $n_i$.  
 
@@ -516,6 +518,7 @@ Among the RFX meta-analytic approaches, GLM RFX and contrast permutations provid
 
 \section{Discussions}\label{sec:discussion}    
 TODO: different scanners effect on units, event-related designs, analytical variability (maybe intro??)
+TODO: discuss cpmbination of real data TPR with FPR. Ideally we should have real data for all the settings. 
 
 \section{Conclusion}\label{sec_ccl}
 We have compared nine meta-analytic approaches in the context of one-sample test. Through simulations, we found the expected invalidity of standard FFX approaches in the presence of study heterogeneity, but also of FFX GLM even with no between-study variation. In a real dataset of 21 studies of pain, there was evidence for substantial between-study variation that supports the use of RFX meta-analytic statistics. When only contrast estimates are available, RFX GLM was valid. This is in line with previous results on within-group one-sample t-tests studies~\cite{Mumford2009}. When only standardised estimates are available, permutation is the preferred option as the one providing the most faithful results. Further investigations are needed in order to assess the behaviour of these estimators in other configurations, including meta-analyses focusing on between-study differences.
