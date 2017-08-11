@@ -59,7 +59,9 @@
 \newcommand{\varCombined}{\sigma^2_{C}}
 \newcommand{\estvarCombined}{\hat\sigma^2_{C}}
 
-\newcommand{\metaanalyticeffect}{\gamma}
+\newcommand{\metaanalyticeffects}{\vec{\metaanalyticeffect[]}}
+\newcommand{\metaanalyticeffect}[1][i]{\gamma_{#1}}
+\newcommand{\nMetaAnalyticEffects}{p}
 
 \newcommand{\varBetween}{\tau^2}
 \newcommand{\estvarBetween}{\hat\tau^2}
@@ -212,74 +214,49 @@ For study $\studyidx=1,\ldots,\nStudies$ we have contrast estimate $\effect$, it
 The gold standard approach is to fit contrast estimates and their standard error with a hierarchical general linear model (GLM)~\cite{Cummings2004}, creating a third-level (level ~1:~subject; level~2:~study; level~3:~meta-analysis). The general formulation for the study-level data is:
 
 \begin{equation}
-	\vec{\effectvector} = X \metaanalyticeffect + \epsilon
+	\vec{\effectvector} = X \metaanalyticeffects + \epsilon
 	\label{eq_meta_GLM}
 \end{equation}
-where $\metaanalyticeffect$ is the meta-analytic parameter to estimate, $\vec{\effectvector} = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $k\times p$ study-level matrix (typically p=1 with just a column of ones for a one-sample test) and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. 
+where $\metaanalyticeffects  = [\metaanalyticeffect[1] \ldots \metaanalyticeffect[\nMetaAnalyticEffects] ]\transpose$ is a vector of meta-analytic parameters to estimate, $\vec{\effectvector} = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $\nStudies \times \nMetaAnalyticEffects$ study-level matrix (typically $\nMetaAnalyticEffects=1$ with just a column of ones for a one-sample test) and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. 
 
-In the most general case of a random-effects (RFX) meta-analysis, i.e. assuming non-zero between-study variance, we have $W = \mathrm{diag}( \varWithinCon[1] + \varBetween, \ldots ,\varWithinCon[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance and $\varWithinCon$ denotes the contrast variance for study $i$. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least squares giving:
+In the most general case of a random-effects meta-analysis, i.e. assuming non-zero between-study variance, we have $W = \mathrm{diag}( \varWithinCon[1] + \varBetween, \ldots ,\varWithinCon[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance and $\varWithinCon$ denotes the variance of the contrast estimate for study $i$. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least squares giving:
 
 \begin{eqnarray}
-	\vec{\hat \metaanalyticeffect}  &=& (X\transpose W^{-1} X)^{-1} X\transpose W^{-1} \vec{\effectvector} \\
-	\Var(\vec{\hat \metaanalyticeffect})  &=& (X\transpose W^{-1} X)^{-1}
+	\vec{\hat \metaanalyticeffects}  &=& (X\transpose W^{-1} X)^{-1} X\transpose W^{-1} \vec{\effectvector} \\
+	\Var(\vec{\hat \metaanalyticeffects})  &=& (X\transpose W^{-1} X)^{-1}
 	\label{eq_WLS}
 \end{eqnarray}
 
-
-But in practice, the weight matrix $W$ is unknown and has to be estimated from the data. Given $\hat W$ a consistent estimate of $W$, the feasible generalized least squares (FGLS) estimator is computed as:
+Table~\ref{table:estimates_wls_test1} and \ref{table:estimates_wls_test2} provides derivation of the WLS estimates and their sampling variances for one and two-sample tests. But in practice, the weight matrix $W$ is unknown and has to be estimated from the data. Given $\hat W$ a consistent estimate of $W$, the feasible generalized least squares (FGLS) estimator is computed as:
 \begin{eqnarray}
-	\vec{\hat \metaanalyticeffect}  &=& (X\transpose \hat{W}^{-1} X)^{-1} X\transpose \hat{W}^{-1} \vec{\effectvector} \\
-	\Var(\vec{\hat \metaanalyticeffect})  &=& (X\transpose \hat{W}^{-1} X)^{-1}
+	\vec{\hat \metaanalyticeffects}  &=& (X\transpose \hat{W}^{-1} X)^{-1} X\transpose \hat{W}^{-1} \vec{\effectvector} \\
+	\Var(\vec{\hat \metaanalyticeffects})  &=& (X\transpose \hat{W}^{-1} X)^{-1}
 	\label{eq_FGLS}
 \end{eqnarray}
 
-Approximating $\varWithinCon$ by $\vareffect$ and given $\estvarBetween$ an estimate of $\varBetween$ we obtain the estimate detailed in Table~\ref{table:estimates_test1} for a one-sample test. Asymptotic theory shows that inference can be carried out by comparing the statistic to a Student distribution with $k-1$ degrees of freedom $+ADD_REF$ as depicted in  Table~\ref{table:stats_test1}. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
+Here we use $\vareffect$ as an estimate of $\varWithinCon$ and estimate $\estvarBetween$ from the data. FGLS is asymptotically efficient but its finite sample properties are unknown~\cite{Greene2012}. We used the `FLAME~1' implementation available in FSL that provides inference by comparing the statistic to a Student distribution with $\nStudies-\nMetaAnalyticEffects$ degrees of freedom~\cite{Woolrich2004} as depicted in Table~\ref{table:stats_test1}. This reference approach will be referred to as \textbf{Mixed-effects (MFX) GLM}.
 
+% TODO: is there a better ref for FFX dof than FEAT user manual?
+In a fixed-effects meta-analysis, i.e. assuming no or negligible between-study variance, we have $W = \mathrm{diag}( \varWithinCon[1], \ldots ,\varWithinCon[\nStudies])$. We obtain a feasible generalied least squares estimate by approximating $\varWithinCon$ by $\vareffect$. We used the `Simple OLS' implementation available in FSL that provides inference by comparing the statistic to a Student distribution with $(\sum_{i=1}^\nStudies (\nSubjects - 1)) -\nMetaAnalyticEffects$ degrees of freedom~\cite{FEATUserGuide} as depicted in Table~\ref{table:stats_test1}. This reference approach will be referred to as \textbf{Fixed-effects (FFX) GLM}.
 
-In a \textbf{fixed-effects (FFX) GLM}, i.e. assuming no or negligible between-study variance, $W = \mathrm{diag}( \varWithinCon[1], \ldots ,\varWithinCon[\nStudies])$. Approximating $\varWithinCon$ by $\vareffect$ we obtain the feasible generalied least squares estimate detailed in Table~\ref{table:estimates_test1} for a one-sample test. Asymptotic theory shows that inference can be carried out by comparing the statistic to a Student distribution with $(\sum_{\studyidx} n_\studyidx x \nStudies)-1$ degrees of freedom $+ADD_REF and check dof value in FSL$ as depicted in  Table~\ref{table:stats_test1}. 
-
-% Question: do we want FFX with fixed within study var?? > rather do RFX!?
-% Under the asumption of constant study-level contrast variance (i.e.\ $\varWithinCon \simeq \sigma^2$), with the FFX model we have $W = \mathrm{diag}( \sigma^2, \ldots ,\sigma^2)$ and the system can be solved by Ordinary Least Squares leading. This approach will be referred to as \textbf{Homoscedastic FFX GLM}. TODO: is this paragraph true?? When the within-study variance is constant across studies, those (FFX) results are also true for small samples. -> we need to implement this one!!
-
-% TODO: We need a second table (appendix?) for two-sample tests
+% TODO: Review assumptions for RFX Z & Z Perm
 
 \begin{table*}[t]
 \begin{center}
 \setlength{\tabcolsep}{3pt}
-\begin{tabular}{cccl}
-				& $\hat \metaanalyticeffect$			& $\Var(\hat \metaanalyticeffect)$ &  Assumptions\\
+\begin{tabular}{cccccl}
+				& Meta-analysic statistic			& Nominal H$_0$ distrib. & Inputs &  Assumptions\\
 \hline						
-MFX GLM 		& $ \left( \sum \kappa_i \effect \right) / \left( \sum \kappa_i \right)$ with $\kappa_i = 1/(\estvarBetween + \vareffect)$ & $1/\sum \kappa_i$ & IGE.\\
-RFX GLM 		& $ \sum \effect/\nStudies $ & $ \varCombined/\nStudies $  & IGE; $\varBetween+\varWithin = \varCombined\; \forall i$ \\
-FFX GLM 		& $ \left( \sum \effect \times \varWithinConInv \right) / \left(\sum \varWithinConInv \right)$ & $1/(\sum \varWithinConInv)$ & IGE; $\varBetween=0$.\\
-Contrast Perm.	& $ \sum \effect/\nStudies $ & Empirical & ISE.\\
-Z MFX 		& $ \sum \zeffect/\nStudies $ & $ \varCombined/\nStudies $  & IGE; $1 + \varBetween/\varWithin$ cst.\\
-Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical & ISE.\\
-\hline 
-
-\end{tabular}
-\end{center}
-\caption{One-sample meta-analytic estimates, sampling variance and associated assumptions. Note: $\peffect = \Phi(-\zeffect)$}
-\label{table:estimates_test1}
-\end{table*}
-
-
-\begin{table*}[t]
-\begin{center}
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{ccccl}
-				& Meta-analysic statistic			& Nominal H$_0$ distrib. & Inputs & Properties\\
-\hline						
-MFX GLM 		& $ \left( \sum \kappa_i \effect \right) / \sqrt{\sum_{i=1}^\nStudies \kappa_i}$ with $\kappa_i = 1/(\estvarBetween + \vareffect)$ & $\mathcal{T}_{\nStudies - 1}$ & $\effect, \vareffect$& Asymptotic.\\
-RFX GLM 		& $  \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies} } \right) / \widehat\varCombined  $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect$ & Finite sample.\\
-Ctrst Perm.	& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies}} \right) /\widehat\varCombined  $ & Empirical & $\effect$ & ??.\\
+MFX GLM 		& $ \left( \sum \kappa_i \effect \right) / \sqrt{\sum_{i=1}^\nStudies \kappa_i}$ with $\kappa_i = 1/(\estvarBetween + \vareffect)$ & $\mathcal{T}_{\nStudies - 1}$ & $\effect, \vareffect$& IGE, large sample.\\
+RFX GLM 		& $  \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies} } \right) / \widehat\varCombined  $ & $\mathcal{T}_{\nStudies - 1}$ & $\effect$ & IGE; $\varBetween+\varWithin = \varCombined\; \forall i$ \\
+Contrast Perm.	& $ \left( \sum_{i=1}^\nStudies \frac{\effect}{\sqrt{\nStudies}} \right) /\widehat\varCombined  $ & Empirical & $\effect$ & ISE.\\
 FFX GLM 		& $  \left(  \sum_{i=1}^{\nStudies}  \frac{\effect}{\vareffect} \right) / \sqrt{\sum_{i=1}^\nStudies 1/\vareffect } $ & $\mathcal{T}_{ (\sum_{i=1}^\nStudies n_i - 1) - 1}$ & $\effect, \vareffect$ 
-& Asymptotic.\\
-Fisher	& $ \displaystyle -2 \sum_{\studyidx} \ln \peffect $ & $\chi^2_{(2\nStudies)}$ & $\zeffect$ & ??.\\
-Stouffer& $ \displaystyle \sqrt{\nStudies} \times \frac{1}{\nStudies} \sum_{\studyidx} \zeffect $ & $\mathcal{N}(0,1)$ & $\zeffect$& ??.\\
-Weighted Z& $  \displaystyle \frac{1}{\sqrt{\sum_{\studyidx} n_\studyidx}} \sum_{\studyidx}  \sqrt{n_\studyidx} \zeffect  $ & $\mathcal{N}(0,1)$ & $\zeffect, \nSubjects$& ??.\\
-Z MFX& $ \left(   \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies} \hat \sigma$ & $\mathcal{T}_{\nStudies-1}$ & $\zeffect$& ??.\\
-Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical & $\zeffect$ & ??.\\
+& $\varBetween=0$, large sample.\\
+Fisher	& $ \displaystyle -2 \sum_{\studyidx} \ln \peffect $ & $\chi^2_{(2\nStudies)}$ & $\zeffect$ & $\varBetween=0$\\
+Stouffer& $ \displaystyle \sqrt{\nStudies} \times \frac{1}{\nStudies} \sum_{\studyidx} \zeffect $ & $\mathcal{N}(0,1)$ & $\zeffect$& $\varBetween=0$\\
+Weighted Z& $  \displaystyle \frac{1}{\sqrt{\sum_{\studyidx} n_\studyidx}} \sum_{\studyidx}  \sqrt{n_\studyidx} \zeffect  $ & $\mathcal{N}(0,1)$ & $\zeffect, \nSubjects$ & $\varBetween=0$\\
+Z RFX& $ \left(   \sum_{i=1}^\nStudies \zeffect \right)/ \sqrt{\nStudies} \hat \sigma$ & $\mathcal{T}_{\nStudies-1}$ & $\zeffect$& IGE; $1 + \varBetween/\varWithin$ cst.\\
+Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & Empirical & $\zeffect$ & ISE.\\
 \hline 
 
 \end{tabular}
@@ -289,27 +266,27 @@ Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ & E
 \end{table*}	
 
 \paragraph{Combining contrast estimates}
-If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be combined by assuming that the within-study contrast variance $\varWithinCon$ is constant ($\varWithinCon = \sigma^2 \;\; \forall i$) or negligible in comparison to the between-study variance ($\varWithinCon \ll \varBetween$). Then $W = \mathrm{diag}( \varCombined, \ldots, \varCombined )$ where $\varCombined$ is the combined within and between-study variance, i.e.\ $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$ (note, however, in this setting we do not separately estimate $\varBetween$ or $\varWithinCommon$). Under these assumptions, Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least squares giving:
+If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be combined by assuming that the within-study contrast variance $\varWithinCon$ is constant ($\varWithinCon = \sigma^2 \;\; \forall i$) or negligible in comparison to the between-study variance ($\varWithinCon \ll \varBetween$). Then $W = \mathrm{diag}( \varCombined, \ldots, \varCombined )$ where $\varCombined$ combines the within and between-study variances, i.e.\ $\varCombined \simeq \varBetween$ or $\varCombined \simeq \varBetween + \varWithinCommon$ (note, however, in this setting we do not separately estimate $\varBetween$ or $\varWithinCommon$). Under these assumptions, Eq.~\eqref{eq_meta_GLM} can be solved by ordinary least squares giving:
 
 \begin{eqnarray}
-	\hat \metaanalyticeffect  &=& (X\transpose X)^{-1} X\transpose \effectvector \\
-	\Var(\hat \metaanalyticeffect)  &=& (X\transpose X)^{-1} \varCombined
+	\hat \metaanalyticeffects  &=& (X\transpose X)^{-1} X\transpose \effectvector \\
+	\Var(\hat \metaanalyticeffects)  &=& (X\transpose X)^{-1} \varCombined
 	\label{eq_OLS}
 \end{eqnarray}
 
-Given $\estvarCombined$ the unbiased sample variance, we obtain the statistics presented in Table~\ref{table:estimates_test1} for one sample tests. This approach will be referred to \textbf{RFX GLM} in the following. Inference can be carried out by comparing the RFX GLM statistic to a Student distribution with $\nStudies-1$ degrees of freedom, this result holds asymptotically as well as in small samples $+ADD_REF$. 
+Given $\estvarCombined$ the unbiased sample variance, we obtain the statistics presented in Table~\ref{table:stats_test1} for one sample tests. This approach will be referred to \textbf{Random-effects (RFX) GLM} in the following. Inference can be carried out by comparing the RFX GLM statistic to a Student distribution with $\nStudies-1$ degrees of freedom, this result holds asymptotically as well as in small samples~\cite{Greene2012}. 
 
 As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the one-sample RFX GLM T-statistic to the distribution obtained with ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. For two-sample tests, the non-parameteric distribution can be obtained by random permutation of the group labels. This approach will be referred to as \textbf{Contrast permutation}.
 
 % TODO: We should be able to do something if we have the sample sizes by assuming constant within subject variance
 
 \paragraph{Combining standardised statistics} 
-When only test statistic images are available there are a several alternative approaches available. \textbf{Fisher}'s meta-analysis provide a statistic to combine the associated p-values~\cite{Fisher1932}. \textbf{Stouffer}'s approach combines directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. This approach will be referred to as \textbf{Weighted Stouffer's}. All these meta-analytic statistics assumes no or negligible between-study variance and are only suited for one-sample tests. The corresponding statistics are presented in Table~\ref{table:stats_test1}.
+When only test statistic images are available there are a several alternative approaches available. \textbf{Fisher}'s meta-analysis provide a statistic to combine the associated p-values~\cite{Fisher1932}. \textbf{Stouffer}'s approach combines directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. This approach will be referred to as \textbf{Weighted Stouffer's}. All these meta-analytic statistics assumes no or negligible between-study variance and are only suited for one-sample tests. The corresponding statistics and nominal null distributions are presented in Table~\ref{table:stats_test1}.
 
-As suggested in~\cite{Salimi-khorshidi2009}, to get a kind of MFX with Stouffer's approach, the standardised statistical estimates $\zeffect$ can be combined in an OLS analysis. The corresponding estimate, referred as \textbf{Z MFX} is also provided in~\ref{table:stats_test1}
+As suggested in~\cite{Salimi-khorshidi2009}, to get an RFX-like method based on Stouffer's approach, the standardised statistical estimates $\zeffect$ can be combined in an OLS analysis. The corresponding estimate, referred as \textbf{Z RFX} is also provided in~\ref{table:stats_test1}. 
 Non-parametric inference~\cite{Holmes1996,Nichols2002} can also be obtained by sign flipping on the $\zeffect$'s. This approach will be referred to as \textbf{Z permutation}.
 
-\paragraph{Approximations}  In practice, methods based on FGLS (MFX GLM and FFX GLM) have approximate parametric null distributions.  The nominal distributions of RFX GLM and two-sample contrast permutations are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s. The fixed-effects methods (Fisher, Stouffer, wieghted Z and FFX GLM) assume homogeneity across studies, i.e. zero between-study variance. Finally, all contrast methods (MFX GLM, RFX GLM, Contrast permutation and FFX GLM) require the contrasts to be expressed with in the same units.
+\subsection{Approximations}  In practice, all the methods are either approximate in small samples or rely on assumptions that might not be verified in the context of neuroimaging meta-analyses. Methods based on FGLS (MFX GLM and FFX GLM) have approximate parametric null distributions. The nominal distributions of RFX GLM and two-sample contrast permutations are under the (unrealistic) assumption of homogeneous standard errors over studies; even if all studies are `clean' and conducted at the same center, variation in sample size will induce differences in $\vareffect$'s. The fixed-effects methods (Fisher, Stouffer, wieghted Z and FFX GLM) assume homogeneity across studies, i.e. zero between-study variance. All contrast methods (MFX GLM, RFX GLM, Contrast permutation and FFX GLM) require the contrasts to be expressed with in the same units. Finally, RFX Stouffer and Z RFX are ad-hoc methods and their validity has to be investigated.
 
 
 % \begin{figure}[t]
@@ -327,9 +304,9 @@ We used Monte Carlo simulations to empirically investigate the validity of each 
 	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\nSubjects[]}+\varBetween) \\
 	\vareffect &\sim& \frac{\varWithin}{\nSubjects[]}  \frac{\chi^2_{(\nSubjects[]-1)}}{\nSubjects[]-1} %
 \end{eqnarray}
-where $\varWithin$ was either constant across studies (homoscedasticity) and taken from $\{\nSubjects[] \times [0.25, 0.5, 1, 2, 4] \}$ or varying across studies (heteroscedasticity) such as $\max(\varWithin) = \alpha \min(\varWithin)$ with $\alpha \in [2, 4, 8, 16]$ and $\text{mean}(\varWithin) = 1$, allowing for 5 different values of $\varWithin$ that were linearly spaced and repeated as many times as needed for the specified number of studies $\nStudies$. The between-study variance $\varBetween$ was set to zero (homogeneity) or $1$ (heterogeneity). We looked at four different number of studies per meta-analysis $\nStudies \in \{5, 10, 25, 50\}$ and two number of subjects $\nSubjects[] \in \{20, 100\}$. We set the default number of subjects per studies to $\nSubjects[]=20$ which is a common sample size in existing neuroimaging studies~\cite{Poldrack2017}. A total of 144 parameter sets (9 $\varWithin$ x 2 $\varBetween$ x 4 $\nStudies$ x 2 $\nSubjects$) was therefore tested and a total of $1~026~000$ realisations was performed for each parameter set.
+where $\varWithin$ was either constant across studies (homoscedasticity) and taken from $\{\nSubjects[] \times [0.25, 0.5, 1, 2, 4] \}$ or varying across studies (heteroscedasticity) such as $\max(\varWithin) = \alpha \min(\varWithin)$ with $\alpha \in \{2, 4, 8, 16\}$ and $\text{mean}(\varWithin) = 1$, allowing for 5 different values of $\varWithin$ that were linearly spaced and repeated as many times as needed for the specified number of studies $\nStudies$. The between-study variance $\varBetween$ was set to zero (homogeneity) or $1$ (heterogeneity). We looked at four different number of studies per meta-analysis $\nStudies \in \{5, 10, 25, 50\}$ and two number of subjects $\nSubjects[] \in \{20, 100\}$. We set the default number of subjects per studies to $\nSubjects[]=20$ which is a common sample size in existing neuroimaging studies~\cite{Poldrack2017}. A total of 144 parameter sets ($9 \varWithin \times 2 \varBetween \times 4 \nStudies \times 2 \nSubjects$) was therefore tested and a total of $1~026~000$ realisations was performed for each parameter set.
 
-Three types of analyses were computed: a one-sample meta-analysis (testing significance on the mean effect in 1 group of \nStudies), a two-sample meta-analysis (testing significance in mean differences between two groups of $\nStudies$ each) and an unbalanced two-sample meta-analysis (testing significance in mean differences between two groups of 2*$\nStudies$/5 and 2*$\nStudies$*4/5 respectively). Two-sample analysis asuumed a common between-study variance across groups.
+Three types of analyses were computed: a one-sample meta-analysis testing significance of the mean effect in a group of \nStudies studies, a two-sample meta-analysis testing significance in mean differences between two groups of $\nStudies$ studies each and an unbalanced two-sample meta-analysis testing significance in mean differences between two groups of $2/5 \times \nStudies$ and $8/5 \times \nStudies$ respectively. Two-sample analysis asuumed a common between-study variance across groups.
 
 We conducted those simulations to evaluate the validity of each estimator in small samples and under violations of their assumptions, such as inhomogeneity of contrast variances $\vareffect$ or presence of non-negligible between-study variance. Furthermore, we studied the robustness of contrast-based methods to the presence of mismatched units across studies. To simulate units mismatch, each contrast estimates $\effect$ and contrast variance estimates $\vareffect$ was replaced by a rescaled version: $\effectunits = \effect a_i$ and $\vareffectunits = \vareffect a_i^2$. 2 types of unit mismatched were investigated: 
 \begin{itemize}
@@ -519,6 +496,72 @@ We gratefully acknowledge the use of the pain dataset from the Tracey pain group
 
 \beginsupplement
 
+% % TODO: This is not entirely true... Think that for MFX and FFX the true sampling variance is unknown, maybe add a column? Or a different table for FGLS?
+\begin{table*}[h]
+\begin{center}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccccl}
+				& $\hat{\metaanalyticeffect[1]}$ & $\Var(\hat{\metaanalyticeffect[1]})$ \\
+\hline						
+Random effects 		& $ \left( \sum \eta_i \effect \right) / \left( \sum \eta_i \right)$ with $\eta_i = 1/(\varBetween + \varWithin/\nSubjects)$ & $1/\sum \eta_i$ \\
+Fixed effects 		& $ \left( \sum \effect \times \varWithinConInv \right) / \left(\sum \varWithinConInv \right)$ & $1/(\sum \varWithinConInv)$\\
+\hline 
+\end{tabular}
+\end{center}
+\caption{One-sample weighted least squares (WLS) estimates and their sampling distributions for random-effects and fixed-effects meta-analyses. The FGLS estimates and assumed sampling distributions are obtained by substituing: $\varBetween \leftarrow \estvarBetween$ and $\varWithin/\nSubjects \leftarrow \vareffect$.}
+\label{table:estimates_wls_test1}
+\end{table*}
+
+\begin{table*}[h]
+\begin{center}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccccl}
+				& $\hat{\metaanalyticeffect[1]}$ - $\hat{\metaanalyticeffect[2]}$ & $\Var(\hat{\metaanalyticeffect[1]}$ - $\hat{\metaanalyticeffect[2]})$\\
+\hline						
+Random effects 		& $ \displaystyle \left( \sum_{i \in G_1} \eta_i \effect \right) / \left( \sum_{i \in G_1} \eta_i \right) - \left( \sum_{i \in G_2} \eta_i \effect \right) / \left( \sum_{i \in G_2} \eta_i \right)$ with $\displaystyle \eta_i = 1/\left(\varBetween + \varWithin/\nSubjects\right)$ & $\displaystyle 1/\sum_{i \in G_1} \eta_i + 1/\sum_{i \in G_2} \eta_i$\\
+Fixed effects 		& $ \displaystyle \left( \sum_{i \in G_1} \effect \times \varWithinConInv \right) / \left(\sum_{i \in G_1} \varWithinConInv \right) - \left( \sum_{i \in G_2} \effect \times \varWithinConInv \right) / \left(\sum_{i \in G_2} \varWithinConInv \right)$ & $\displaystyle 1/ \left( \sum_{i \in G_1} \varWithinConInv\right) + 1/ \left(\sum_{i \in G_2} \varWithinConInv \right)$\\
+\hline 
+\end{tabular}
+\end{center}
+\caption{Two-sample weighted least squares (WLS) estimates and their sampling distributions for random-effects and fixed-effects meta-analyses. The FGLS estimates and assumed sampling distributions are obtained by substituing: $\varBetween \leftarrow \estvarBetween$ and $\varWithin/\nSubjects \leftarrow \vareffect$.}
+\label{table:estimates_wls_test2}
+\end{table*}
+
+
+\begin{table*}[h]
+\begin{center}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccl}
+				& $ \hat{\metaanalyticeffect[1]} $			& $\Var(\hat{\metaanalyticeffect[1]})$\\
+\hline						
+RFX GLM 		& $ \sum \effect/\nStudies $ & $ \varCombined/\nStudies $ \\
+Z MFX 		& $ \sum \zeffect/\nStudies $ & $ \varCombined/\nStudies $ \\
+\hline 
+\end{tabular}
+\end{center}
+\caption{For the meta-analytic approaches based on Ordinary Least Squares (OLS), one-sample meta-analytic estimates and sampling variances. Note that $\varCombined$ will be different for each row of this table.}
+\label{table:estimates_test1}
+\end{table*}
+
+\begin{table*}[h]
+\begin{center}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccl}
+				& $ \hat{\metaanalyticeffect[1]} $			& $\Var(\hat{\metaanalyticeffect[1]})$\\
+\hline						
+MFX GLM 		& $ \left( \sum \kappa_i \effect \right) / \left( \sum \kappa_i \right)$ with $\kappa_i = 1/(\estvarBetween + \vareffect)$ & $1/\sum \kappa_i$\\
+RFX GLM 		& $ \sum \effect/\nStudies $ & $ \varCombined/\nStudies $ \\
+FFX GLM 		& $ \left( \sum \effect \times \varWithinConInv \right) / \left(\sum \varWithinConInv \right)$ & $1/(\sum \varWithinConInv)$\\
+Contrast Perm.	& $ \sum \effect/\nStudies $\\
+Z MFX 		& $ \sum \zeffect/\nStudies $ & $ \varCombined/\nStudies $ \\
+Z Perm.	& $\left(  \sum_{i=1}^\nStudies \zeffect \right) / \sqrt{\nStudies}$ \\
+\hline 
+
+\end{tabular}
+\end{center}
+\caption{Two-sample meta-analytic estimates and sampling variance. Note: $\peffect = \Phi(-\zeffect)$}
+\label{table:estimates_test1}
+\end{table*}
 
 \begin{figure}[h]
 	\centering
@@ -551,6 +594,8 @@ We gratefully acknowledge the use of the pain dataset from the Tracey pain group
 	\caption{Deviation from theoretical P-values in one-sample tests under violations of the underlying model assumptions: small sample sizes~(A), heteroscedasticity~(B) and heterogeneity~(C). Deviation from theoretical Z in two-sample tests with unit mismatch, under ideal circunstances for each statistical approach ($\varBetween=1$ and $\nStudies = 5, 25, 50$ with matched (``nominal'') or mismatched (``different scaling target", ``different scaling algorithm", ``different contrast vector scaling") units.}
 	\label{fig:units_test3}
 \end{figure}
+
+
 
 % %
 % \begin{thebibliography}{5}
