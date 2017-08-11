@@ -199,9 +199,7 @@ Section~\ref{sec:methods} provides theoretical background on each of the nine me
 
 \section{Methods}\label{sec:methods}
 
-% TODO: add two sample statistics
-% TODO: ajouter software used to compute the figures (ggplot, cowplot)
-% TODO: ajouter RRIDs
+% TODO: cite nibabel & other python package (numpy, etc.)
 % TODO: say how we computed the CI for the qqplots
 % TODO: add links to GitHub repo
 % TODO: table FFX GLM should sum up to k x n
@@ -278,8 +276,6 @@ If the $\vareffect$ are unavailable, the contrast estimates $\effect$ can be com
 Given $\estvarCombined$ the unbiased sample variance, we obtain the statistics presented in Table~\ref{table:stats_test1} for one sample tests. This approach will be referred to \textbf{Random-effects (RFX) GLM} in the following. Inference can be carried out by comparing the RFX GLM statistic to a Student distribution with $\nStudies-1$ degrees of freedom, this result holds asymptotically as well as in small samples~\cite{Greene2012}. 
 
 As an alternative to parametric approaches, non-parametric inference~\cite{Holmes1996,Nichols2002} can be performed by comparing the one-sample RFX GLM T-statistic to the distribution obtained with ``sign flipping'', i.e.\ randomly multiplying each study's data by 1 or -1, justified by an assumption of independent studies and symmetrically distributed random error. For two-sample tests, the non-parameteric distribution can be obtained by random permutation of the group labels. This approach will be referred to as \textbf{Contrast permutation}.
-
-% TODO: We should be able to do something if we have the sample sizes by assuming constant within subject variance
 
 \paragraph{Combining standardised statistics} 
 When only test statistic images are available there are a several alternative approaches available. \textbf{Fisher}'s meta-analysis provide a statistic to combine the associated p-values~\cite{Fisher1932}. \textbf{Stouffer}'s approach combines directly the standardised statistic~\cite{Stouffer1949}. In \cite{Zaykin2011} following \cite{Liptak1958}, the author proposed a weighted method that weights each study's $\zeffect$ by the square root of its sample size [3,7]. This approach will be referred to as \textbf{Weighted Z}. All these meta-analytic statistics assumes no or negligible between-study variance and are only suited for one-sample tests. The corresponding statistics and nominal null distributions are presented in Table~\ref{table:stats_test1}.
