@@ -321,11 +321,11 @@ The simulations were implemented in Matlab R2016b~\cite{release2016bmathworks} o
 % The full set of simulations is summarised is table~\ref{table:simu_settings}. 
 
 \subsubsection{Accuracy on real data}
-We then used Receiver-Operating-Characteristics (ROC) curves to assess the sensibility of each of the nine meta-analytic estimators on real data. We used a dataset of 21 studies of pain that were intially runned using FSL. This dataset is available at: http://neurovault.org/collections/XRJCFIYG/. 
+We then used Receiver-Operating-Characteristics (ROC) curves to assess the sensibility of each of the nine meta-analytic estimators on real data. We used a dataset of 21 studies investigating pain of which 10 were computed with SPM and 11 with FSL, this dataset is available at: http://neurovault.org/collections/1425/. 
 
 % TODO add ref to nidmres library 
 
-Comparability of contrast estimates depends on equivalent scaling of the data, models, and contrast vectors. Data scaling was consistently performed by FSL, setting median brain intensity to 10,000; model were all created by FSL's Feat tool; and contrasts were constructed to preserve units, with sum of positive elements equal to 1, sum of negative elements equal to -1. 
+Comparability of contrast estimates depends on equivalent scaling of the data, models, and contrast vectors. Data scaling in FSL is performed by setting the median brain intensity to 10,000 while in SPM the mean brain intensity is set to 100. Furthermore, due to imprections of SPM data scaling algorithm, gray matter values tends to be closer to 200 than 100. We therefore resclaled SPM contrast estimates and standard errors by 2 and FSL contrast estimates and standard errors by 100. Furthermore when contrasts were not constructed to preserve units, with sum of positive elements equal to 1, sum of negative elements equal to -1, we further rescale the data to take into account these undesired effects.
 
 We used Neurosynth~\cite{Yarkoni2011}'s automated large scale coordinate-based meta-analysis of pain as ground truth of areas that should present an effect (cf. http://neurosynth.org/analyses/terms/pain/). For each meta-analytic approach, we estimated the true positive rate over a range of thresholds and combined these values to the false positive rates computed on simulated data to create the ROC curves. 
 
@@ -443,6 +443,7 @@ Fig.~\ref{fig:units} presents the simulation results under unit mismatches for o
 \end{figure}
 
 % TODO: check RFX curve: do we need more points towards zero??
+% TODO: redo with data already available on Neurovault??
 
 Fig.~\ref{fig_realdata}A. displays the ROC curves for all the meta-analytic estimators under varying levels of heterogeneity. As expected, the fixed-effects approaches are the most affected by heterogeneity. Hence, Fisher's method is both the most sensitive method under low heterogeneity and the less sensitive under large heterogeneity. Random-effects approaches are relatively insensitive to the level of heterogeneity. Amongst random-effects approaches the most optimal are Stouffers RFX and Z Permutation that display nearly identical ROC curves, followed by MFX GLM, Contrast Permutation and finally RFX GLM. Differences between MFX GLM and RFX GLM are likely to be non-significant as they both had p-values within the 95\% confidence interval.
 % TODO: display CIs for FPR??  
@@ -472,8 +473,8 @@ Fig.~\ref{fig_realdata}B. displays the ROC curves for all the meta-analytic esti
 	\label{fig:heterogeneity_I2}
 \end{figure}
 
-Fig.~\ref{fig:heterogeneity_Q} presents the results of Cochran's Q test of heterogeneity on real data. More than 88\% of the voxels displayed significant heterogeneity at FDR-corrected $P < 0.05$. 
-Fig.~\ref{fig:heterogeneity_I2} displays the $I^2$ statistic. 32\% of the voxels presented a larger between-study variance. Both statistics therefore support the presence of study heterogeneity (non negligible between-study variance) in this collection of studies.
+Fig.~\ref{fig:heterogeneity_Q} presents the results of Cochran's Q test of heterogeneity on real data. Overall, 88\% of the voxels displayed significant heterogeneity at FDR-corrected $P < 0.05$. 
+Fig.~\ref{fig:heterogeneity_I2} displays the $I^2$ statistic. 27\% of the voxels presented a larger between-study variance. Both statistics therefore support the presence of study heterogeneity (non negligible between-study variance) in this collection of studies.
 
 \begin{figure}[h]
 	\centering
