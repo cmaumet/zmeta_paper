@@ -210,13 +210,13 @@ For study $\studyidx=1,\ldots,\nStudies$ we have contrast estimate $\effect$, it
 
 \paragraph{Combining contrast estimates and their standard error}
 
-The gold standard approach is to fit contrast estimates and their standard error with a hierarchical general linear model (GLM)~\cite{Cummings2004}, creating a third-level (level ~1:~subject; level~2:~study; level~3:~meta-analysis). The general formulation for the study-level data is:
+The recommanded approach is to fit contrast estimates and their standard error with a hierarchical general linear model (GLM)~\cite{Cummings2004}, creating a third-level (level ~1:~subject; level~2:~study; level~3:~meta-analysis). The general formulation for the study-level data is a meta-regression:
 
 \begin{equation}
 	\vec{\effectvector} = X \metaanalyticeffects + \epsilon
 	\label{eq_meta_GLM}
 \end{equation}
-where $\metaanalyticeffects  = [\metaanalyticeffect[1] \ldots \metaanalyticeffect[\nMetaAnalyticEffects] ]\transpose$ is a vector of meta-analytic parameters to estimate, $\vec{\effectvector} = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $\nStudies \times \nMetaAnalyticEffects$ study-level matrix (typically $\nMetaAnalyticEffects=1$ with just a column of ones for a one-sample test) and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. 
+where $\vec{\effectvector} = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $\nStudies \times \nMetaAnalyticEffects$ study-level matrix (typically $\nMetaAnalyticEffects=1$ with just a column of ones for a one-sample test), $\metaanalyticeffects  = [\metaanalyticeffect[1] \ldots \metaanalyticeffect[\nMetaAnalyticEffects] ]\transpose$ is a vector of meta-analytic parameters to estimate and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. 
 
 In the most general case of a random-effects meta-analysis, i.e. assuming non-zero between-study variance, we have $W = \mathrm{diag}( \varWithinCon[1] + \varBetween, \ldots ,\varWithinCon[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance and $\varWithinCon$ denotes the variance of the contrast estimate for study $i$. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least squares giving:
 
