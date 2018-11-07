@@ -1,5 +1,6 @@
 ## Ignore (heavy pdf version of the figures)
 figures/*.pdf
+comments/*
 
 *.DS_Store
 
