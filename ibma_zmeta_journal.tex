@@ -216,7 +216,7 @@ The recommanded approach is to fit contrast estimates and their standard error w
 	\vec{\effectvector} = X \metaanalyticeffects + \epsilon
 	\label{eq_meta_GLM}
 \end{equation}
-where $\vec{\effectvector} = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $\nStudies \times \nMetaAnalyticEffects$ study-level matrix (typically $\nMetaAnalyticEffects=1$ with just a column of ones for a one-sample test), $\metaanalyticeffects  = [\metaanalyticeffect[1] \ldots \metaanalyticeffect[\nMetaAnalyticEffects] ]\transpose$ is a vector of meta-analytic parameters to estimate and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. 
+where $\vec{\effectvector} = [\effect[1] \ldots \effect[\nStudies] ]\transpose$ is the vector of contrast estimates, $X$ is the $\nStudies \times \nMetaAnalyticEffects$ study-level matrix. While the design matrix $X$ can take any form, typically a one-sample model is used with $\nMetaAnalyticEffects==1$ and $X$ comprised of a column of ones. $\metaanalyticeffects  = [\metaanalyticeffect[1] \ldots \metaanalyticeffect[\nMetaAnalyticEffects] ]\transpose$ is a vector of meta-analytic parameters to estimate and $\epsilon \sim \mathcal{N}(0,W)$ is the residual error term. 
 
 In the most general case of a random-effects meta-analysis, i.e. assuming non-zero between-study variance, we have $W = \mathrm{diag}( \varWithinCon[1] + \varBetween, \ldots ,\varWithinCon[\nStudies] + \varBetween )$ where $\varBetween$ denotes the between-study variance and $\varWithinCon$ denotes the variance of the contrast estimate for study $i$. Eq.~\eqref{eq_meta_GLM} can be solved by weighted least squares giving:
 
@@ -226,7 +226,7 @@ In the most general case of a random-effects meta-analysis, i.e. assuming non-ze
 	\label{eq_WLS}
 \end{eqnarray}
 
-Table~\ref{table:estimates_wls_test1} and \ref{table:estimates_wls_test2} provides derivation of the WLS estimates and their sampling variances for one and two-sample tests. But in practice, the weight matrix $W$ is unknown and has to be estimated from the data. Given $\hat W$ a consistent estimate of $W$, the feasible generalized least squares (FGLS) estimator is computed as:
+Table~\ref{table:estimates_wls_test1} and \ref{table:estimates_wls_test2} provides the WLS estimates and their sampling variances for one and two-sample tests. But in practice, the weight matrix $W$ is unknown and has to be estimated from the data. Given $\hat W$ a consistent estimate of $W$, the feasible generalized least squares (FGLS) estimator is computed as:
 \begin{eqnarray}
 	\vec{\hat \metaanalyticeffects}  &=& (X\transpose \hat{W}^{-1} X)^{-1} X\transpose \hat{W}^{-1} \vec{\effectvector} \\
 	\Var(\vec{\hat \metaanalyticeffects})  &=& (X\transpose \hat{W}^{-1} X)^{-1}
