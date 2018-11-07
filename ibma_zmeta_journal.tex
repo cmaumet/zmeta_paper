@@ -75,6 +75,10 @@
 \newcommand{\IGE}{IGE}
 \newcommand{\ISE}{ISE}
 
+\newcommand{\E}{E}
+\newcommand{\ES}{E+S}
+\newcommand{\Z}{Z}
+
 % Bold that works both for letters and greek symbols
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 
@@ -171,55 +175,56 @@ Meta-analysis \sep Neuroimaging \sep Mixed-effects
 %% main text
 \section{Introduction}
 
-What is known:
- - reproducibility crisis. 
- - meta-analysis as a tool to increase power
- - add loads of papers makes fMRI particularly well suited for meta-analysis
+% What is known:
+%  - reproducibility crisis. 
+%  - meta-analysis as a tool to increase power
+%  - add loads of papers makes fMRI particularly well suited for meta-analysis
 
- - Meta-analysis methods: 
-   + mainly coordinate-based 
-   + image-based is more optimal as it combines all available info. Can detect sub-threshold effects.
+%  - Meta-analysis methods: 
+%    + mainly coordinate-based 
+%    + image-based is more optimal as it combines all available info. Can detect sub-threshold effects.
 
- - Increasing interest in sharing maps, made easier with tools (NIDM-Results?, NeuroVault)
+%  - Increasing interest in sharing maps, made easier with tools (NIDM-Results?, NeuroVault)
 
-What is unknown, gaps limitations
- - But IBMA exists in many flavours: E+S / E / Z?
+% What is unknown, gaps limitations
+%  - But IBMA exists in many flavours: E+S / E / Z?
  
- - Gap: Each approach has drawbacks. 
-   + Closest to the ``gold standard'': E+S: but:
-      o requires same ``units''.
-      o not widely known but asymptotic results and unclear how it behaves in neuroimaging small samples.
-   + Other approaches rely of assumptions. 
-     o combining E's only true under homoscedasticity 
-     o combining Z's only true under homogeneity
+%  - Gap: Each approach has drawbacks. 
+%    + Closest to the ``gold standard'': E+S: but:
+%       o requires same ``units''.
+%       o not widely known but asymptotic results and unclear how it behaves in neuroimaging small samples.
+%    + Other approaches rely of assumptions. 
+%      o combining E's only true under homoscedasticity 
+%      o combining Z's only true under homogeneity
 
-   + Some had doc method with unknown theoretical behaviour
-     o Z RFX
-
-
- - here we compare the use of 9 meta-analytic estimators. 
-   + we assessed validity using simulated data under violation of their underlying assumptions: small samples, hetreroscedasticity, heterogeneity or mismatched units.
-   + we assessed accuracy on real neuroimaging data 
+%    + Some had doc method with unknown theoretical behaviour
+%      o Z RFX
 
 
-A growing literature is focusing on the lack of statistical power in neuroimaging studies (see, e.g.~\cite{Button2013}), feeding the debate on the validity and reproducibility of published neuroimaging results. Meta-analysis, by providing inference based on the results of previously conducted studies, provides an essential method to increase power and hence confidence in neuroimaging.
+%  - here we compare the use of 9 meta-analytic estimators. 
+%    + we assessed validity using simulated data under violation of their underlying assumptions: small samples, hetreroscedasticity, heterogeneity or mismatched units.
+%    + we assessed accuracy on real neuroimaging data 
 
-A number of methods have been proposed for neuroimaging meta-analysis (see~\cite{Radua2012} for a review). As the results of neuroimaging studies are usually conveyed by providing a table of peak coordinate and statistics, most of these meta-analyses are restricted to combining coordinate-based information. Nevertheless the best practice method is an Image-Based Meta-Analysis (IBMA) that combines the effect estimates and standard errors from each study~\cite{Salimi-khorshidi2009}. 
 
-In order to facilitate IBMA in neuroimaging, tools for sharing 3D volumes obtained as a result of a statistical analysis are needed. NeuroVault~\cite{Gorgolewski2015} is an example of one such plateform which facilitates sharing of neuroimaging results data, but the emphasis is mainly on statistical maps. There are three evident approaches to sharing summary data from each study $i$:
+
+A growing literature is focusing on the lack of statistical power in neuroimaging studies (see, e.g.~\cite{Button2013}), feeding the debate on the validity and reproducibility of published neuroimaging results. Meta-analysis, by providing inference based on the results of previously conducted studies, provides an essential method to increase power and hence confidence in results. Functional Magnetic Resonance Imaging (fMRI), with its ample literature of more than 100 000 articles [ADDREF] is particularly well-suited for this approach. -- use mature field with robust well-established methods
+
+Most fMRI meta-analyses are `'coordinate-based'', i.e. they proceed by combining information about the locations of local maxima (and optionnally their statistic value). But, the best practice method is an Image-Based Meta-Analysis (IBMA) that combines information from each study at every location in space~\cite{Salimi-khorshidi2009}, effectively enabling the discovery of consistent sub-threshold effects that could not be uncover using coordinates only.
+For a long time, the standard in the fMRI literature was to report a table with coordinates and statistic values of each local maxima. IBMAs were very limited as they required contacting back the original authors of each study of interest to retreive the summary statistic images, an approach that is both time-consuming and inefficient (ADD REF on data availability). With the arrival of tools that facilitate sharing 3D volumes obtained as a result of a statistical analysis, such as NeuroVault~\cite{Gorgolewski2015}, IBMAs becomes more and more easy to perform.
+
+IBMAs can be performed with three different types of summary data per study:
 \begin{enumerate}
-	\item the contrast estimates $\effect$ and contrast variance estimates $\vareffect$ (E+S).
-	\item the contrast estimates $\effect$ (E).	
-	\item the standardized statistic maps $\zeffect$ (Z).		
+	\item the contrast estimates and contrast variance estimates (\ES).
+	\item the contrast estimates (\E).	
+	\item the standardized statistic maps (\Z).		
 \end{enumerate}
+But all IBMA methods have specific limitations. The first option (\ES), which is considered best practice, leading to more statistically efficient estimates~\cite{Cummings2004}, requires the contrasts to be expressed with in the same units. In fMRI, units will depends on the field strength~\cite{Chen2016} as well as data, model and contrast vector scaling~\cite{Nichols2012units}. Also, while often neglected, the statistical methods for this first option rely on asymptotic, large sample results and may have poor performance for typical number of studies [ADDREF,ADDREF].
+The second option (\E) assumes homoscedasticity, i.e. constant variance of the study-level contrast estimates, an assumption that is difficult to atteign in meta-analysis where the number of subjects is likely to vary across studies.
+Finally the third option (\Z) corresponds to historical methods that typically assume homogeneity, i.e. no between-study variance. 
 
-Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to more statistically efficient estimates~\cite{Cummings2004}, it requires the contrasts to be expressed with in the same units and inference relies on asymptotic results (i.e under large sample sizes). In fMRI, units will depends on the field strength~\cite{Chen2016} as well as data, model and contrast vector scaling~\cite{Nichols2012units} and the number of samples included in a meta-analysis is usually small.
+Given the growing interest in data sharing in the neuroimaging community~\cite{Poldrack2014,Nichols2017}, there is a need to identify what is the best approach for neuroimaging IBMAs and what is the minimal data needed. Here, we compared the use of IMBA using 9 meta-analytic approaches: 2 approaches use \ES's, 2 \E's only and 5 \Z's. We assessed and compared validity using simulated data under violation of each method's underlying assumptions: in small samples, under hetreroscedasticity, under heterogeneity or with contrast using mismatched units. We estimated the accuracy using a real dataset of 21 studies of pain.
 
-Given the growing interest in data sharing in the neuroimaging community~\cite{Poldrack2014,Nichols2017}, and the relative easiness of sharing and combining just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
-
-Here we compare the use of IMBA using 9 meta-analytic approaches: 2 approaches use $\effect$'s and $\vareffect$'s, 2 $\effect$'s only and 5 $\zeffect$'s. We compare the validity and the accuracy of the nine meta-analytic approaches on simulated and real data including 21 studies of pain.
-
-Section~\ref{sec:methods} provides theoretical background on each of the nine meta-analytic approaches. Experiments undertaken on simulated and real data are then described. The results are described in section~\ref{sec:results}. Discussions, inlcluding our recommendations are provide in~\ref{sec:discussion} Finally, we conclude in section~\ref{sec:ccl}.
+% Section~\ref{sec:methods} provides theoretical background on each of the nine meta-analytic approaches. Experiments undertaken on simulated and real data are then described. The results are described in section~\ref{sec:results}. Discussions, inlcluding our recommendations are provide in~\ref{sec:discussion} Finally, we conclude in section~\ref{sec:ccl}.
 
 \begin{figure}[t]
 	\centering
