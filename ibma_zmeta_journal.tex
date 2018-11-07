@@ -171,18 +171,49 @@ Meta-analysis \sep Neuroimaging \sep Mixed-effects
 %% main text
 \section{Introduction}
 
+What is known:
+ - reproducibility crisis. 
+ - meta-analysis as a tool to increase power
+ - add loads of papers makes fMRI particularly well suited for meta-analysis
+
+ - Meta-analysis methods: 
+   + mainly coordinate-based 
+   + image-based is more optimal as it combines all available info. Can detect sub-threshold effects.
+
+ - Increasing interest in sharing maps, made easier with tools (NIDM-Results?, NeuroVault)
+
+What is unknown, gaps limitations
+ - But IBMA exists in many flavours: E+S / E / Z?
+ 
+ - Gap: Each approach has drawbacks. 
+   + Closest to the ``gold standard'': E+S: but:
+      o requires same ``units''.
+      o not widely known but asymptotic results and unclear how it behaves in neuroimaging small samples.
+   + Other approaches rely of assumptions. 
+     o combining E's only true under homoscedasticity 
+     o combining Z's only true under homogeneity
+
+   + Some had doc method with unknown theoretical behaviour
+     o Z RFX
+
+
+ - here we compare the use of 9 meta-analytic estimators. 
+   + we assessed validity using simulated data under violation of their underlying assumptions: small samples, hetreroscedasticity, heterogeneity or mismatched units.
+   + we assessed accuracy on real neuroimaging data 
+
+
 A growing literature is focusing on the lack of statistical power in neuroimaging studies (see, e.g.~\cite{Button2013}), feeding the debate on the validity and reproducibility of published neuroimaging results. Meta-analysis, by providing inference based on the results of previously conducted studies, provides an essential method to increase power and hence confidence in neuroimaging.
 
 A number of methods have been proposed for neuroimaging meta-analysis (see~\cite{Radua2012} for a review). As the results of neuroimaging studies are usually conveyed by providing a table of peak coordinate and statistics, most of these meta-analyses are restricted to combining coordinate-based information. Nevertheless the best practice method is an Image-Based Meta-Analysis (IBMA) that combines the effect estimates and standard errors from each study~\cite{Salimi-khorshidi2009}. 
 
-In order for IBMA to be possible in neuroimaging, tools for sharing 3D volumes obtained as a result of a statistical analysis are needed. NeuroVault~\cite{Gorgolewski2015} is an example of one such plateform which facilitates sharing of neuroimaging results data but emphasis is mainly on statistical maps. There are three evident approaches to sharing summary data from each study $i$:
+In order to facilitate IBMA in neuroimaging, tools for sharing 3D volumes obtained as a result of a statistical analysis are needed. NeuroVault~\cite{Gorgolewski2015} is an example of one such plateform which facilitates sharing of neuroimaging results data, but the emphasis is mainly on statistical maps. There are three evident approaches to sharing summary data from each study $i$:
 \begin{enumerate}
-	\item the contrast estimates $\effect$ and contrast variance estimates $\vareffect$.
-	\item the contrast estimates $\effect$.	
-	\item the standardized statistic maps $\zeffect$.		
+	\item the contrast estimates $\effect$ and contrast variance estimates $\vareffect$ (E+S).
+	\item the contrast estimates $\effect$ (E).	
+	\item the standardized statistic maps $\zeffect$ (Z).		
 \end{enumerate}
 
-Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to statistically optimal estimates~\cite{Cummings2004}, it requires the contrasts to be expressed with in the same units and inference relies on asymptotic results (i.e under large sample sizes). In fMRI, units will depends on the field strength~\cite{Chen2016} as well as data, model and contrast vector scaling~\cite{Nichols2012units} and the number of samples included in a meta-analysis is usually small.
+Depending on how much data is shared, different strategies can be used to combine the available results into a meta-analysis. While the first option is the best practice, leading to more statistically efficient estimates~\cite{Cummings2004}, it requires the contrasts to be expressed with in the same units and inference relies on asymptotic results (i.e under large sample sizes). In fMRI, units will depends on the field strength~\cite{Chen2016} as well as data, model and contrast vector scaling~\cite{Nichols2012units} and the number of samples included in a meta-analysis is usually small.
 
 Given the growing interest in data sharing in the neuroimaging community~\cite{Poldrack2014,Nichols2017}, and the relative easiness of sharing and combining just (unitless) statistic maps, there is a need to identify what is the minimal data to be shared in order to allow for future IBMA.
 
