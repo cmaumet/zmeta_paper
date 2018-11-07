@@ -176,9 +176,13 @@ Meta-analysis \sep Neuroimaging \sep Mixed-effects
 \section{Introduction}
 
 % What is known:
-%  - reproducibility crisis. 
-%  - meta-analysis as a tool to increase power
-%  - add loads of papers makes fMRI particularly well suited for meta-analysis
+%  - low power in neurosciences which makes results less reliable (cite Button).
+% 	+ true outcome less likely to be detected
+%   + when a difference is detected, less likely to be true
+%  - power is direclty related to sample sizes and many authors have advocated 
+%    for increasing sample sizes in neuroimaging (cite Poldrack data sharing)
+%  - while new large analyses would be great, meta-analysis is also an interesting tool %   that can let us take advantage of the existing literature
+%  - fMRI particularly well suited for meta-analysis as mature field with stabilised methodologies and tools which has an ample literature of abour 100 000 papers (cite Poline data sharing)
 
 %  - Meta-analysis methods: 
 %    + mainly coordinate-based 
@@ -205,9 +209,9 @@ Meta-analysis \sep Neuroimaging \sep Mixed-effects
 %    + we assessed validity using simulated data under violation of their underlying assumptions: small samples, hetreroscedasticity, heterogeneity or mismatched units.
 %    + we assessed accuracy on real neuroimaging data 
 
+Neuroscience research studies typically exhibit low power and therefore have low likelihood that a given result is True~\cite{Button2013}. Under low power, both true effects are less likely to be detected and, when an effect is detected, it is less likely to be true~\cite{Button2013}. Many authors have advocated for increased sample sizes in neuroimaging (e.g. ~\cite{Poldrack2014}) which would mechanically increase the power. Aware of this issue, our community has started a couple of years ago to generated large datasets by means of consortia (e.g. ADDREF 1000FC) or dedicated datasets (e.g. ADDREF UK biobank) which are starting to show promising results. Another approach to increase sample size, is to combine the results of previous studies through meta-analyses. Functional Magnetic Resonance Imaging (fMRI), with its ample literature of more than 100 000 articles [ADDREF] is particularly well-suited for this approach. -- use mature field with robust well-established methods
 
-
-A growing literature is focusing on the lack of statistical power in neuroimaging studies (see, e.g.~\cite{Button2013}), feeding the debate on the validity and reproducibility of published neuroimaging results. Meta-analysis, by providing inference based on the results of previously conducted studies, provides an essential method to increase power and hence confidence in results. Functional Magnetic Resonance Imaging (fMRI), with its ample literature of more than 100 000 articles [ADDREF] is particularly well-suited for this approach. -- use mature field with robust well-established methods
+% A growing literature is focusing on the lack of statistical power in neuroimaging studies (see, e.g.~\cite{Button2013}), feeding the debate on the validity and reproducibility of published neuroimaging results. Meta-analysis, by providing inference based on the results of previously conducted studies, provides an essential method to increase power and hence confidence in results. 
 
 Most fMRI meta-analyses are `'coordinate-based'', i.e. they proceed by combining information about the locations of local maxima (and optionnally their statistic value). But, the best practice method is an Image-Based Meta-Analysis (IBMA) that combines information from each study at every location in space~\cite{Salimi-khorshidi2009}, effectively enabling the discovery of consistent sub-threshold effects that could not be uncover using coordinates only.
 For a long time, the standard in the fMRI literature was to report a table with coordinates and statistic values of each local maxima. IBMAs were very limited as they required contacting back the original authors of each study of interest to retreive the summary statistic images, an approach that is both time-consuming and inefficient (ADD REF on data availability). With the arrival of tools that facilitate sharing 3D volumes obtained as a result of a statistical analysis, such as NeuroVault~\cite{Gorgolewski2015}, IBMAs becomes more and more easy to perform.
