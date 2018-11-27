@@ -330,16 +330,30 @@ Non-parametric inference~\cite{Holmes1996,Nichols2002} can also be obtained by s
 \subsection{Experiments}
 
 \subsubsection{Validity on null data}
+
 We used Monte Carlo simulations to empirically investigate the validity of each estimator. We simulated a set of  contrast estimates $\effect$ and contrast variance estimates $\vareffect$ according to:
 \begin{eqnarray}
 	\effect &\sim& \mathcal{N}(0, \frac{\varWithin}{\nSubjects[]}+\varBetween) \\
 	\vareffect &\sim& \frac{\varWithin}{\nSubjects[]}  \frac{\chi^2_{(\nSubjects[]-1)}}{\nSubjects[]-1} %
 \end{eqnarray}
-where $\varWithin$ was either constant across studies (homoscedasticity) and taken from $\{\nSubjects[] \times [0.25, 0.5, 1, 2, 4] \}$ or varying across studies (heteroscedasticity) such as $\max(\varWithin) = \alpha \min(\varWithin)$ with $\alpha \in \{2, 4, 8, 16\}$ and $\text{mean}(\varWithin) = 1$, allowing for 5 different values of $\varWithin$ that were linearly spaced and repeated as many times as needed for the specified number of studies $\nStudies$. The between-study variance $\varBetween$ was set to zero (homogeneity) or $1$ (heterogeneity). We looked at four different number of studies per meta-analysis $\nStudies \in \{5, 10, 25, 50\}$ and two number of subjects $\nSubjects[] \in \{20, 100\}$. We set the default number of subjects per studies to $\nSubjects[]=20$ which is a common sample size in existing neuroimaging studies~\cite{Poldrack2017}. A total of 144 parameter sets ($9 \varWithin \times 2 \varBetween \times 4 \nStudies \times 2 \nSubjects$) was therefore tested and a total of $1~026~000$ realisations was performed for each parameter set.
+We conducted those simulations to evaluate the validity of each estimator in small samples and under violations of their assumptions, such as inhomogeneity of contrast variances $\vareffect$ or presence of non-negligible between-study variance. A total of 144 parameter sets ($9 \varWithin \times 2 \varBetween \times 4 \nStudies \times 2 \nSubjects$) was tested as described below, with $1~026~000$ realisations each.
 
-Three types of analyses were computed: a one-sample meta-analysis testing significance of the mean effect in a group of \nStudies studies, a two-sample meta-analysis testing significance in mean differences between two groups of $\nStudies$ studies each and an unbalanced two-sample meta-analysis testing significance in mean differences between two groups of $2/5 \times \nStudies$ and $8/5 \times \nStudies$ respectively. Two-sample analysis asuumed a common between-study variance across groups.
+\paragraph{Heteroscedasticity}
+$\varWithin$ was either constant across studies (homoscedasticity) and taken from $\{\nSubjects[] \times [0.25, 0.5, 1, 2, 4] \}$ or varying across studies (heteroscedasticity) such as $\max(\varWithin) = \alpha \min(\varWithin)$ with $\alpha \in \{2, 4, 8, 16\}$ and $\text{mean}(\varWithin) = 1$, allowing for 5 different values of $\varWithin$ that were linearly spaced and repeated as many times as needed for the specified number of studies $\nStudies$. 
 
-We conducted those simulations to evaluate the validity of each estimator in small samples and under violations of their assumptions, such as inhomogeneity of contrast variances $\vareffect$ or presence of non-negligible between-study variance. Furthermore, we studied the robustness of contrast-based methods to the presence of mismatched units across studies. To simulate units mismatch, each contrast estimates $\effect$ and contrast variance estimates $\vareffect$ was replaced by a rescaled version: $\effectunits = \effect a_i$ and $\vareffectunits = \vareffect a_i^2$. 2 types of unit mismatched were investigated: 
+
+\paragraph{Heterogeneity}
+The between-study variance $\varBetween$ was set to zero (homogeneity) or $1$ (heterogeneity). 
+
+\paragraph{Sample sizes}
+We looked at four different number of studies per meta-analysis $\nStudies \in \{5, 10, 25, 50\}$ and two number of subjects $\nSubjects[] \in \{20, 100\}$. We set the default number of subjects per studies to $\nSubjects[]=20$ which is a common sample size in existing neuroimaging studies~\cite{Poldrack2017}. 
+
+\paragraph{One-sample versus two-sample} Three types of analyses were computed: a one-sample meta-analysis testing significance of the mean effect in a group of \nStudies studies, a two-sample meta-analysis testing significance in mean differences between two groups of $\nStudies$ studies each and an unbalanced two-sample meta-analysis testing significance in mean differences between two groups of $2/5 \times \nStudies$ and $3/5 \times \nStudies$ respectively. Two-sample analysis asuumed a common between-study variance across groups.
+
+% TODO: 8/5 changed in 3/5
+
+\paragraph{Mismatched units}
+We studied the robustness of contrast-based methods to the presence of mismatched units across studies. To simulate units mismatch, each contrast estimates $\effect$ and contrast variance estimates $\vareffect$ was replaced by a rescaled version: $\effectunits = \effect a_i$ and $\vareffectunits = \vareffect a_i^2$. 2 types of unit mismatched were investigated: 
 \begin{itemize}
 	\item Mismatched contrast vectors: $a_i$ linearly sampled between $0.4$ and $1.6$ (mean 1).
 	\item Mismatched data scaling algorithms (simulating data from different analysis sofware): either 20\% or 50\% of the studies were rescaled with a factor $a_i = 2$ other studies keeping the original scaling.
@@ -350,6 +364,7 @@ In the case of two-sample tests, the same mismatch was applied to both groups.
 % TODO add requirements.txt with conda env? Add conda in citations?
 % TODO add Matlab citation as 'MATLAB and Statistics Toolbox Release 2012b, The MathWorks, Inc., Natick, Massachusetts, United States.' > http://www.walkingrandomly.com/?p=4767
 
+\paragraph{Implementation}
 The simulations were implemented in Matlab R2016b~\cite{release2016bmathworks} on a High Permformance Computing cluster. Code is available at: \url{https://github.com/cmaumet/zmeta_buster} and depends on the IBMA toolbox~cb5aee~\cite{Maumet2014}, SPM12~revision~6196 (RRID:SCR\_007037)~\cite{Friston2007}, FSL~5.0.10 (RRID:SCR\_002823)~\cite{Jenkinson2012} and SnPM~f254ff (RRID:SCR\_002092)~\cite{Nichols2002}. Figures were computed in R~\cite{RCoreTeam2016} jupyter notebooks~\cite{Perez2007} and depends on ggplot2~\cite{Hadley2009} and cowplot~\cite{Wilke2016}. The code used to compute the figures displayed in this manuscript is available at: \url{https://github.com/cmaumet/zmeta}.
 
 % TODO: table summarising the simulations
